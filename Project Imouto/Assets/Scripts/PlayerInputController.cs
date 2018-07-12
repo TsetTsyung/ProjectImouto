@@ -6,6 +6,11 @@ public class PlayerInputController : MonoBehaviour {
 
     private OverlayController overlayController;
 
+    private void Awake()
+    {
+        GameObjectDirectory.PlayerInputController = this;
+    }
+
     // Use this for initialization
     void Start () {
         overlayController = GameObjectDirectory.OverlayController;
