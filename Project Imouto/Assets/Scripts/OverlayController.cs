@@ -72,7 +72,9 @@ public class OverlayController : MonoBehaviour {
 
     public void UpdateHealthBar(int newHealth)
     {
+        Debug.Log("Updating the health bar with health of " + newHealth);
         healthSlider.value = newHealth;
+        Debug.Log("Healthbar value is now " + healthSlider.value);
     }
 
     public void UpdateStaminaBar(int newStamina)

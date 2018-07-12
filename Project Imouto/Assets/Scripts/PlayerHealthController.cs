@@ -31,11 +31,13 @@ public class PlayerHealthController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         overlayController = GameObjectDirectory.OverlayController;
-	}
+        StartNewGame();
+        //UpdateUIBars();
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        UpdateUIBars();        
+        //UpdateUIBars();        
 	}
 
     private void UpdateUIBars()
@@ -69,7 +71,38 @@ public class PlayerHealthController : MonoBehaviour {
     public void PlayerHasTakenDamage(int damageTaken)
     {
         health -= damageTaken;
+        UpdateUIBars();
         CheckForDeath();
+    }
+
+    public void PlayerHasUsedStamina(int staminaUsed)
+    {
+        stamina -= staminaUsed;
+        UpdateUIBars();
+    }
+
+    public void PlayerHasIncreasedHealth(int healthIncrease)
+    {
+        health += healthIncrease;
+        UpdateUIBars();
+    }
+
+    public void PlayerHasIncreasedStamina(int staminaIncrease)
+    {
+        stamina += staminaIncrease;
+        UpdateUIBars();
+    }
+
+    public void PlayerHasIncreasedMaxHealth(int maxHealthIncrease)
+    {
+        maxHealth += maxHealthIncrease;
+        UpdateUIBars();
+    }
+
+    public void PlayerHasIncreasedMaxStamina(int maxStaminaIncrease)
+    {
+        maxStamina += maxStaminaIncrease;
+        UpdateUIBars();
     }
 
     private void CheckForDeath()
