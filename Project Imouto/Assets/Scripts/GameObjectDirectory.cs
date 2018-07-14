@@ -9,6 +9,8 @@ public static class GameObjectDirectory {
     public static InteractionScript InteractionSystem { get; set; }
     public static PlayerHealthController PlayerHealthController { get; set; }
     public static PlayerInputController PlayerInputController { get; set; }
+    public static PlayerAnimationController PlayerAnimationController { get; set; }
+    public static PlayerMovementController PlayerMovementController { get; set; }
 
     public static void ClearAll()
     {
