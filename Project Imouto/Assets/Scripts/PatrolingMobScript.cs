@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum MobPatrolState { Stationary, Patroling, Chasing, ReturningToPatrol, Attacking }
+public enum MobPatrolState { Stationary, Patroling, Chasing, ReturningToPatrol, Attacking, Waiting }
 public class PatrolingMobScript : MonoBehaviour
 {
 
+    [SerializeField]
+    private AnimationBaseClass animationController;
     [SerializeField]
     private Transform[] waypoints;
     [SerializeField]
@@ -27,32 +29,55 @@ public class PatrolingMobScript : MonoBehaviour
     [SerializeField]
     private float returnToPatrolSpeed;
     [SerializeField]
+    private float waypointWaitingTime;
+    [SerializeField]
     private float timeTilReplanPath;
+    [SerializeField]
+    private float timeBetweenAttacks;
+    [SerializeField]
+    private float timeIntoAnimationForAttack;
+    [SerializeField]
+    private int damage = 18;
+    [SerializeField]
+    private float swingRange = 1f;
 
+    private GameControllerScript gameController;
     private PlayerHealthController playerHealthController;
     private Transform playerTransform;
     private int currentWaypoint;
     private MobPatrolState ourPatrolState;
     private float distanceToPlayerSQRD;
     private float replanTimer;
+    private float waitingTimer;
+    private float nextAttackTimer;
+    private float nextHitContactTimer;
+    private bool attemptedHitThisLoop = false;
 
     // Use this for initialization
     void Start()
     {
+        gameController = GameObjectDirectory.GameController;
         playerHealthController = GameObjectDirectory.PlayerHealthController;
 
         if (playerHealthController != null)
             playerTransform = playerHealthController.transform;
 
+        timeBetweenAttacks = animationController.GetAttackAnimationClipTime();
+        timeIntoAnimationForAttack = animationController.GetTimeIntoAnimationForAttack();
+
         if (waypoints.Length >= 1)
         {
             ourPatrolState = MobPatrolState.Patroling;
-
+            animationController.StartWalkAnimation();
             transform.position = waypoints[waypoints.Length - 1].position;
 
             ourNavAgent.SetDestination(waypoints[0].position);
 
             currentWaypoint = 0;
+        }
+        else
+        {
+            ourPatrolState = MobPatrolState.Waiting;
         }
     }
 
@@ -65,7 +90,6 @@ public class PatrolingMobScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         // Get range to player for attack or returning to patrol
         distanceToPlayerSQRD = Vector3.SqrMagnitude(transform.position - playerTransform.position);
 
@@ -79,44 +103,54 @@ public class PatrolingMobScript : MonoBehaviour
                 if (currentWaypoint > waypoints.Length)
                     currentWaypoint = 0;
 
-                ourNavAgent.SetDestination(waypoints[currentWaypoint].position);
+                ourPatrolState = MobPatrolState.Waiting;
+                animationController.StartIdlingAnimation();
+                waitingTimer = waypointWaitingTime;
             }
 
-            // Check if player has come within 'alert range'
-            if (distanceToPlayerSQRD <= (alertRange * alertRange))
+            CheckForPlayerAlert();
+        }
+        else if (ourPatrolState == MobPatrolState.Waiting)
+        {
+            waitingTimer -= Time.deltaTime;
+            if (waitingTimer <= 0f)
             {
-                //Debug.LogWarning("Giving Chase");
-                // Enter chase state
-                ourPatrolState = MobPatrolState.Chasing;
+                if (waypoints.Length >= 1)
+                {
+                    ourPatrolState = MobPatrolState.Patroling;
+                    animationController.StartWalkAnimation();
+                    transform.position = waypoints[waypoints.Length - 1].position;
 
-                SetPathToPlayer();
-                ourNavAgent.speed = chaseSpeed;
+                    ourNavAgent.SetDestination(waypoints[0].position);
 
-                replanTimer = timeTilReplanPath;
+                    currentWaypoint = 0;
+                }
             }
+
+            CheckForPlayerAlert();
         }
         else if (ourPatrolState == MobPatrolState.Chasing)
         {
             replanTimer -= Time.deltaTime;
             if (replanTimer <= 0f)
             {
-                SetPathToPlayer();
+                if (gameController.PlayerIsAlive)
+                {
+                    SetPathToPlayer();
+                }
+                else
+                {
+                    ReturnToPatrol();
+                }
             }
 
             if (distanceToPlayerSQRD <= (attackRange * attackRange))
             {
-                // ATTACK
-                //ourPatrolState = MobPatrolState.Attacking;
-
-                // Start attack animation
+                CommenceAttackCycle();
             }
             else if (distanceToPlayerSQRD > (chaseRange * chaseRange))
             {
-                //Debug.Log("Returning to patrol");
-                // Return to patrol
-                ourNavAgent.SetDestination(waypoints[currentWaypoint].position);
-                ourNavAgent.speed = returnToPatrolSpeed;
-                ourPatrolState = MobPatrolState.ReturningToPatrol;
+                ReturnToPatrol();
             }
         }
         else if (ourPatrolState == MobPatrolState.ReturningToPatrol)
@@ -124,7 +158,6 @@ public class PatrolingMobScript : MonoBehaviour
             if (Vector3.SqrMagnitude(transform.position - waypoints[currentWaypoint].position) <= (nextWaypointDistance * nextWaypointDistance))
             {
                 // Move on to the next waypoint
-                //Debug.Log("Resuming Patrol");
                 currentWaypoint++;
                 if (currentWaypoint > waypoints.Length)
                     currentWaypoint = 0;
@@ -133,17 +166,103 @@ public class PatrolingMobScript : MonoBehaviour
                 ourNavAgent.speed = patrolSpeed;
 
                 ourPatrolState = MobPatrolState.Patroling;
+                animationController.StartWalkAnimation();
             }
         }
         else if (ourPatrolState == MobPatrolState.Attacking)
         {
-            // Check if animation is finished.
+            if (!gameController.PlayerIsAlive)
+                ReturnToPatrol();
+
+            // Decrement the timers
+            nextAttackTimer -= Time.deltaTime;
+
+            if (!attemptedHitThisLoop)
+            {
+                nextHitContactTimer -= Time.deltaTime;
+                if (nextHitContactTimer <= 0)
+                {
+                    attemptedHitThisLoop = true;
+
+                    // Try to see if the player is within the attack range
+                    if (distanceToPlayerSQRD <= (attackRange * attackRange))
+                        playerHealthController.PlayerHasTakenDamage(damage);
+                }
+            }
+
+            if (nextAttackTimer <= 0f)
+            {
+                // Check the location of the player
+                if (distanceToPlayerSQRD > attackRange * attackRange)
+                {
+                    SetPathToPlayer();
+                    animationController.StartRunAnimation();
+                    ourPatrolState = MobPatrolState.Chasing;
+                }
+                else
+                {
+                    nextAttackTimer = timeBetweenAttacks;
+                    nextHitContactTimer = timeIntoAnimationForAttack;
+                    attemptedHitThisLoop = false;
+                }
+            }
+        }
+    }
+
+    private void ReturnToPatrol()
+    {
+        if (waypoints.Length >= 1)
+        {
+            // Return to patrol
+            ourNavAgent.SetDestination(waypoints[currentWaypoint].position);
+            ourNavAgent.speed = returnToPatrolSpeed;
+            animationController.StartRunAnimation();
+            ourPatrolState = MobPatrolState.ReturningToPatrol;
+        }
+        else
+        {
+            animationController.StartIdlingAnimation();
+            ourPatrolState = MobPatrolState.Waiting;
+        }
+    }
+
+    private void CommenceAttackCycle()
+    {
+        // Set our state to attacking
+        ourPatrolState = MobPatrolState.Attacking;
+
+        // Start attack animation
+        animationController.StartAttackAnimation();
+
+        // Start timer for the weapon to make contact
+        nextHitContactTimer = timeIntoAnimationForAttack;
+
+        // Set timer for the next attack
+        nextAttackTimer = timeBetweenAttacks;
+
+        attemptedHitThisLoop = false;
+    }
+
+    private void CheckForPlayerAlert()
+    {
+        // Check if player has come within 'alert range'
+        if (gameController.PlayerIsAlive && distanceToPlayerSQRD <= (alertRange * alertRange))
+        {
+            // Enter chase state
+            ourPatrolState = MobPatrolState.Chasing;
+
+            // start the running animation
+            animationController.StartRunAnimation();
+
+            SetPathToPlayer();
+            ourNavAgent.speed = chaseSpeed;
+
+            replanTimer = timeTilReplanPath;
         }
     }
 
     private void SetPathToPlayer()
     {
-        //Debug.LogWarning("Setting path to player");
         ourNavAgent.SetDestination(playerTransform.position);
     }
 }

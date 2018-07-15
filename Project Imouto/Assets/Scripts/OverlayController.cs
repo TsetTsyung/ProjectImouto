@@ -15,6 +15,8 @@ public class OverlayController : MonoBehaviour {
     private GameObject emoteMenuObject;
 
     private GameObject interactingObject;
+    private GameControllerScript gameController;
+    private PlayerAnimationController playerAnimationController;
     private int currentMaxHealth;
     private int currentHealth;
 
@@ -26,13 +28,10 @@ public class OverlayController : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        gameController = GameObjectDirectory.GameController;
+        playerAnimationController = GameObjectDirectory.PlayerAnimationController;
         HideInteractionText();
         HideEmotePanel();
-    }
-
-    // Update is called once per frame
-    void Update() {
-
     }
 
     private void HideInteractionText()
@@ -56,18 +55,14 @@ public class OverlayController : MonoBehaviour {
 
     public void DisplayEmotePanel()
     {
-        Time.timeScale = 0;
+        gameController.PauseGame();
         emoteMenuObject.SetActive(true);
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;  // TODO: select the player's chosen lockmode
     }
 
     public void HideEmotePanel()
     {
-        Time.timeScale = 1;
+        gameController.ResumeGame();
         emoteMenuObject.SetActive(false);
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void UpdateHealthBar(int newHealth)
@@ -91,4 +86,53 @@ public class OverlayController : MonoBehaviour {
     {
         staminaSlider.maxValue = newMaxStamina;
     }
+
+    public void PlayEmote1()
+    {
+        HideEmotePanel();
+        // Now call the animator controller
+        playerAnimationController.PlayEmote1();
+
+    }
+
+    public void PlayEmote2()
+    {
+        playerAnimationController.PlayEmote2();
+    }
+
+    public void PlayEmote3()
+    {
+        playerAnimationController.PlayEmote3();
+    }
+
+    public void PlayEmote4()
+    {
+        playerAnimationController.PlayEmote4();
+    }
+
+    public void PlayEmote5()
+    {
+        playerAnimationController.PlayEmote5();
+    }
+
+    public void PlayEmote6()
+    {
+        playerAnimationController.PlayEmote6();
+    }
+
+    public void PlayEmote7()
+    {
+        playerAnimationController.PlayEmote7();
+    }
+
+    public void PlayEmote8()
+    {
+        playerAnimationController.PlayEmote8();
+    }
+
+    public void TestClick()
+    {
+        Debug.Log("Clicked!");
+    }
+
 }

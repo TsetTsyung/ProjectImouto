@@ -6,6 +6,9 @@ using UnityEngine;
 public class PlayerHealthController : MonoBehaviour {
 
     [SerializeField]
+    private PlayerAnimationController playerAnimationController;
+
+    [SerializeField]
     private int startingHealth;
     [SerializeField]
     private int startingMaxHealth;
@@ -111,6 +114,7 @@ public class PlayerHealthController : MonoBehaviour {
         {
             health = 0;
             // DIE!
+            playerAnimationController.PlayerDied();
         }
     }
 }
