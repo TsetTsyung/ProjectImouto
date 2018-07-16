@@ -27,11 +27,13 @@ public class GenericAnimationController : AnimationBaseClass {
 
     public override void StartRunAnimation()
     {
+        Debug.Log("Trying to start run Animation");
         animator.SetTrigger("Running");
     }
 
     public override void StartWalkAnimation()
     {
+        Debug.Log("Trying to start Walking animation");
         animator.SetTrigger("Walking");
     }
 

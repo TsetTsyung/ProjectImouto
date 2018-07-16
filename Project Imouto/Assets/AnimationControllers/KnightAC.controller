@@ -808,10 +808,10 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1102013932241610856}
-    m_Position: {x: 600, y: 264, z: 0}
+    m_Position: {x: 372, y: 60, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102802863084789552}
-    m_Position: {x: 612, y: 204, z: 0}
+    m_Position: {x: 156, y: 60, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102331054980470954}
     m_Position: {x: 264, y: -60, z: 0}
