@@ -116,7 +116,7 @@ public class PlayerAnimationController : MonoBehaviour
         playerAnimator.SetTrigger("Emote8");
     }
 
-    internal void PlayerDied()
+    public void PlayerDied()
     {
         Debug.LogWarning("Player Has Died");
         if (gameController.PlayerIsAlive)
@@ -124,5 +124,15 @@ public class PlayerAnimationController : MonoBehaviour
             playerAnimator.SetTrigger("Death" + UnityEngine.Random.Range(0, 2).ToString());
             gameController.PlayerDied();
         }
+    }
+
+    public void PlayStationaryJump()
+    {
+        playerAnimator.SetTrigger("StationaryJump");
+    }
+
+    public void PlayMovingJump()
+    {
+        playerAnimator.SetTrigger("MovingJump");
     }
 }

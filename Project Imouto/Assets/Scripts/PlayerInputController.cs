@@ -1,9 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInputController : MonoBehaviour
 {
+    [SerializeField]
+    private float movementThresholdForJump = 0.1f;
+    [SerializeField]
+    private float airControllerMultiplier = 0.2f;
+    [SerializeField]
+    private Transform groundCheckStartPoint;
+    [SerializeField]
+    private float groundCheckDistance;
 
     private GameControllerScript gameController;
     private OverlayController overlayController;
@@ -14,6 +23,9 @@ public class PlayerInputController : MonoBehaviour
     private float horizontalInput;
     private float mouseXInput;
     private bool isWalking;
+    private bool isGrounded;
+
+    private RaycastHit hitInfo;
 
     private void Awake()
     {
@@ -46,6 +58,15 @@ public class PlayerInputController : MonoBehaviour
         // Check for walk/Run modifier
         isWalking = (Input.GetButton("Walk")) ? true : false;
 
+        // Check to see if the player is grounded
+        DoGroundCheck();
+        if (!isGrounded)
+
+        {
+            verticalInput *= airControllerMultiplier;
+            horizontalInput *= airControllerMultiplier;
+        }
+
         // Inform the movement and animation scripts of the Forward/Backward input
         playerMovementController.SubmitVerticalInput(verticalInput, isWalking);
         playerAnimationController.SubmitVerticalInput(verticalInput, isWalking);
@@ -54,6 +75,10 @@ public class PlayerInputController : MonoBehaviour
         playerMovementController.SubmitHorizontalInput(horizontalInput, isWalking);
         playerAnimationController.SubmitHorizontalInput(horizontalInput, isWalking);
 
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            Jump(verticalInput, horizontalInput);
+        }
 
         // Check to see if the player is trying to interact with stuff
         if (Input.GetButtonDown("Use"))
@@ -71,5 +96,35 @@ public class PlayerInputController : MonoBehaviour
         {
             overlayController.HideEmotePanel();
         }
+    }
+
+    private void DoGroundCheck()
+    {
+        if (Physics.Raycast(groundCheckStartPoint.position, -Vector3.up, out hitInfo, groundCheckDistance))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+    }
+
+    private void Jump(float verticalInput, float horizontalInput)
+    {
+        Debug.Log("Jumping");
+        if (Mathf.Abs(verticalInput) <= movementThresholdForJump && Mathf.Abs(horizontalInput) <= movementThresholdForJump)
+        {
+            // Perform standing jump
+            playerAnimationController.PlayStationaryJump();
+
+        }
+        else
+        {
+            // Perform moving jump
+            playerAnimationController.PlayMovingJump();
+        }
+
+
     }
 }

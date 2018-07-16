@@ -163,6 +163,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1147813481703612
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4522345297828146}
+  m_Layer: 0
+  m_Name: GroundCheckStartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1150847549642030
 GameObject:
   m_ObjectHideFlags: 1
@@ -1959,6 +1974,19 @@ Transform:
   m_Father: {fileID: 4634202666957080}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4522345297828146
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1147813481703612}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4772559584240596}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4524320885393102
 Transform:
   m_ObjectHideFlags: 1
@@ -2364,7 +2392,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1227425349886540}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 288.79984, y: 7.1483316, z: 256.6921}
+  m_LocalPosition: {x: 276.8032, y: 8.878072, z: 197.03572}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4805102911703236}
@@ -2375,6 +2403,7 @@ Transform:
   - {fileID: 4621714322245900}
   - {fileID: 4303531838757232}
   - {fileID: 4738169510060972}
+  - {fileID: 4522345297828146}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3043,6 +3072,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5a5a567b71741e409a969b2f3903b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementThresholdForJump: 0.25
+  airControllerMultiplier: 0.2
+  groundCheckStartPoint: {fileID: 4522345297828146}
+  groundCheckDistance: 0.1
 --- !u!136 &136540827286698992
 CapsuleCollider:
   m_ObjectHideFlags: 1

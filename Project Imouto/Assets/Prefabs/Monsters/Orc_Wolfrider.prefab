@@ -920,7 +920,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1246422787230522}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 294.87, y: 6.79851, z: 266.22}
+  m_LocalPosition: {x: 280.64206, y: 8.985317, z: 190.71788}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4121630640911838}
@@ -1658,7 +1658,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9df1fd1114a653c4d9b6e15af669c10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orcAnimator: {fileID: 95066576435511118}
+  animator: {fileID: 95066576435511118}
+  attackAnimationTime: 1.33
+  timeIntoAnimationForAttack: 0.33
 --- !u!114 &114611927442266318
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1681,9 +1683,7 @@ MonoBehaviour:
   chaseSpeed: 4
   returnToPatrolSpeed: 3.5
   waypointWaitingTime: 0
-  timeTilReplanPath: 1.5
-  timeBetweenAttacks: 0
-  timeIntoAnimationForAttack: 0
+  timeTilReplanPath: 0.5
   damage: 18
   swingRange: 2
 --- !u!135 &135855797774660428
