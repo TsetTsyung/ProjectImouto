@@ -190,13 +190,15 @@ GameObject:
   - component: {fileID: 195439742785169800}
   - component: {fileID: 114611927442266318}
   - component: {fileID: 114108690801145916}
+  - component: {fileID: 114938107209389274}
+  - component: {fileID: 114792134876938304}
   m_Layer: 0
   m_Name: Orc_Wolfrider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1276396349741194
 GameObject:
   m_ObjectHideFlags: 1
@@ -920,7 +922,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1246422787230522}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 276.96616, y: 8.913276, z: 196.82933}
+  m_LocalPosition: {x: 276.56308, y: 8.998428, z: 193.44264}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4121630640911838}
@@ -1686,6 +1688,30 @@ MonoBehaviour:
   timeTilReplanPath: 0.5
   damage: 18
   swingRange: 2
+--- !u!114 &114792134876938304
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1246422787230522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 846bbb233dcae3a46bc6d9360a9d9a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114938107209389274
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1246422787230522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a8cbe34dae8b3b4c9ddd28fbf3d073b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingHealth: 150
+  isSkeleton: 0
 --- !u!135 &135855797774660428
 SphereCollider:
   m_ObjectHideFlags: 1

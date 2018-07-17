@@ -13,6 +13,9 @@ public class PlayerAnimationController : MonoBehaviour
     private AnimatorClipInfo[] clipInfo;
     private Vector2 mouseInput;
 
+    private bool isMovingOnX = false;
+    private bool isMovingOnY = false;
+
     private void Awake()
     {
         GameObjectDirectory.PlayerAnimationController = this;
@@ -87,10 +90,12 @@ public class PlayerAnimationController : MonoBehaviour
                 verticalInput *= 2f;
             }
             playerAnimator.SetFloat("ForwardSpeed", verticalInput);
+            isMovingOnY = true;
         }
         else
         {
             playerAnimator.SetFloat("ForwardSpeed", 0f);
+            isMovingOnY = false;
         }
     }
 
@@ -104,10 +109,36 @@ public class PlayerAnimationController : MonoBehaviour
             }
 
             playerAnimator.SetFloat("SidewaysSpeed", horizontalInput);
+            isMovingOnX = true;
         }
         else
         {
             playerAnimator.SetFloat("SidewaysSpeed", 0f);
+            isMovingOnX = false;
+        }
+    }
+
+    public void SubmitMouseRotationInput(float mouseXInput, bool isGrounded)
+    {
+        if (isGrounded && mouseXInput != 0f && !isMovingOnX && !isMovingOnY)
+        {
+            if (mouseXInput < 0f)
+            {
+                // Turning Left
+                playerAnimator.SetBool("StationaryTurningLeft", true);
+                playerAnimator.SetBool("StationaryTurningRight", false);
+            }
+            else
+            {
+                // Turning Right
+                playerAnimator.SetBool("StationaryTurningLeft", false);
+                playerAnimator.SetBool("StationaryTurningRight", true);
+            }
+        }
+        else
+        {
+            playerAnimator.SetBool("StationaryTurningLeft", false);
+            playerAnimator.SetBool("StationaryTurningRight", false);
         }
     }
 
@@ -115,6 +146,7 @@ public class PlayerAnimationController : MonoBehaviour
     {
         playerAnimator.SetTrigger("Emote8");
     }
+
 
     public void PlayerDied()
     {

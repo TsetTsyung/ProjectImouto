@@ -47,9 +47,6 @@ public class PlayerInputController : MonoBehaviour
         if (!gameController.PlayerIsAlive)
             return;
 
-        // Rotational Handling
-        mouseXInput = Input.GetAxis("Mouse X");
-        playerMovementController.SubmitMouseRotationInput(mouseXInput);
 
         // Movement Handling
         verticalInput = Input.GetAxis("Vertical");
@@ -75,6 +72,11 @@ public class PlayerInputController : MonoBehaviour
         playerMovementController.SubmitHorizontalInput(horizontalInput, isWalking);
         playerAnimationController.SubmitHorizontalInput(horizontalInput, isWalking);
 
+        // Rotational Handling
+        mouseXInput = Input.GetAxis("Mouse X");
+        playerMovementController.SubmitMouseRotationInput(mouseXInput);
+        playerAnimationController.SubmitMouseRotationInput(mouseXInput, isGrounded);
+
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             Jump(verticalInput, horizontalInput);
@@ -95,6 +97,11 @@ public class PlayerInputController : MonoBehaviour
         else if (Input.GetButtonUp("Emote"))
         {
             overlayController.HideEmotePanel();
+        }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            GameObject.FindGameObjectWithTag("Monster").GetComponent<MonsterHealthScript>().TakeDamage(500);
         }
     }
 

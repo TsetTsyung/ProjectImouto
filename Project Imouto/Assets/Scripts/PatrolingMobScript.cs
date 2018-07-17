@@ -63,6 +63,11 @@ public class PatrolingMobScript : MonoBehaviour
         timeBetweenAttacks = animationController.GetAttackAnimationClipTime();
         timeIntoAnimationForAttack = animationController.GetTimeIntoAnimationForAttack();
 
+        ActivateCreature();
+    }
+
+    public void ActivateCreature()
+    {
         if (waypoints.Length >= 1)
         {
             ourPatrolState = MobPatrolState.Patroling;

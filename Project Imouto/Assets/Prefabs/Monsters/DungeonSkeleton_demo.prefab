@@ -134,9 +134,12 @@ GameObject:
   - component: {fileID: 195520785103155090}
   - component: {fileID: 114563530970010032}
   - component: {fileID: 114636366832346768}
+  - component: {fileID: 114640255157046010}
+  - component: {fileID: 114802509894079486}
+  - component: {fileID: 114461000177372128}
   m_Layer: 0
   m_Name: DungeonSkeleton_demo
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -661,7 +664,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1194221615584224}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 275.92535, y: 8.911264, z: 194.64943}
+  m_LocalPosition: {x: 276.38834, y: 8.996279, z: 193.93475}
   m_LocalScale: {x: 0.67, y: 0.67, z: 0.67}
   m_Children:
   - {fileID: 4241294402390002}
@@ -1228,6 +1231,42 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114461000177372128
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1194221615584224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e1efd37c7d19b4478775a469d5034d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyParts:
+  - {fileID: 4979799313050756}
+  - {fileID: 4658659979244812}
+  - {fileID: 4856089729587592}
+  - {fileID: 4010456838902376}
+  - {fileID: 4931523813442944}
+  - {fileID: 4896457819617134}
+  - {fileID: 4049606524318294}
+  - {fileID: 4852323225005174}
+  - {fileID: 4950467187340194}
+  - {fileID: 4794414393466852}
+  - {fileID: 4730571184423750}
+  - {fileID: 4686252006934056}
+  - {fileID: 4316600283953826}
+  - {fileID: 4308581680112558}
+  - {fileID: 4211184790977162}
+  - {fileID: 4018226822632272}
+  - {fileID: 4198602307661778}
+  - {fileID: 4241496213324672}
+  - {fileID: 4532311044257316}
+  - {fileID: 4251954089874264}
+  - {fileID: 4241276341624006}
+  - {fileID: 4852467223253910}
+  - {fileID: 4510529240488784}
+  - {fileID: 4017416532147524}
 --- !u!114 &114563530970010032
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1267,6 +1306,30 @@ MonoBehaviour:
   animator: {fileID: 95373477152707466}
   attackAnimationTime: 1.5
   timeIntoAnimationForAttack: 0.7
+--- !u!114 &114640255157046010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1194221615584224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a8cbe34dae8b3b4c9ddd28fbf3d073b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingHealth: 100
+  isSkeleton: 1
+--- !u!114 &114802509894079486
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1194221615584224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 846bbb233dcae3a46bc6d9360a9d9a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &135714378201960958
 SphereCollider:
   m_ObjectHideFlags: 1
