@@ -101,7 +101,8 @@ public class PlayerInputController : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            GameObject.FindGameObjectWithTag("Monster").GetComponent<MonsterHealthScript>().TakeDamage(500);
+            // Attack
+            playerAnimationController.PlayAttack1();
         }
     }
 

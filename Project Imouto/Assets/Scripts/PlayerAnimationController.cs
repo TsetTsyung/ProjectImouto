@@ -142,6 +142,11 @@ public class PlayerAnimationController : MonoBehaviour
         }
     }
 
+    public void PlayAttack1()
+    {
+        playerAnimator.SetTrigger("Attack");
+    }
+
     public void PlayEmote8()
     {
         playerAnimator.SetTrigger("Emote8");
