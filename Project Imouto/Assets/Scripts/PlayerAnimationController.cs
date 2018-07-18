@@ -15,7 +15,8 @@ public class PlayerAnimationController : MonoBehaviour
 
     private bool isMovingOnX = false;
     private bool isMovingOnY = false;
-    private bool isMoving = false;
+    private bool stationary = false;
+    private AnimatorStateInfo stateInfo;
 
     private void Awake()
     {
@@ -62,6 +63,11 @@ public class PlayerAnimationController : MonoBehaviour
         playerAnimator.SetTrigger("Emote3");
     }
 
+    public AnimatorStateInfo GetState()
+    {
+        return playerAnimator.GetCurrentAnimatorStateInfo(0);
+    }
+
     public void PlayEmote4()
     {
         playerAnimator.SetTrigger("Emote4");
@@ -84,22 +90,26 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void SubmitInput(float verticalInput, float horizonatlInput, float mouseInput, bool isWalking)
     {
-        isMoving = false;
+        //stateInfo = playerAnimator.GetCurrentAnimatorStateInfo(0);
+
+        stationary = true;
         if (!isWalking)
         {
             verticalInput *= 2f;
             horizonatlInput *= 2f;
         }
 
-        if (verticalInput != 0f || horizonatlInput != 0f)
-            isMoving = true;
+        if (verticalInput != 0f || horizonatlInput != 0f )
+            stationary = false;
 
         playerAnimator.SetFloat("ForwardSpeed", verticalInput);
         playerAnimator.SetFloat("SidewaysSpeed", horizonatlInput);
         playerAnimator.SetFloat("TurnInput", mouseInput);
-        playerAnimator.SetBool("Stationary", !isMoving);
+
+        playerAnimator.SetBool("Stationary", stationary);
     }
 
+    /*
     public void SubmitVerticalInput(float verticalInput, bool isWalking)
     {
         if (verticalInput != 0f)
@@ -160,10 +170,30 @@ public class PlayerAnimationController : MonoBehaviour
             playerAnimator.SetBool("StationaryTurningRight", false);
         }
     }
+    */
 
-    public void PlayAttack1()
+    public void PlayerAttack(ComboMoves newMove)
     {
-        playerAnimator.SetTrigger("Attack");
+        playerAnimator.SetBool("Attacking", true);
+        switch (newMove)
+        {
+            case ComboMoves.Unset:
+                break;
+            case ComboMoves.LightAttack:
+                playerAnimator.SetTrigger("Attack");
+                break;
+            case ComboMoves.HeavyAttack1:
+                playerAnimator.SetTrigger("HeavyAttack1");
+                break;
+            case ComboMoves.HeavyAttack2:
+                playerAnimator.SetTrigger("HeavyAttack2");
+                break;
+            case ComboMoves.SuperHeavyAttack:
+                playerAnimator.SetTrigger("SuperHeavyAttack");
+                break;
+            default:
+                break;
+        }
     }
 
     public void PlayEmote8()
@@ -184,8 +214,10 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void PlayStationaryJump()
     {
+        
         playerAnimator.SetTrigger("StationaryJump");
     }
+
 
     public void PlayMovingJump()
     {

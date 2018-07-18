@@ -25,6 +25,8 @@ public class PlayerInputController : MonoBehaviour
     private float mouseXInput;
     private bool isWalking;
     private bool isGrounded;
+    private bool inputAllowed = true;
+    private bool movementAllowed = true;
 
     private RaycastHit hitInfo;
 
@@ -46,13 +48,21 @@ public class PlayerInputController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!gameController.PlayerIsAlive)
+        if (!gameController.PlayerIsAlive || !inputAllowed)
             return;
 
 
         // Movement Handling
-        verticalInput = Input.GetAxis("Vertical");
-        horizontalInput = Input.GetAxis("Horizontal");
+        if (movementAllowed)
+        {
+            verticalInput = Input.GetAxis("Vertical");
+            horizontalInput = Input.GetAxis("Horizontal");
+        }
+        else
+        {
+            verticalInput = 0f;
+            horizontalInput = 0f;
+        }
 
         // Check for walk/Run modifier
         isWalking = (Input.GetButton("Walk")) ? true : false;
@@ -66,33 +76,39 @@ public class PlayerInputController : MonoBehaviour
             horizontalInput *= airControllerMultiplier;
         }
 
-        // Inform the movement and animation scripts of the Forward/Backward input
+        // Inform the movement script of the Forward/Backward input
         playerMovementController.SubmitVerticalInput(verticalInput, isWalking);
-        //playerAnimationController.SubmitVerticalInput(verticalInput, isWalking);
 
-        // Inform the movement script and animation scripts of the Left/Right input
+        // Inform the movement script of the Left/Right input
         playerMovementController.SubmitHorizontalInput(horizontalInput, isWalking);
-        //playerAnimationController.SubmitHorizontalInput(horizontalInput, isWalking);
 
         // Rotational Handling
-        mouseXInput = Input.GetAxis("Mouse X");
+        if (movementAllowed)
+        {
+            mouseXInput = Input.GetAxis("Mouse X");
+        }
+        else
+        {
+            mouseXInput = 0f;
+        }
         playerMovementController.SubmitMouseRotationInput(mouseXInput);
-        //playerAnimationController.SubmitMouseRotationInput(mouseXInput, isGrounded);
+
+        // Inform the animation script of the input
         playerAnimationController.SubmitInput(verticalInput, horizontalInput, mouseXInput, isWalking);
 
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded && movementAllowed)
         {
             Jump(verticalInput, horizontalInput);
         }
 
         // Check to see if the player is trying to interact with stuff
-        if (Input.GetButtonDown("Use"))
+        if (Input.GetButtonDown("Use") && movementAllowed)
         {
             // see if we can activate stuff
         }
 
         // Check for Emote input
-        if (Input.GetButtonDown("Emote"))
+        if (Input.GetButtonDown("Emote") && movementAllowed)
         {
             // display the emote window
             overlayController.DisplayEmotePanel();
@@ -106,9 +122,18 @@ public class PlayerInputController : MonoBehaviour
         {
             // Contact the attack script
             playerAttackScript.PlayerHasPressedAttack();
+        }
 
-            // Attack
-            //playerAnimationController.PlayAttack1();
+        if (Input.GetButtonDown("Fire2"))
+        {
+            // Contact the attack script
+            playerAttackScript.PlayerHasPressedHeavyAttack();
+        }
+
+        if (Input.GetButtonDown("Fire3"))
+        {
+            // Contact the attack script
+            playerAttackScript.PlayerHasPressedSuperHeavyAttack();
         }
     }
 
@@ -138,7 +163,25 @@ public class PlayerInputController : MonoBehaviour
             // Perform moving jump
             playerAnimationController.PlayMovingJump();
         }
+    }
 
+    public void EnableInput()
+    {
+        inputAllowed = true;
+    }
 
+    public void DisableInput()
+    {
+        inputAllowed = false;
+    }
+
+    public void EnableMovementInput()
+    {
+        movementAllowed = false;
+    }
+
+    internal void DisableMovemoentInput()
+    {
+        movementAllowed = true;
     }
 }
