@@ -11,6 +11,7 @@ public static class GameObjectDirectory {
     public static PlayerInputController PlayerInputController { get; set; }
     public static PlayerAnimationController PlayerAnimationController { get; set; }
     public static PlayerMovementController PlayerMovementController { get; set; }
+    public static PlayerAttackScript PlayerAttackScript { get; set; }
 
     public static void ClearAll()
     {

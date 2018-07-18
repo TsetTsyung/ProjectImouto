@@ -3,15 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class PlayerAnimationController : MonoBehaviour
 {
-
     [SerializeField]
     private Animator playerAnimator;
 
     private GameControllerScript gameController;
     private AnimatorClipInfo[] clipInfo;
     private Vector2 mouseInput;
+
+    private bool isMovingOnX = false;
+    private bool isMovingOnY = false;
+    private bool stationary = false;
+    private AnimatorStateInfo stateInfo;
 
     private void Awake()
     {
@@ -58,6 +63,11 @@ public class PlayerAnimationController : MonoBehaviour
         playerAnimator.SetTrigger("Emote3");
     }
 
+    public AnimatorStateInfo GetState()
+    {
+        return playerAnimator.GetCurrentAnimatorStateInfo(0);
+    }
+
     public void PlayEmote4()
     {
         playerAnimator.SetTrigger("Emote4");
@@ -78,6 +88,28 @@ public class PlayerAnimationController : MonoBehaviour
         playerAnimator.SetTrigger("Emote7");
     }
 
+    public void SubmitInput(float verticalInput, float horizonatlInput, float mouseInput, bool isWalking)
+    {
+        //stateInfo = playerAnimator.GetCurrentAnimatorStateInfo(0);
+
+        stationary = true;
+        if (!isWalking)
+        {
+            verticalInput *= 2f;
+            horizonatlInput *= 2f;
+        }
+
+        if (verticalInput != 0f || horizonatlInput != 0f )
+            stationary = false;
+
+        playerAnimator.SetFloat("ForwardSpeed", verticalInput);
+        playerAnimator.SetFloat("SidewaysSpeed", horizonatlInput);
+        playerAnimator.SetFloat("TurnInput", mouseInput);
+
+        playerAnimator.SetBool("Stationary", stationary);
+    }
+
+    /*
     public void SubmitVerticalInput(float verticalInput, bool isWalking)
     {
         if (verticalInput != 0f)
@@ -87,10 +119,12 @@ public class PlayerAnimationController : MonoBehaviour
                 verticalInput *= 2f;
             }
             playerAnimator.SetFloat("ForwardSpeed", verticalInput);
+            isMovingOnY = true;
         }
         else
         {
             playerAnimator.SetFloat("ForwardSpeed", 0f);
+            isMovingOnY = false;
         }
     }
 
@@ -104,10 +138,61 @@ public class PlayerAnimationController : MonoBehaviour
             }
 
             playerAnimator.SetFloat("SidewaysSpeed", horizontalInput);
+            isMovingOnX = true;
         }
         else
         {
             playerAnimator.SetFloat("SidewaysSpeed", 0f);
+            isMovingOnX = false;
+        }
+    }
+
+    public void SubmitMouseRotationInput(float mouseXInput, bool isGrounded)
+    {
+        if (isGrounded && mouseXInput != 0f && !isMovingOnX && !isMovingOnY)
+        {
+            if (mouseXInput < 0f)
+            {
+                // Turning Left
+                playerAnimator.SetBool("StationaryTurningLeft", true);
+                playerAnimator.SetBool("StationaryTurningRight", false);
+            }
+            else
+            {
+                // Turning Right
+                playerAnimator.SetBool("StationaryTurningLeft", false);
+                playerAnimator.SetBool("StationaryTurningRight", true);
+            }
+        }
+        else
+        {
+            playerAnimator.SetBool("StationaryTurningLeft", false);
+            playerAnimator.SetBool("StationaryTurningRight", false);
+        }
+    }
+    */
+
+    public void PlayerAttack(ComboMoves newMove)
+    {
+        playerAnimator.SetBool("Attacking", true);
+        switch (newMove)
+        {
+            case ComboMoves.Unset:
+                break;
+            case ComboMoves.LightAttack:
+                playerAnimator.SetTrigger("Attack");
+                break;
+            case ComboMoves.HeavyAttack1:
+                playerAnimator.SetTrigger("HeavyAttack1");
+                break;
+            case ComboMoves.HeavyAttack2:
+                playerAnimator.SetTrigger("HeavyAttack2");
+                break;
+            case ComboMoves.SuperHeavyAttack:
+                playerAnimator.SetTrigger("SuperHeavyAttack");
+                break;
+            default:
+                break;
         }
     }
 
@@ -116,7 +201,8 @@ public class PlayerAnimationController : MonoBehaviour
         playerAnimator.SetTrigger("Emote8");
     }
 
-    internal void PlayerDied()
+
+    public void PlayerDied()
     {
         Debug.LogWarning("Player Has Died");
         if (gameController.PlayerIsAlive)
@@ -124,5 +210,17 @@ public class PlayerAnimationController : MonoBehaviour
             playerAnimator.SetTrigger("Death" + UnityEngine.Random.Range(0, 2).ToString());
             gameController.PlayerDied();
         }
+    }
+
+    public void PlayStationaryJump()
+    {
+        
+        playerAnimator.SetTrigger("StationaryJump");
+    }
+
+
+    public void PlayMovingJump()
+    {
+        playerAnimator.SetTrigger("MovingJump");
     }
 }

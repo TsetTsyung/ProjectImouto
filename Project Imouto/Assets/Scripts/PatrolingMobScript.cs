@@ -33,10 +33,6 @@ public class PatrolingMobScript : MonoBehaviour
     [SerializeField]
     private float timeTilReplanPath;
     [SerializeField]
-    private float timeBetweenAttacks;
-    [SerializeField]
-    private float timeIntoAnimationForAttack;
-    [SerializeField]
     private int damage = 18;
     [SerializeField]
     private float swingRange = 1f;
@@ -52,6 +48,8 @@ public class PatrolingMobScript : MonoBehaviour
     private float nextAttackTimer;
     private float nextHitContactTimer;
     private bool attemptedHitThisLoop = false;
+    private float timeBetweenAttacks;
+    private float timeIntoAnimationForAttack;
 
     // Use this for initialization
     void Start()
@@ -65,6 +63,11 @@ public class PatrolingMobScript : MonoBehaviour
         timeBetweenAttacks = animationController.GetAttackAnimationClipTime();
         timeIntoAnimationForAttack = animationController.GetTimeIntoAnimationForAttack();
 
+        ActivateCreature();
+    }
+
+    public void ActivateCreature()
+    {
         if (waypoints.Length >= 1)
         {
             ourPatrolState = MobPatrolState.Patroling;
