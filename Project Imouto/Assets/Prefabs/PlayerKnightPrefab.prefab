@@ -2421,8 +2421,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1227425349886540}
+<<<<<<< HEAD:Project Imouto/Assets/Prefabs/PlayerKnightPrefab.prefab
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 276.03363, y: 8.911993, z: 194.88333}
+=======
+  m_LocalRotation: {x: -0, y: 0.76207346, z: -0, w: 0.6474906}
+  m_LocalPosition: {x: 105, y: 10.06, z: 473.3}
+>>>>>>> master:Project Imouto/Assets/Prefabs/knigthprefab.prefab
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4805102911703236}
@@ -2436,7 +2441,7 @@ Transform:
   - {fileID: 4365117205315488}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 99.295006, z: 0}
 --- !u!4 &4783463358905024
 Transform:
   m_ObjectHideFlags: 1
