@@ -3075,6 +3075,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundCheck: {fileID: 4522345297828146}
+  movementPerSecDuringSHAttack: 3.5
 --- !u!114 &114461234578902762
 MonoBehaviour:
   m_ObjectHideFlags: 1
