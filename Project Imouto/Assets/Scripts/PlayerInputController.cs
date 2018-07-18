@@ -18,6 +18,7 @@ public class PlayerInputController : MonoBehaviour
     private OverlayController overlayController;
     private PlayerMovementController playerMovementController;
     private PlayerAnimationController playerAnimationController;
+    private PlayerAttackScript playerAttackScript;
 
     private float verticalInput;
     private float horizontalInput;
@@ -39,6 +40,7 @@ public class PlayerInputController : MonoBehaviour
         overlayController = GameObjectDirectory.OverlayController;
         playerMovementController = GameObjectDirectory.PlayerMovementController;
         playerAnimationController = GameObjectDirectory.PlayerAnimationController;
+        playerAttackScript = GameObjectDirectory.PlayerAttackScript;
     }
 
     // Update is called once per frame
@@ -102,8 +104,11 @@ public class PlayerInputController : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
+            // Contact the attack script
+            playerAttackScript.PlayerHasPressedAttack();
+
             // Attack
-            playerAnimationController.PlayAttack1();
+            //playerAnimationController.PlayAttack1();
         }
     }
 
