@@ -66,16 +66,17 @@ public class PlayerInputController : MonoBehaviour
 
         // Inform the movement and animation scripts of the Forward/Backward input
         playerMovementController.SubmitVerticalInput(verticalInput, isWalking);
-        playerAnimationController.SubmitVerticalInput(verticalInput, isWalking);
+        //playerAnimationController.SubmitVerticalInput(verticalInput, isWalking);
 
         // Inform the movement script and animation scripts of the Left/Right input
         playerMovementController.SubmitHorizontalInput(horizontalInput, isWalking);
-        playerAnimationController.SubmitHorizontalInput(horizontalInput, isWalking);
+        //playerAnimationController.SubmitHorizontalInput(horizontalInput, isWalking);
 
         // Rotational Handling
         mouseXInput = Input.GetAxis("Mouse X");
         playerMovementController.SubmitMouseRotationInput(mouseXInput);
-        playerAnimationController.SubmitMouseRotationInput(mouseXInput, isGrounded);
+        //playerAnimationController.SubmitMouseRotationInput(mouseXInput, isGrounded);
+        playerAnimationController.SubmitInput(verticalInput, horizontalInput, mouseXInput, isWalking);
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {

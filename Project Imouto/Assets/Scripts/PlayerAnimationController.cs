@@ -15,6 +15,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     private bool isMovingOnX = false;
     private bool isMovingOnY = false;
+    private bool isMoving = false;
 
     private void Awake()
     {
@@ -79,6 +80,24 @@ public class PlayerAnimationController : MonoBehaviour
     public void PlayEmote7()
     {
         playerAnimator.SetTrigger("Emote7");
+    }
+
+    public void SubmitInput(float verticalInput, float horizonatlInput, float mouseInput, bool isWalking)
+    {
+        isMoving = false;
+        if (!isWalking)
+        {
+            verticalInput *= 2f;
+            horizonatlInput *= 2f;
+        }
+
+        if (verticalInput != 0f || horizonatlInput != 0f)
+            isMoving = true;
+
+        playerAnimator.SetFloat("ForwardSpeed", verticalInput);
+        playerAnimator.SetFloat("SidewaysSpeed", horizonatlInput);
+        playerAnimator.SetFloat("TurnInput", mouseInput);
+        playerAnimator.SetBool("Stationary", !isMoving);
     }
 
     public void SubmitVerticalInput(float verticalInput, bool isWalking)
