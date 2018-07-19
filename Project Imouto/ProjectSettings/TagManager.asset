@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Interactable
   - ScreenOverlay
+  - Monster
   layers:
   - Default
   - TransparentFX
