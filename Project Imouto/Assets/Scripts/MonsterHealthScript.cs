@@ -51,7 +51,7 @@ public class MonsterHealthScript : MonoBehaviour
 
     private void CreatureDied()
     {
-
+        gameObject.SetActive(false);
         animationControllerScript.StartDeathAnimation();
 
         monsterStatusController.DeactivateCreature();

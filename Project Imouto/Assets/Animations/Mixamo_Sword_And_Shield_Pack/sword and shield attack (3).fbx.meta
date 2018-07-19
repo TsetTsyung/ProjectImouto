@@ -193,8 +193,15 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 1
-        functionName: HeavyAttack2Ended
+      - time: 0.039997462
+        functionName: HeavyAttackStarted
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.75084174
+        functionName: HeavyAttackEnded
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

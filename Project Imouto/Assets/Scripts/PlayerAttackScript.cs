@@ -12,6 +12,10 @@ public class PlayerAttackScript : MonoBehaviour
     [SerializeField]
     private float movementPerSecDuringSHAttack = 3.5f;
 
+
+    [SerializeField]
+    private BoxCollider swordCollider;
+
     private PlayerAnimationController playerAnimationController;
     private PlayerInputController playerInputController;
     private Rigidbody ourRB;
@@ -149,28 +153,6 @@ public class PlayerAttackScript : MonoBehaviour
         playerAnimationController.PlayerAttack(ComboMoves.SuperHeavyAttack);
     }
 
-    public void SHAttackStarted()
-    {
-    }
-
-    public void SHAttackTakeOff()
-    {
-        airborneSuperHeavyAttack = true;
-    }
-
-    public void SHAttackLanding()
-    {
-        airborneSuperHeavyAttack = false;
-    }
-
-    public void SHAttackEnded()
-    {
-    }
-
-    public void HeavyAttack2Ended()
-    {
-        startedCombo = false;
-    }
 
     public void SubmitUnlockedMoves(bool heavy1UnlockState, bool heavy2UnlockState, bool superHeavyUnlockState)
     {
@@ -193,6 +175,26 @@ public class PlayerAttackScript : MonoBehaviour
 
     }
 
+    public void HitMonster(GameObject monster)
+    {
+        stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        int damageToInflict = 10;
+
+        if (stateInfo.IsName("HeavyAttack1"))
+        {
+            damageToInflict = 20;
+        }
+        else if (stateInfo.IsName("HeavyAttack2"))
+        {
+            damageToInflict = 35;
+        }
+
+        monster.GetComponent<MonsterHealthScript>().TakeDamage(damageToInflict);
+    }
+
+    #region ANIMATION EVENTS AND STATE CALLBACKS
+
     internal void LeftTheAttackSubState()
     {
         comboPointer = 0;
@@ -212,4 +214,40 @@ public class PlayerAttackScript : MonoBehaviour
     {
         playerInputController.EnableMovementInput();
     }
+
+    public void SHAttackStarted()
+    {
+    }
+
+    public void SHAttackTakeOff()
+    {
+        airborneSuperHeavyAttack = true;
+    }
+
+    public void SHAttackLanding()
+    {
+        airborneSuperHeavyAttack = false;
+
+    }
+
+    public void SHAttackEnded()
+    {
+    }
+
+    public void LightAttackLanding()
+    {
+        // Check for hits
+    }
+
+    public void HeavyAttackStarted()
+    {
+        swordCollider.enabled = true;
+    }
+
+    public void HeavyAttackEnded()
+    {
+        swordCollider.enabled = false;
+    }
+
+#endregion
 }

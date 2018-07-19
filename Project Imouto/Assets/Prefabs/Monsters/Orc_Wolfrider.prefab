@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 114792134876938304}
   m_Layer: 0
   m_Name: Orc_Wolfrider
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1711,7 +1711,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingHealth: 150
-  isSkeleton: 0
 --- !u!135 &135855797774660428
 SphereCollider:
   m_ObjectHideFlags: 1

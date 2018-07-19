@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 114999557219710854}
   m_Layer: 0
   m_Name: ToonRTS_demo_Knight
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -845,8 +845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8cbe34dae8b3b4c9ddd28fbf3d073b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 75
-  isSkeleton: 0
+  startingHealth: 15
 --- !u!114 &114790281761443180
 MonoBehaviour:
   m_ObjectHideFlags: 1
