@@ -40,6 +40,7 @@ public class PatrolingMobScript : MonoBehaviour
     private GameControllerScript gameController;
     private PlayerHealthController playerHealthController;
     private Transform playerTransform;
+    private bool creatureActive = true;
     private int currentWaypoint;
     private MobPatrolState ourPatrolState;
     private float distanceToPlayerSQRD;
@@ -68,6 +69,9 @@ public class PatrolingMobScript : MonoBehaviour
 
     public void ActivateCreature()
     {
+        creatureActive = true;
+        ourNavAgent.enabled = true;
+
         if (waypoints.Length >= 1)
         {
             ourPatrolState = MobPatrolState.Patroling;
@@ -84,6 +88,12 @@ public class PatrolingMobScript : MonoBehaviour
         }
     }
 
+    public void DeactivateCreature()
+    {
+        creatureActive = false;
+        ourNavAgent.enabled = false;
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////
     //
     // THERE ARE MUCH BETTER WAYS OF DOING THIS, BUT THIS IS THE QUICK AND DIRTY METHOD.
@@ -93,6 +103,9 @@ public class PatrolingMobScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!creatureActive)
+            return;
+
         // Get range to player for attack or returning to patrol
         distanceToPlayerSQRD = Vector3.SqrMagnitude(transform.position - playerTransform.position);
 

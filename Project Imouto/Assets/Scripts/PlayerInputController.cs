@@ -177,11 +177,11 @@ public class PlayerInputController : MonoBehaviour
 
     public void EnableMovementInput()
     {
-        movementAllowed = false;
+        movementAllowed = true;
     }
 
-    internal void DisableMovemoentInput()
+    internal void DisableMovementInput()
     {
-        movementAllowed = true;
+        movementAllowed = false;
     }
 }

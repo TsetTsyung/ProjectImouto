@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GenericAnimationController : AnimationBaseClass {
+public class GenericAnimationController : AnimationBaseClass
+{
 
     [SerializeField]
     private Animator animator;
@@ -11,9 +12,12 @@ public class GenericAnimationController : AnimationBaseClass {
     [SerializeField]
     private float timeIntoAnimationForAttack;
 
+    private bool animatorEnabled = true;
+
     public override void StartAttackAnimation()
     {
-        animator.SetTrigger("Attacking");
+        if (animatorEnabled)
+            animator.SetTrigger("Attacking");
     }
 
     public override void StartDeathAnimation()
@@ -22,19 +26,20 @@ public class GenericAnimationController : AnimationBaseClass {
 
     public override void StartIdlingAnimation()
     {
-        animator.SetTrigger("Idling");
+        if (animatorEnabled)
+            animator.SetTrigger("Idling");
     }
 
     public override void StartRunAnimation()
     {
-        Debug.Log("Trying to start run Animation");
-        animator.SetTrigger("Running");
+        if (animatorEnabled)
+            animator.SetTrigger("Running");
     }
 
     public override void StartWalkAnimation()
     {
-        Debug.Log("Trying to start Walking animation");
-        animator.SetTrigger("Walking");
+        if (animatorEnabled)
+            animator.SetTrigger("Walking");
     }
 
     public override float GetAttackAnimationClipTime()
@@ -47,13 +52,13 @@ public class GenericAnimationController : AnimationBaseClass {
         return timeIntoAnimationForAttack;
     }
 
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public void DeactivateAnimtor()
+    {
+        animator.enabled = false;
+    }
+
+    public void ActivateAnimator()
+    {
+        animator.enabled = true;
+    }
 }

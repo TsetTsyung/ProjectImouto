@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SuperHeavyAttackMonitor : StateMachineBehaviour {
-
+    /*
     private PlayerAttackScript playerAttackScript;
 
     public void AssignAttackScriptReference(PlayerAttackScript _playerAttackScript)
@@ -17,7 +17,7 @@ public class SuperHeavyAttackMonitor : StateMachineBehaviour {
     //    Debug.Log("OnStateEnter on " + this + " has been called");
     //    playerAttackScript.EnteredMove(ComboMoves.SuperHeavyAttack);
     //}
-
+    */
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
     //

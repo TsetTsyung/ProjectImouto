@@ -214,8 +214,15 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 1
+      - time: 0.98275864
         functionName: SHAttackEnded
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.9962121
+        functionName: ExitedMoveClip
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

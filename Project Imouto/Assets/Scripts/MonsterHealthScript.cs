@@ -11,6 +11,7 @@ public class MonsterHealthScript : MonoBehaviour
 
     private MonsterStatusController monsterStatusController;
     private GenericAnimationController animationControllerScript;
+    private RagDollDeathScript ragDollDeathScript;
 
     private int currentHealth;
 
@@ -18,11 +19,13 @@ public class MonsterHealthScript : MonoBehaviour
     {
         monsterStatusController = GetComponent<MonsterStatusController>();
         animationControllerScript = GetComponent<GenericAnimationController>();
+        ragDollDeathScript = GetComponent<RagDollDeathScript>();
     }
 
     // Use this for initialization
     void Start()
     {
+        ragDollDeathScript.Initialise();
         ActivateCreature();
     }
 
@@ -36,6 +39,8 @@ public class MonsterHealthScript : MonoBehaviour
     public void ActivateCreature()
     {
         currentHealth = startingHealth;
+        animationControllerScript.ActivateAnimator();
+        ragDollDeathScript.DisableRagdoll();
     }
 
     public void TakeDamage(int damageTaken)
@@ -51,9 +56,8 @@ public class MonsterHealthScript : MonoBehaviour
 
     private void CreatureDied()
     {
-        gameObject.SetActive(false);
-        animationControllerScript.StartDeathAnimation();
-
+        animationControllerScript.DeactivateAnimtor();
+        ragDollDeathScript.EnableRagDoll();
         monsterStatusController.DeactivateCreature();
     }
 }

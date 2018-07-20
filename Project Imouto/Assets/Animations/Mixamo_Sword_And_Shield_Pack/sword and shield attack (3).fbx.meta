@@ -193,6 +193,13 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0
+        functionName: EnteredMoveClip
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.039997462
         functionName: HeavyAttackStarted
         data: 
@@ -202,6 +209,13 @@ ModelImporter:
         messageOptions: 0
       - time: 0.75084174
         functionName: HeavyAttackEnded
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.95689654
+        functionName: ExitedMoveClip
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

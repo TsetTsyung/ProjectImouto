@@ -12,13 +12,24 @@ public class OverlayController : MonoBehaviour {
     [SerializeField]
     private Slider staminaSlider;
     [SerializeField]
+    private Slider xpSlider;
+    [SerializeField]
+    private Text xpValue;
+    [SerializeField]
     private GameObject emoteMenuObject;
+    [SerializeField]
+    private GameObject levelUpMenuObject;
+    [SerializeField]
+    private Animator overlayAnimator;
 
     private GameObject interactingObject;
     private GameControllerScript gameController;
     private PlayerAnimationController playerAnimationController;
+    private LevelUpScreenController levelUpScreenController;
+    private PlayerXPController playerXPController;
     private int currentMaxHealth;
     private int currentHealth;
+
 
 
     private void Awake()
@@ -30,8 +41,13 @@ public class OverlayController : MonoBehaviour {
     void Start() {
         gameController = GameObjectDirectory.GameController;
         playerAnimationController = GameObjectDirectory.PlayerAnimationController;
+        levelUpScreenController = GetComponentInChildren<LevelUpScreenController>();
+        playerXPController = GameObjectDirectory.PlayerXPController;
+        overlayAnimator = GetComponent<Animator>();
         HideInteractionText();
         HideEmotePanel();
+        HideLevelUpPanel();
+        
     }
 
     private void HideInteractionText()
@@ -65,16 +81,33 @@ public class OverlayController : MonoBehaviour {
         emoteMenuObject.SetActive(false);
     }
 
+    public void DisplayLevelUpPanel()
+    {
+        gameController.PauseGame();
+        levelUpMenuObject.SetActive(true);
+        levelUpScreenController.OpenLevelUpScreen();
+    }
+
+    public void HideLevelUpPanel()
+    {
+        gameController.ResumeGame();
+        levelUpMenuObject.SetActive(false);
+    }
+
     public void UpdateHealthBar(int newHealth)
     {
-        Debug.Log("Updating the health bar with health of " + newHealth);
         healthSlider.value = newHealth;
-        Debug.Log("Healthbar value is now " + healthSlider.value);
     }
 
     public void UpdateStaminaBar(int newStamina)
     {
         staminaSlider.value = newStamina;
+    }
+
+    public void UpdateXPBar(int newXP)
+    {
+        xpSlider.value = newXP;
+        xpValue.text = xpSlider.maxValue.ToString() + "/" + xpSlider.value.ToString();
     }
 
     public void SetNewMaxHealth(int newMaxHealth)
@@ -85,6 +118,14 @@ public class OverlayController : MonoBehaviour {
     public void SetNewMaxStamina(int newMaxStamina)
     {
         staminaSlider.maxValue = newMaxStamina;
+    }
+
+    public void SetNewMaxXP(int newMaxXP)
+    {
+        if(xpSlider.value > xpSlider.maxValue)
+            overlayAnimator.SetBool("LevelUpAvailable", true);
+        xpSlider.maxValue = newMaxXP;
+        xpValue.text = xpSlider.maxValue.ToString() + "/" + xpSlider.value.ToString();
     }
 
     public void PlayEmote1()
@@ -129,10 +170,4 @@ public class OverlayController : MonoBehaviour {
     {
         playerAnimationController.PlayEmote8();
     }
-
-    public void TestClick()
-    {
-        Debug.Log("Clicked!");
-    }
-
 }

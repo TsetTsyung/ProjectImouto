@@ -10,7 +10,11 @@ public class PlayerAttackScript : MonoBehaviour
     [SerializeField]
     private Transform groundCheck;
     [SerializeField]
-    private float movementPerSecDuringSHAttack = 3.5f;
+    private float lightAttackLength = 1f;
+    [SerializeField]
+    private float heavyAttack1Length = 1.3f;
+    [SerializeField]
+    private float heavyAttack2Length = 1.7f;
 
 
     [SerializeField]
@@ -37,10 +41,11 @@ public class PlayerAttackScript : MonoBehaviour
     private bool startedCombo = false;
     private ComboMoves[] movesThisCombo = new ComboMoves[3];
     private int comboPointer = 0;
-    private int currentMovePointer = 0;
-    private int moveStartedPointer = 0;
-    private int moveEndedPointer = 0;
+    private float comboTimeLeft;
+    //private int moveStartedPointer = 0;
+    //private int moveEndedPointer = 0;
 
+    #region STARTUP AND INITIALISATION
     private void Awake()
     {
         GameObjectDirectory.PlayerAttackScript = this;
@@ -54,24 +59,20 @@ public class PlayerAttackScript : MonoBehaviour
         animator = GetComponent<Animator>();
         ourRB = GetComponent<Rigidbody>();
 
-        animator.GetBehaviour<AttackSubStateMonitor>().AssignAttackScriptReference(this);
-        animator.GetBehaviour<AttackMoveMonitor>().AssignAttackScriptReference(this);
-        animator.GetBehaviour<HeavyAttack1MoveMonitor>().AssignAttackScriptReference(this);
-        animator.GetBehaviour<HeavyAttack2MoveMonitor>().AssignAttackScriptReference(this);
-        animator.GetBehaviour<SuperHeavyAttackMonitor>().AssignAttackScriptReference(this);
+        //animator.GetBehaviour<AttackSubStateMonitor>().AssignAttackScriptReference(this);
+        //animator.GetBehaviour<AttackMoveMonitor>().AssignAttackScriptReference(this);
+        //animator.GetBehaviour<HeavyAttack1MoveMonitor>().AssignAttackScriptReference(this);
+        //animator.GetBehaviour<HeavyAttack2MoveMonitor>().AssignAttackScriptReference(this);
+        //animator.GetBehaviour<SuperHeavyAttackMonitor>().AssignAttackScriptReference(this);
     }
 
-    // Update is called once per frame
-    private void Update()
+    public void SubmitUnlockedMoves(bool heavy1UnlockState, bool heavy2UnlockState, bool superHeavyUnlockState)
     {
-        stateInfo = playerAnimationController.GetState();
+        heavy1Unlocked = heavy1UnlockState;
+        heavy2Unlocked = heavy2UnlockState;
+        superHeavyUnlocked = superHeavyUnlockState;
     }
-
-    void LateUpdate()
-    {
-        if (airborneSuperHeavyAttack)
-            ourRB.MovePosition(transform.position + (transform.forward * movementPerSecDuringSHAttack * Time.deltaTime));
-    }
+    #endregion
 
     public void PlayerHasPressedAttack()
     {
@@ -109,22 +110,22 @@ public class PlayerAttackScript : MonoBehaviour
 
         if (!startedCombo)
         {
-            Debug.Log("We're starting the combo");
+            //Debug.Log("We're starting the combo");
             // As this this an unlocked move and the beginning
             // of a new combo, add it and return
             AddMoveToCombo(ComboMoves.HeavyAttack1);
             return;
         }
 
-        Debug.Log("About to loop through the combo list");
+        //Debug.Log("About to loop through the combo list");
         // Let's see what attack they were planning
         for (int i = 0; i < movesThisCombo.Length; i++)
         {
-            Debug.Log("Checking combo position " + i + " it's current value is " + movesThisCombo[i]);
+            //Debug.Log("Checking combo position " + i + " it's current value is " + movesThisCombo[i]);
             if (movesThisCombo[i] == ComboMoves.HeavyAttack1)
             {
                 heavyAttack1InCombo = true;
-                Debug.LogError("Heavy1 is in the combo already");
+                //Debug.LogError("Heavy1 is in the combo already");
             }
             else if (movesThisCombo[i] == ComboMoves.HeavyAttack2)
             {
@@ -144,7 +145,7 @@ public class PlayerAttackScript : MonoBehaviour
             if (!heavy2Unlocked)
                 return;
 
-            Debug.Log("There's already a heavy1 in the combo, trying heavy2");
+            //Debug.Log("There's already a heavy1 in the combo, trying heavy2");
             // it's unlocked, so let's add it to the combo
             if (!heavyAttack2InCombo)
             {
@@ -155,18 +156,10 @@ public class PlayerAttackScript : MonoBehaviour
 
     public void PlayerHasPressedSuperHeavyAttack()
     {
-        if (!superHeavyUnlocked)
+        if (!superHeavyUnlocked || startedCombo || comboPointer > 0)
             return;
 
         playerAnimationController.PlayerAttack(ComboMoves.SuperHeavyAttack);
-    }
-
-
-    public void SubmitUnlockedMoves(bool heavy1UnlockState, bool heavy2UnlockState, bool superHeavyUnlockState)
-    {
-        heavy1Unlocked = heavy1UnlockState;
-        heavy2Unlocked = heavy2UnlockState;
-        superHeavyUnlocked = superHeavyUnlockState;
     }
 
     public void AddMoveToCombo(ComboMoves newMove)
@@ -174,13 +167,38 @@ public class PlayerAttackScript : MonoBehaviour
         if (comboPointer >= movesThisCombo.Length)
             return;
 
-        Debug.LogError("Adding " + newMove + " to the combo");
+        //Debug.LogError("Adding " + newMove + " to the combo");
         startedCombo = true;
         movesThisCombo[comboPointer] = newMove;
         comboPointer++;
 
-        playerAnimationController.PlayerAttack(newMove);
+        if (newMove == ComboMoves.LightAttack)
+        {
+            comboTimeLeft += lightAttackLength;
+        }
+        else if (newMove == ComboMoves.HeavyAttack1)
+        {
+            comboTimeLeft += heavyAttack1Length;
+        }
+        else if (newMove == ComboMoves.HeavyAttack2)
+        {
+            comboTimeLeft += heavyAttack2Length;
+        }
 
+        playerAnimationController.PlayerAttack(newMove);
+        playerInputController.DisableMovementInput();
+    }
+
+    private void Update()
+    {
+        if(startedCombo)
+        {
+            comboTimeLeft -= Time.deltaTime;
+            if (comboTimeLeft <= 0f)
+            {
+                FinishCombo();
+            }
+        }
     }
 
     public void HitMonster(GameObject monster)
@@ -201,32 +219,14 @@ public class PlayerAttackScript : MonoBehaviour
         monster.GetComponent<MonsterHealthScript>().TakeDamage(damageToInflict);
     }
 
-    #region ANIMATION EVENTS AND STATE CALLBACKS
 
-    public void LeftTheAttackSubState()
+    private void FinishCombo()
     {
-    }
-
-    public void EnteredTheAttackSubstate()
-    {
-        playerInputController.EnableMovementInput();
-        animator.applyRootMotion = true;
-    }
-
-    public void EnteredMove(ComboMoves currentMove)
-    {
-            currentMovePointer++;
-    }
-
-    public void ExitedMove()
-    {
-        if (currentMovePointer < comboPointer)
-        {
-            return;
-        }
-
+        Debug.LogError("Inside the FinishCombo method");
+        //Debug.LogWarning("the moveStartedPointer and moveEndedPoint = " + moveStartedPointer + ", " + moveEndedPointer);
         comboPointer = 0;
-        currentMovePointer = 0;
+        //moveStartedPointer = 0;
+        //moveEndedPointer = 0;
         startedCombo = false;
 
         // Clear out all of the moves from the combo list
@@ -236,8 +236,10 @@ public class PlayerAttackScript : MonoBehaviour
         }
 
         playerAnimationController.ClearAllAttackAnimations();
-        playerInputController.DisableMovemoentInput();
+        playerInputController.EnableMovementInput();
     }
+
+    #region ANIMATION EVENTS AND STATE CALLBACKS
 
     public void SHAttackStarted()
     {
@@ -251,7 +253,6 @@ public class PlayerAttackScript : MonoBehaviour
     public void SHAttackLanding()
     {
         airborneSuperHeavyAttack = false;
-
     }
 
     public void SHAttackEnded()
@@ -275,11 +276,18 @@ public class PlayerAttackScript : MonoBehaviour
 
     public void EnteredMoveClip()
     {
+        Debug.LogWarning(this + " called");
+        //moveStartedPointer++;
+        //Debug.LogWarning("moveStartedPointer = " + moveStartedPointer);
     }
 
     public void ExitedMoveClip()
     {
+        Debug.LogWarning(this + " called");
+        //moveEndedPointer++;
+        //Debug.LogWarning("Calling the FinsihCombo Method, moveEndedPointer = " +moveEndedPointer);
+        //FinishCombo();
     }
 
-#endregion
+    #endregion
 }

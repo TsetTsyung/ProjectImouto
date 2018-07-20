@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HeavyAttack2MoveMonitor : StateMachineBehaviour {
-
+    /*
     private PlayerAttackScript playerAttackScript;
 
     public void AssignAttackScriptReference(PlayerAttackScript _playerAttackScript)
@@ -28,7 +28,7 @@ public class HeavyAttack2MoveMonitor : StateMachineBehaviour {
         Debug.LogWarning("Apparently leaving HeavyAttack2");
         playerAttackScript.ExitedMove();
     }
-
+    */
     // OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
     //

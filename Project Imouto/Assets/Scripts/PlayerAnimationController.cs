@@ -175,6 +175,7 @@ public class PlayerAnimationController : MonoBehaviour
     public void PlayerAttack(ComboMoves newMove)
     {
         playerAnimator.SetBool("Attacking", true);
+        playerAnimator.applyRootMotion = true;
         switch (newMove)
         {
             case ComboMoves.Unset:

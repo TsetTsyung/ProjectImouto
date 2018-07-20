@@ -9,6 +9,7 @@ public class WeaponHitScript : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+        //Debug.LogWarning("We hit something, it's tag is " + other.tag);
         if (other.CompareTag("Monster"))
             attackScript.HitMonster(other.gameObject);
     }
