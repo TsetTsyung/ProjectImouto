@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,11 +17,19 @@ public class GameControllerScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        // Load the game state from the save profile and set everything up.
+        SetupGame();
+
         ResumeGame();
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    private void SetupGame()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update () {
 
 	}
 

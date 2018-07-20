@@ -914,6 +914,7 @@ GameObject:
   - component: {fileID: 114201002056344506}
   - component: {fileID: 114656746846970766}
   - component: {fileID: 114512631980751352}
+  - component: {fileID: 114150562708860202}
   m_Layer: 0
   m_Name: knigthprefab
   m_TagString: Untagged
@@ -1081,6 +1082,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4622183505265642}
   - component: {fileID: 114321399798829844}
+  - component: {fileID: 114746214519294976}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -4516,6 +4518,17 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114150562708860202
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1397588284646914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47eca61f9b48bd1449072447a82f8d3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114167060379397810
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6073,6 +6086,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114746214519294976
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1422984998424246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4f54115ddb5d4546905987ca217ec77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114750174443729858
 MonoBehaviour:
   m_ObjectHideFlags: 1
