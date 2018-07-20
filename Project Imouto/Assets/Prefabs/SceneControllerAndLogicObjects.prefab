@@ -3641,7 +3641,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1397588284646914}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 120
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -4097,7 +4097,7 @@ MonoBehaviour:
   movementThresholdForJump: 0.1
   airControllerMultiplier: 0.2
   groundCheckStartPoint: {fileID: 4062122572303964}
-  groundCheckDistance: 0.1
+  groundCheckDistance: 0.5
 --- !u!114 &114186070731143156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4186,7 +4186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundCheck: {fileID: 4062122572303964}
-  movementPerSecDuringSHAttack: 3.5
+  movementPerSecDuringSHAttack: 0
   swordCollider: {fileID: 65962941010697390}
 --- !u!114 &114206513094209072
 MonoBehaviour:
@@ -6211,7 +6211,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 142, y: -38.432358}
+  m_AnchoredPosition: {x: 142, y: -37.984406}
   m_SizeDelta: {x: 264, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224754067281287210

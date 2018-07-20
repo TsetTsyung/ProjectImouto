@@ -37,6 +37,9 @@ public class PlayerAttackScript : MonoBehaviour
     private bool startedCombo = false;
     private ComboMoves[] movesThisCombo = new ComboMoves[3];
     private int comboPointer = 0;
+    private int currentMovePointer = 0;
+    private int moveStartedPointer = 0;
+    private int moveEndedPointer = 0;
 
     private void Awake()
     {
@@ -52,6 +55,10 @@ public class PlayerAttackScript : MonoBehaviour
         ourRB = GetComponent<Rigidbody>();
 
         animator.GetBehaviour<AttackSubStateMonitor>().AssignAttackScriptReference(this);
+        animator.GetBehaviour<AttackMoveMonitor>().AssignAttackScriptReference(this);
+        animator.GetBehaviour<HeavyAttack1MoveMonitor>().AssignAttackScriptReference(this);
+        animator.GetBehaviour<HeavyAttack2MoveMonitor>().AssignAttackScriptReference(this);
+        animator.GetBehaviour<SuperHeavyAttackMonitor>().AssignAttackScriptReference(this);
     }
 
     // Update is called once per frame
@@ -113,6 +120,7 @@ public class PlayerAttackScript : MonoBehaviour
         // Let's see what attack they were planning
         for (int i = 0; i < movesThisCombo.Length; i++)
         {
+            Debug.Log("Checking combo position " + i + " it's current value is " + movesThisCombo[i]);
             if (movesThisCombo[i] == ComboMoves.HeavyAttack1)
             {
                 heavyAttack1InCombo = true;
@@ -195,9 +203,30 @@ public class PlayerAttackScript : MonoBehaviour
 
     #region ANIMATION EVENTS AND STATE CALLBACKS
 
-    internal void LeftTheAttackSubState()
+    public void LeftTheAttackSubState()
     {
+    }
+
+    public void EnteredTheAttackSubstate()
+    {
+        playerInputController.EnableMovementInput();
+        animator.applyRootMotion = true;
+    }
+
+    public void EnteredMove(ComboMoves currentMove)
+    {
+            currentMovePointer++;
+    }
+
+    public void ExitedMove()
+    {
+        if (currentMovePointer < comboPointer)
+        {
+            return;
+        }
+
         comboPointer = 0;
+        currentMovePointer = 0;
         startedCombo = false;
 
         // Clear out all of the moves from the combo list
@@ -206,13 +235,8 @@ public class PlayerAttackScript : MonoBehaviour
             movesThisCombo[i] = ComboMoves.Unset;
         }
 
-        animator.SetBool("Attacking", false);
+        playerAnimationController.ClearAllAttackAnimations();
         playerInputController.DisableMovemoentInput();
-    }
-
-    public void EnteredTheAttackSubstate()
-    {
-        playerInputController.EnableMovementInput();
     }
 
     public void SHAttackStarted()
@@ -247,6 +271,14 @@ public class PlayerAttackScript : MonoBehaviour
     public void HeavyAttackEnded()
     {
         swordCollider.enabled = false;
+    }
+
+    public void EnteredMoveClip()
+    {
+    }
+
+    public void ExitedMoveClip()
+    {
     }
 
 #endregion
