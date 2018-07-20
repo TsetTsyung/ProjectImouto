@@ -8,9 +8,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class FileHandler : MonoBehaviour {
 
     [SerializeField]
-    private string playerProfileFilename = Application.dataPath + "PlayerProfile.dat";
+    private string playerProfileFilename = "PlayerProfile.dat";
     [SerializeField]
-    private string playerSettingsFilename = Application.dataPath + "Settings.dat";
+    private string playerSettingsFilename = "Settings.dat";
+
+    private string dataPath;
 
     private void Awake()
     {
@@ -19,7 +21,7 @@ public class FileHandler : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
+        dataPath = Application.dataPath + "/";
 	}
 	
 	// Update is called once per frame
@@ -32,7 +34,7 @@ public class FileHandler : MonoBehaviour {
         if (File.Exists(playerProfileFilename))
         {
             // The file exists, so open it and get the settings
-            using (Stream stream = File.OpenRead(playerProfileFilename))
+            using (Stream stream = File.OpenRead(dataPath + playerProfileFilename))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 return (PlayerSaveProfile)formatter.Deserialize(stream);
@@ -45,7 +47,7 @@ public class FileHandler : MonoBehaviour {
 
     public void SavePlayerProfileToFile(PlayerSaveProfile profile)
     {
-        using (Stream stream = File.OpenWrite(playerSettingsFilename))
+        using (Stream stream = File.OpenWrite(dataPath + playerSettingsFilename))
         {
             BinaryFormatter formatter = new BinaryFormatter();
             formatter.Serialize(stream, profile);

@@ -13,7 +13,7 @@ public static class GameObjectDirectory {
     public static PlayerMovementController PlayerMovementController { get; set; }
     public static PlayerAttackScript PlayerAttackScript { get; set; }
     public static PlayerXPController PlayerXPController { get; set; }
-    public static PlayerProfileController PlayerProfileHandler { get; set; }
+    public static PlayerProfileController PlayerProfileController { get; set; }
     public static FileHandler FileHandler { get; set; }
 
     public static void ClearAll()

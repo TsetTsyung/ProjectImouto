@@ -9,6 +9,7 @@ public class PlayerXPController : MonoBehaviour {
     private int[] levels;
 
     private OverlayController overlayController;
+    private PlayerProfileController playerProfileController;
     private int playerXP;
     private int currentMaxXP;
     private int playerLevel;
@@ -21,6 +22,7 @@ public class PlayerXPController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         overlayController = GameObjectDirectory.OverlayController;
+        playerProfileController = GameObjectDirectory.PlayerProfileController;
         StartNewGame();
 	}
 
@@ -51,6 +53,7 @@ public class PlayerXPController : MonoBehaviour {
         if (playerXP >= currentMaxXP)
             UpdatePlayersLevel();
 
+        playerProfileController.SetPlayerXP(playerXP);
         overlayController.UpdateXPBar(newXP);
     }
 
@@ -62,6 +65,7 @@ public class PlayerXPController : MonoBehaviour {
             playerLevel = levels.Length;
         }
 
+        playerProfileController.SetPlayerLevel(playerLevel);
         overlayController.SetNewMaxXP(levels[playerLevel - 1]);
 
         // Allow unlock of new ability

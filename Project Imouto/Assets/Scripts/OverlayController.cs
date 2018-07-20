@@ -85,7 +85,7 @@ public class OverlayController : MonoBehaviour {
     {
         gameController.PauseGame();
         levelUpMenuObject.SetActive(true);
-        levelUpScreenController.OpenLevelUpScreen();
+        levelUpScreenController.UpdateLevelUpScreen();
     }
 
     public void HideLevelUpPanel()

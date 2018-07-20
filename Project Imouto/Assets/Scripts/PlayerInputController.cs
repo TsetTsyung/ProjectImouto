@@ -48,7 +48,7 @@ public class PlayerInputController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!gameController.PlayerIsAlive || !inputAllowed)
+        if (!gameController.PlayerIsAlive || !inputAllowed || gameController.GetPausedState())
             return;
 
 
@@ -134,6 +134,11 @@ public class PlayerInputController : MonoBehaviour
         {
             // Contact the attack script
             playerAttackScript.PlayerHasPressedSuperHeavyAttack();
+        }
+
+        if(Input.GetButtonDown("LevelUp"))
+        {
+            overlayController.DisplayLevelUpPanel();
         }
     }
 

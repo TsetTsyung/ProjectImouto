@@ -7,12 +7,10 @@ public class PlayerHealthController : MonoBehaviour {
 
     [SerializeField]
     private PlayerAnimationController playerAnimationController;
-
     [SerializeField]
     private int startingHealth;
     [SerializeField]
     private int startingMaxHealth;
-
     [SerializeField]
     private int startingStamina;
     [SerializeField]
@@ -25,6 +23,7 @@ public class PlayerHealthController : MonoBehaviour {
     private int maxStamina;
 
     private OverlayController overlayController;
+    private PlayerProfileController playerProfileController;
 
     private void Awake()
     {
@@ -34,13 +33,12 @@ public class PlayerHealthController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         overlayController = GameObjectDirectory.OverlayController;
+        playerProfileController = GameObjectDirectory.PlayerProfileController;
         StartNewGame();
-        //UpdateUIBars();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        //UpdateUIBars();        
 	}
 
     private void UpdateUIBars()
@@ -99,12 +97,14 @@ public class PlayerHealthController : MonoBehaviour {
     public void PlayerHasIncreasedMaxHealth(int maxHealthIncrease)
     {
         maxHealth += maxHealthIncrease;
+        playerProfileController.SetPlayerMaxHealth(maxHealth);
         UpdateUIBars();
     }
 
     public void PlayerHasIncreasedMaxStamina(int maxStaminaIncrease)
     {
         maxStamina += maxStaminaIncrease;
+        playerProfileController.SetPlayerMaxStamina(maxStamina);
         UpdateUIBars();
     }
 
