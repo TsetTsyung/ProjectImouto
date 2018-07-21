@@ -45,6 +45,7 @@ public class MonsterStatusController : MonoBehaviour
 
     public void DeactivateCreature()
     {
+        Debug.Log("DeactivateCreacture has been called");
         monsterHealth.enabled = false;
         if (mainCollider != null)
             mainCollider.enabled = true;

@@ -227,7 +227,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void ClearAllAttackAnimations()
     {
-        Debug.Log("Clear all attack animations called");
+        //Debug.Log("Clearing all animations");
         playerAnimator.SetBool("Attacking", false);
         playerAnimator.ResetTrigger("Attack");
         playerAnimator.ResetTrigger("HeavyAttack1");

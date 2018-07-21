@@ -41,7 +41,7 @@ public class PlayerAttackScript : MonoBehaviour
     private bool startedCombo = false;
     private ComboMoves[] movesThisCombo = new ComboMoves[3];
     private int comboPointer = 0;
-    private float comboTimeLeft;
+    private float comboTimeLeft = 0f;
     //private int moveStartedPointer = 0;
     //private int moveEndedPointer = 0;
 
@@ -168,22 +168,26 @@ public class PlayerAttackScript : MonoBehaviour
             return;
 
         //Debug.LogError("Adding " + newMove + " to the combo");
+        if (!startedCombo)
+        {
+            if (newMove == ComboMoves.LightAttack)
+            {
+                comboTimeLeft = lightAttackLength;
+            }
+            else if (newMove == ComboMoves.HeavyAttack1)
+            {
+                comboTimeLeft = heavyAttack1Length;
+            }
+            else if (newMove == ComboMoves.HeavyAttack2)
+            {
+                comboTimeLeft = heavyAttack2Length;
+            }
+        }
+
         startedCombo = true;
         movesThisCombo[comboPointer] = newMove;
         comboPointer++;
 
-        if (newMove == ComboMoves.LightAttack)
-        {
-            comboTimeLeft += lightAttackLength;
-        }
-        else if (newMove == ComboMoves.HeavyAttack1)
-        {
-            comboTimeLeft += heavyAttack1Length;
-        }
-        else if (newMove == ComboMoves.HeavyAttack2)
-        {
-            comboTimeLeft += heavyAttack2Length;
-        }
 
         playerAnimationController.PlayerAttack(newMove);
         playerInputController.DisableMovementInput();
@@ -191,9 +195,10 @@ public class PlayerAttackScript : MonoBehaviour
 
     private void Update()
     {
-        if(startedCombo)
+        if (startedCombo)
         {
             comboTimeLeft -= Time.deltaTime;
+            //Debug.Log("The combo has been started. The combo timer is now " + comboTimeLeft);
             if (comboTimeLeft <= 0f)
             {
                 FinishCombo();
@@ -222,11 +227,8 @@ public class PlayerAttackScript : MonoBehaviour
 
     private void FinishCombo()
     {
-        Debug.LogError("Inside the FinishCombo method");
-        //Debug.LogWarning("the moveStartedPointer and moveEndedPoint = " + moveStartedPointer + ", " + moveEndedPointer);
+        //Debug.Log("FinishCombo has been called");
         comboPointer = 0;
-        //moveStartedPointer = 0;
-        //moveEndedPointer = 0;
         startedCombo = false;
 
         // Clear out all of the moves from the combo list
@@ -274,16 +276,31 @@ public class PlayerAttackScript : MonoBehaviour
         swordCollider.enabled = false;
     }
 
-    public void EnteredMoveClip()
+    public void EnteredMoveClip(int moveNumber)
     {
-        Debug.LogWarning(this + " called");
+        Debug.LogWarning(this + "EnteredMoveClip called");
+
+        switch (moveNumber)
+        {
+            case 0:
+                comboTimeLeft = lightAttackLength;
+                break;
+            case 1:
+                comboTimeLeft = heavyAttack1Length;
+                break;
+            case 2:
+                comboTimeLeft = heavyAttack2Length;
+                break;
+            default:
+                break;
+        }
         //moveStartedPointer++;
         //Debug.LogWarning("moveStartedPointer = " + moveStartedPointer);
     }
 
     public void ExitedMoveClip()
     {
-        Debug.LogWarning(this + " called");
+        //Debug.LogWarning(this + " called");
         //moveEndedPointer++;
         //Debug.LogWarning("Calling the FinsihCombo Method, moveEndedPointer = " +moveEndedPointer);
         //FinishCombo();
