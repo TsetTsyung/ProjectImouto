@@ -6267,8 +6267,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b88cae6553c2caf478755fafbf238fe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missions: []
-  missionBoardPrefab: {fileID: 0}
+  missions:
+  - {fileID: 11400000, guid: 5045fe0689bf8654a9db9e69656cd0b9, type: 2}
+  missionBoardPrefab: {fileID: 1557244305805004, guid: f7c24a38a73f6d843ba70609ac5bef49,
+    type: 2}
 --- !u!114 &114440044811333888
 MonoBehaviour:
   m_ObjectHideFlags: 1

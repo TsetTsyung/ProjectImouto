@@ -37,12 +37,16 @@ public class InteractionScript : MonoBehaviour
 
         }
         // See if the player is pressing 'use'
-        else if (interactableObject != null)
+         if (interactableObject != null)
         {
             // Interact with the interactable object
+            if (attemptInteraction)
+            {
+                interactableObject.Interact();
 
-            interactableObject.HideText();
-            interactableObject = null;
+                interactableObject.HideText();
+                interactableObject = null;
+            }
         }
     }
 

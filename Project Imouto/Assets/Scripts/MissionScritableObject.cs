@@ -15,13 +15,16 @@ public class MissionScritableObject : ScriptableObject {
     public string completedMessage;
     public int xpReward;
     public int coinReward;
-    public EnemyType[] enemies;
     public Vector3 missionBoardLocation;
     public float missionBoardDirection;
-    public Vector3 enemyLocations;
-    public Vector3 enemyWaypoints;
+    public EnemyType[] enemies;
+    public EnemyType targetEnemy;
+    public Vector3 missionLocation;
+    public Vector3 targetLocation;
+    public Vector3[] targetWaypoints;
+    public Vector3[] enemyLocations;
+    public Vector3[] enemyWaypoints;
     public Vector3[] waypoints;
     public string[] waypointMessages;
-    public Vector3 missionLocation;
     public string unlocksMissions;
 }

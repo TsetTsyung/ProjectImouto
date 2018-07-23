@@ -31,6 +31,7 @@ public class MissionController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         SetupMissions();
+
 	}
 
 
@@ -41,6 +42,7 @@ public class MissionController : MonoBehaviour {
 
     private void SetupMissions()
     {
+        missionBoards = new List<MissionBoardInteractable>();
         for (int i = 0; i < missions.Length; i++)
         {
             if (missions[i].missionIsAvailable && !missions[i].missionIsActive)
@@ -58,11 +60,24 @@ public class MissionController : MonoBehaviour {
 
     public void DisplayMissionScreen(string missionName)
     {
-
+        Debug.LogWarning("Trying to display mission screen.  Searching for mission ." + missionName + ".");
         for (int i = 0; i < missions.Length; i++)
         {
-            if (missions[i].name == missionName)
+            Debug.Log("we are at slot " + i + " and the name is ." + missions[i].missionName + ".");
+
+            for (int j = 0; j < missionName.Length; j++)
             {
+                Debug.Log(missionName[j] + " = " + (int)missionName[j]);
+                Debug.Log(missions[i].missionName[j] + " = " + ((int)missions[i].missionName[j]).ToString());
+            }
+            bool result = missionName.Equals(missions[i].name);
+            Debug.LogWarning("The result is " + result);
+            int intResult = missionName.CompareTo(missions[i].name);
+            Debug.Log("compareto comes back with " + intResult);
+            if (result)
+            {
+                Debug.LogWarning("We've found the mission " + missionName);
+                Debug.Log("overlayController is " + overlayController);
                 overlayController.DisplayMissionInfoPanel(missions[i].missionName, missions[i].missionBriefing,
                     missions[i].missionType, missions[i].xpReward, missions[i].coinReward);
 

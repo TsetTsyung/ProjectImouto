@@ -38,9 +38,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4415673555765344}
   - component: {fileID: 114924556374219040}
+  - component: {fileID: 136596155373851030}
   m_Layer: 0
   m_Name: MissionBoard
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -83,7 +84,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1557244305805004}
   m_LocalRotation: {x: -0, y: 0.76207346, z: -0, w: 0.6474906}
-  m_LocalPosition: {x: 286, y: 7.24, z: 258.1}
+  m_LocalPosition: {x: 295.27124, y: 6.453638, z: 263.98618}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4055398493251598}
@@ -224,3 +225,16 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!136 &136596155373851030
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1557244305805004}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5548266
+  m_Height: 2.5731826
+  m_Direction: 1
+  m_Center: {x: 1.8979152e-10, y: 0.7865908, z: 0.054826677}

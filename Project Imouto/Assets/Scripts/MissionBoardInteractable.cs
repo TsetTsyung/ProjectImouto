@@ -44,6 +44,8 @@ public class MissionBoardInteractable : InteractableObjectBaseClass
 
     public override void Interact()
     {
+        Debug.Log("Interacting, trying to display mission with name " + missionName);
+        Debug.Log("MissionController is " + missionController);
         // Show the full mission display
         missionController.DisplayMissionScreen(missionName);
         HideText();

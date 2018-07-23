@@ -57,6 +57,7 @@ public class OverlayController : MonoBehaviour {
         HideEmotePanel();
         HideLevelUpPanel();
         HideMissionInfoPanel();
+        HideMissionCompletedPanel();
     }
 
     private void HideInteractionText()
@@ -106,6 +107,7 @@ public class OverlayController : MonoBehaviour {
 
     public void DisplayMissionInfoPanel(string missionName, string missionText, MissionType missionType, int xpReward, int coinReward)
     {
+        Debug.Log("Trying to display mission board");
         missionInfoObject.SetActive(true);
         missionInfoScreenController.DisplayMissionInfo(missionName, missionText, missionType, xpReward, coinReward);
     }
