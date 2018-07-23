@@ -19,6 +19,7 @@ public class PlayerInputController : MonoBehaviour
     private PlayerMovementController playerMovementController;
     private PlayerAnimationController playerAnimationController;
     private PlayerAttackScript playerAttackScript;
+    private InteractionScript interactionScript;
 
     private float verticalInput;
     private float horizontalInput;
@@ -43,6 +44,7 @@ public class PlayerInputController : MonoBehaviour
         playerMovementController = GameObjectDirectory.PlayerMovementController;
         playerAnimationController = GameObjectDirectory.PlayerAnimationController;
         playerAttackScript = GameObjectDirectory.PlayerAttackScript;
+        interactionScript = GameObjectDirectory.InteractionSystem;
     }
 
     // Update is called once per frame
@@ -105,7 +107,14 @@ public class PlayerInputController : MonoBehaviour
         if (Input.GetButtonDown("Use") && movementAllowed)
         {
             // see if we can activate stuff
+            interactionScript.AttemptInteraction();
         }
+        else if (Input.GetButtonUp("Use"))
+        {
+            interactionScript.StopAttemptingInteraction();
+        }
+        
+
 
         // Check for Emote input
         if (Input.GetButtonDown("Emote") && movementAllowed)

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,10 @@ public class OverlayController : MonoBehaviour {
     [SerializeField]
     private GameObject levelUpMenuObject;
     [SerializeField]
+    private GameObject missionInfoObject;
+    [SerializeField]
+    private GameObject missionCompletedObject;
+    [SerializeField]
     private Animator overlayAnimator;
 
     private GameObject interactingObject;
@@ -27,6 +32,8 @@ public class OverlayController : MonoBehaviour {
     private PlayerAnimationController playerAnimationController;
     private LevelUpScreenController levelUpScreenController;
     private PlayerXPController playerXPController;
+    private MissionInfoScreenController missionInfoScreenController;
+    private MissionCompletedScreenController missionCompletedScreenController;
     private int currentMaxHealth;
     private int currentHealth;
 
@@ -44,10 +51,12 @@ public class OverlayController : MonoBehaviour {
         levelUpScreenController = GetComponentInChildren<LevelUpScreenController>();
         playerXPController = GameObjectDirectory.PlayerXPController;
         overlayAnimator = GetComponent<Animator>();
+        missionInfoScreenController = GetComponentInChildren<MissionInfoScreenController>();
+        missionCompletedScreenController = GetComponentInChildren<MissionCompletedScreenController>();
         HideInteractionText();
         HideEmotePanel();
         HideLevelUpPanel();
-        
+        HideMissionInfoPanel();
     }
 
     private void HideInteractionText()
@@ -60,6 +69,7 @@ public class OverlayController : MonoBehaviour {
         if (newObject == interactingObject)
             interactionText.enabled = false;
     }
+
 
     public void DisplayInteractionText(GameObject newObject, string textToDisplay)
     {
@@ -92,6 +102,28 @@ public class OverlayController : MonoBehaviour {
     {
         gameController.ResumeGame();
         levelUpMenuObject.SetActive(false);
+    }
+
+    public void DisplayMissionInfoPanel(string missionName, string missionText, MissionType missionType, int xpReward, int coinReward)
+    {
+        missionInfoObject.SetActive(true);
+        missionInfoScreenController.DisplayMissionInfo(missionName, missionText, missionType, xpReward, coinReward);
+    }
+
+    public void HideMissionInfoPanel()
+    {
+        missionInfoObject.SetActive(false);
+    }
+
+    public void DisplayMissionCompletedPanel(string completedMessage)
+    {
+        missionCompletedObject.SetActive(true);
+        missionCompletedScreenController.SetMessage(completedMessage);
+    }
+
+    public void HideMissionCompletedPanel()
+    {
+        missionCompletedObject.SetActive(false);
     }
 
     public void UpdateHealthBar(int newHealth)

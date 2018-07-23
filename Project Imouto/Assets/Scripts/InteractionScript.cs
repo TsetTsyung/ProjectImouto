@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractionScript : MonoBehaviour {
+public class InteractionScript : MonoBehaviour
+{
 
     [SerializeField]
     private float checkDistance;
@@ -10,6 +11,7 @@ public class InteractionScript : MonoBehaviour {
     private RaycastHit hitInfo;
     private OverlayController overlayController;
     private InteractableObjectBaseClass interactableObject;
+    private bool attemptInteraction = false;
 
     private void Awake()
     {
@@ -17,12 +19,14 @@ public class InteractionScript : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         overlayController = GameObjectDirectory.OverlayController;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         if (Physics.Raycast(transform.position, transform.forward, out hitInfo, checkDistance))
         {
             if (hitInfo.transform.CompareTag("Interactable"))
@@ -31,12 +35,24 @@ public class InteractionScript : MonoBehaviour {
                 interactableObject.DisplayText();
             }
 
-            // See if the player is pressing 'use'
         }
+        // See if the player is pressing 'use'
         else if (interactableObject != null)
         {
+            // Interact with the interactable object
+
             interactableObject.HideText();
             interactableObject = null;
         }
+    }
+
+    public void AttemptInteraction()
+    {
+        attemptInteraction = true;
+    }
+
+    public void StopAttemptingInteraction()
+    {
+        attemptInteraction = false;
     }
 }

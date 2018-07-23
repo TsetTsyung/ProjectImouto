@@ -15,6 +15,8 @@ public static class GameObjectDirectory {
     public static PlayerXPController PlayerXPController { get; set; }
     public static PlayerProfileController PlayerProfileController { get; set; }
     public static FileHandler FileHandler { get; set; }
+    public static MonsterSpawner MonsterSpawner { get; set; }
+    public static MissionController MissionController { get; set; }
 
     public static void ClearAll()
     {
