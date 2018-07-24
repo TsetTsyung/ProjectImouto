@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: BootCampMission
   m_EditorClassIdentifier: 
   missionName: Test
-  missionType: 1
+  missionType: 3
   missionIsAvailable: 1
   missionIsActive: 0
   missionBriefing: Go here

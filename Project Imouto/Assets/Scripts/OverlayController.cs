@@ -74,6 +74,9 @@ public class OverlayController : MonoBehaviour {
 
     public void DisplayInteractionText(GameObject newObject, string textToDisplay)
     {
+        if (newObject == interactingObject)
+            return;
+
         interactionText.enabled = true;
         interactionText.text = textToDisplay;
 
@@ -107,24 +110,29 @@ public class OverlayController : MonoBehaviour {
 
     public void DisplayMissionInfoPanel(string missionName, string missionText, MissionType missionType, int xpReward, int coinReward)
     {
-        Debug.Log("Trying to display mission board");
+        if (missionInfoObject.activeSelf)
+            return;
+        gameController.PauseGame();
         missionInfoObject.SetActive(true);
         missionInfoScreenController.DisplayMissionInfo(missionName, missionText, missionType, xpReward, coinReward);
     }
 
     public void HideMissionInfoPanel()
     {
+        gameController.ResumeGame();
         missionInfoObject.SetActive(false);
     }
 
     public void DisplayMissionCompletedPanel(string completedMessage)
     {
+        gameController.PauseGame();
         missionCompletedObject.SetActive(true);
         missionCompletedScreenController.SetMessage(completedMessage);
     }
 
     public void HideMissionCompletedPanel()
     {
+        gameController.ResumeGame();
         missionCompletedObject.SetActive(false);
     }
 

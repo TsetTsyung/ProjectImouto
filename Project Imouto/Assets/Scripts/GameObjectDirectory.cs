@@ -17,6 +17,7 @@ public static class GameObjectDirectory {
     public static FileHandler FileHandler { get; set; }
     public static MonsterSpawner MonsterSpawner { get; set; }
     public static MissionController MissionController { get; set; }
+    public static ItemSpawnerScript ItemSpawner { get; set; }
 
     public static void ClearAll()
     {

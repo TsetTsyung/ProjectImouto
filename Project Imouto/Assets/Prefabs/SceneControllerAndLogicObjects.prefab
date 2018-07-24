@@ -642,7 +642,7 @@ GameObject:
   - component: {fileID: 114552996612163368}
   m_Layer: 0
   m_Name: MonsterSpawner
-  m_TagString: Untagged
+  m_TagString: MonsterSpawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -854,6 +854,22 @@ GameObject:
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1267657179614904
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4432389849203864}
+  - component: {fileID: 114832117358657324}
+  m_Layer: 0
+  m_Name: ItemSpawner
+  m_TagString: ItemSpawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2999,6 +3015,7 @@ Transform:
   - {fileID: 4622183505265642}
   - {fileID: 224124079101768882}
   - {fileID: 4757659755875532}
+  - {fileID: 4432389849203864}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3510,6 +3527,19 @@ Transform:
   - {fileID: 4369849360611022}
   m_Father: {fileID: 4224924581786284}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4432389849203864
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1267657179614904}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4041743065338738}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4478509918092452
 Transform:
@@ -6267,7 +6297,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b88cae6553c2caf478755fafbf238fe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missions:
+  distanceForGoToCompletion: 6
+  originalMissions:
   - {fileID: 11400000, guid: 5045fe0689bf8654a9db9e69656cd0b9, type: 2}
   missionBoardPrefab: {fileID: 1557244305805004, guid: f7c24a38a73f6d843ba70609ac5bef49,
     type: 2}
@@ -7952,8 +7983,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: AcceptMission
+      - m_Target: {fileID: 114176663669396490}
+        m_MethodName: HideMissionCompletedPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8278,6 +8309,19 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Increase Max Stamina
+--- !u!114 &114832117358657324
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1267657179614904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90309f0834bcd434cb8e9fb2600ff1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locationMarkerPrefab: {fileID: 1131959443714436, guid: 540cdd9a1fc760f458b2d24d59864516,
+    type: 2}
 --- !u!114 &114870411584627624
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -109,7 +109,8 @@ public class PlayerInputController : MonoBehaviour
             // see if we can activate stuff
             interactionScript.AttemptInteraction();
         }
-        else if (Input.GetButtonUp("Use"))
+
+        if (Input.GetButtonUp("Use") && movementAllowed)
         {
             interactionScript.StopAttemptingInteraction();
         }
