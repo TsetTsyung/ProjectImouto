@@ -19,6 +19,7 @@ public class PlayerInputController : MonoBehaviour
     private PlayerMovementController playerMovementController;
     private PlayerAnimationController playerAnimationController;
     private PlayerAttackScript playerAttackScript;
+    private InteractionScript interactionScript;
 
     private float verticalInput;
     private float horizontalInput;
@@ -43,12 +44,13 @@ public class PlayerInputController : MonoBehaviour
         playerMovementController = GameObjectDirectory.PlayerMovementController;
         playerAnimationController = GameObjectDirectory.PlayerAnimationController;
         playerAttackScript = GameObjectDirectory.PlayerAttackScript;
+        interactionScript = GameObjectDirectory.InteractionSystem;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!gameController.PlayerIsAlive || !inputAllowed)
+        if (!gameController.PlayerIsAlive || !inputAllowed || gameController.GetPausedState())
             return;
 
 
@@ -105,8 +107,14 @@ public class PlayerInputController : MonoBehaviour
         if (Input.GetButtonDown("Use") && movementAllowed)
         {
             // see if we can activate stuff
+            interactionScript.AttemptInteraction();
         }
 
+        if (Input.GetButtonUp("Use") && movementAllowed)
+        {
+            interactionScript.StopAttemptingInteraction();
+        }
+        
         // Check for Emote input
         if (Input.GetButtonDown("Emote") && movementAllowed)
         {
@@ -134,6 +142,11 @@ public class PlayerInputController : MonoBehaviour
         {
             // Contact the attack script
             playerAttackScript.PlayerHasPressedSuperHeavyAttack();
+        }
+
+        if(Input.GetButtonDown("LevelUp"))
+        {
+            overlayController.DisplayLevelUpPanel();
         }
     }
 
@@ -177,11 +190,11 @@ public class PlayerInputController : MonoBehaviour
 
     public void EnableMovementInput()
     {
-        movementAllowed = false;
+        movementAllowed = true;
     }
 
-    internal void DisableMovemoentInput()
+    internal void DisableMovementInput()
     {
-        movementAllowed = true;
+        movementAllowed = false;
     }
 }

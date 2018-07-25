@@ -99,7 +99,7 @@ public class PlayerAnimationController : MonoBehaviour
             horizonatlInput *= 2f;
         }
 
-        if (verticalInput != 0f || horizonatlInput != 0f )
+        if (verticalInput != 0f || horizonatlInput != 0f)
             stationary = false;
 
         playerAnimator.SetFloat("ForwardSpeed", verticalInput);
@@ -175,6 +175,7 @@ public class PlayerAnimationController : MonoBehaviour
     public void PlayerAttack(ComboMoves newMove)
     {
         playerAnimator.SetBool("Attacking", true);
+        playerAnimator.applyRootMotion = true;
         switch (newMove)
         {
             case ComboMoves.Unset:
@@ -214,7 +215,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void PlayStationaryJump()
     {
-        
+
         playerAnimator.SetTrigger("StationaryJump");
     }
 
@@ -222,5 +223,16 @@ public class PlayerAnimationController : MonoBehaviour
     public void PlayMovingJump()
     {
         playerAnimator.SetTrigger("MovingJump");
+    }
+
+    public void ClearAllAttackAnimations()
+    {
+        //Debug.Log("Clearing all animations");
+        playerAnimator.SetBool("Attacking", false);
+        playerAnimator.ResetTrigger("Attack");
+        playerAnimator.ResetTrigger("HeavyAttack1");
+        playerAnimator.ResetTrigger("HeavyAttack2");
+        playerAnimator.ResetTrigger("SuperHeavyAttack");
+        playerAnimator.applyRootMotion = false;
     }
 }

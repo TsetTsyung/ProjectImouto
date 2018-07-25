@@ -7,12 +7,10 @@ public class PlayerHealthController : MonoBehaviour {
 
     [SerializeField]
     private PlayerAnimationController playerAnimationController;
-
     [SerializeField]
     private int startingHealth;
     [SerializeField]
     private int startingMaxHealth;
-
     [SerializeField]
     private int startingStamina;
     [SerializeField]
@@ -25,6 +23,8 @@ public class PlayerHealthController : MonoBehaviour {
     private int maxStamina;
 
     private OverlayController overlayController;
+    private PlayerProfileController playerProfileController;
+    private PlayerStatsController playerStatsController;
 
     private void Awake()
     {
@@ -34,13 +34,13 @@ public class PlayerHealthController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         overlayController = GameObjectDirectory.OverlayController;
+        playerProfileController = GameObjectDirectory.PlayerProfileController;
+        playerStatsController = GameObjectDirectory.PlayerStatsController;
         StartNewGame();
-        //UpdateUIBars();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        //UpdateUIBars();        
 	}
 
     private void UpdateUIBars()
@@ -51,9 +51,9 @@ public class PlayerHealthController : MonoBehaviour {
 
     public void StartNewGame()
     {
-        maxHealth = startingMaxHealth;
+        maxHealth = playerStatsController.GetPlayerMaxHealth();
         health = startingHealth;
-        maxStamina = startingMaxStamina;
+        maxStamina = playerStatsController.GetPlayerMaxStamina();
         stamina = startingStamina;
 
         UpdateUIBars();
@@ -63,12 +63,14 @@ public class PlayerHealthController : MonoBehaviour {
     {
         health = newStartingHealth;
         maxHealth = newStartingMaxHealth;
+        UpdateUIBars();
     }
 
     public void InitialiseStamina(int newStartingStamina, int newStartingMaxStamina)
     {
         stamina = newStartingStamina;
         maxStamina = newStartingStamina;
+        UpdateUIBars();
     }
 
     public void PlayerHasTakenDamage(int damageTaken)
@@ -99,12 +101,14 @@ public class PlayerHealthController : MonoBehaviour {
     public void PlayerHasIncreasedMaxHealth(int maxHealthIncrease)
     {
         maxHealth += maxHealthIncrease;
+        playerProfileController.SetPlayerMaxHealthLevel(maxHealth);
         UpdateUIBars();
     }
 
     public void PlayerHasIncreasedMaxStamina(int maxStaminaIncrease)
     {
         maxStamina += maxStaminaIncrease;
+        playerProfileController.SetPlayerMaxStaminaLevel(maxStamina);
         UpdateUIBars();
     }
 

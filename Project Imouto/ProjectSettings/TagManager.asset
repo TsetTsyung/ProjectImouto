@@ -7,6 +7,9 @@ TagManager:
   - Interactable
   - ScreenOverlay
   - Monster
+  - MonsterSpawner
+  - ItemSpawner
+  - Fire
   layers:
   - Default
   - TransparentFX

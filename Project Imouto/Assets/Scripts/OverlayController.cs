@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,17 +9,38 @@ public class OverlayController : MonoBehaviour {
     [SerializeField]
     private Text interactionText;
     [SerializeField]
+    private Text messageText;
+    [SerializeField]
     private Slider healthSlider;
     [SerializeField]
     private Slider staminaSlider;
     [SerializeField]
+    private Slider xpSlider;
+    [SerializeField]
+    private Text xpValue;
+    [SerializeField]
     private GameObject emoteMenuObject;
+    [SerializeField]
+    private GameObject levelUpMenuObject;
+    [SerializeField]
+    private GameObject missionInfoObject;
+    [SerializeField]
+    private GameObject missionCompletedObject;
+    [SerializeField]
+    private Animator overlayAnimator;
+    [SerializeField]
+    private float messageTextTimeOut;
 
     private GameObject interactingObject;
     private GameControllerScript gameController;
     private PlayerAnimationController playerAnimationController;
+    private LevelUpScreenController levelUpScreenController;
+    private PlayerXPController playerXPController;
+    private MissionInfoScreenController missionInfoScreenController;
+    private MissionCompletedScreenController missionCompletedScreenController;
     private int currentMaxHealth;
     private int currentHealth;
+
 
 
     private void Awake()
@@ -30,8 +52,16 @@ public class OverlayController : MonoBehaviour {
     void Start() {
         gameController = GameObjectDirectory.GameController;
         playerAnimationController = GameObjectDirectory.PlayerAnimationController;
+        levelUpScreenController = GetComponentInChildren<LevelUpScreenController>();
+        playerXPController = GameObjectDirectory.PlayerXPController;
+        overlayAnimator = GetComponent<Animator>();
+        missionInfoScreenController = GetComponentInChildren<MissionInfoScreenController>();
+        missionCompletedScreenController = GetComponentInChildren<MissionCompletedScreenController>();
         HideInteractionText();
         HideEmotePanel();
+        HideLevelUpPanel();
+        HideMissionInfoPanel();
+        HideMissionCompletedPanel();
     }
 
     private void HideInteractionText()
@@ -42,11 +72,18 @@ public class OverlayController : MonoBehaviour {
     public void HideInteractionText(GameObject newObject)
     {
         if (newObject == interactingObject)
+        {
             interactionText.enabled = false;
+            interactingObject = null;
+        }
     }
+
 
     public void DisplayInteractionText(GameObject newObject, string textToDisplay)
     {
+        if (newObject == interactingObject)
+            return;
+
         interactionText.enabled = true;
         interactionText.text = textToDisplay;
 
@@ -65,16 +102,80 @@ public class OverlayController : MonoBehaviour {
         emoteMenuObject.SetActive(false);
     }
 
+    public void DisplayLevelUpPanel()
+    {
+        gameController.PauseGame();
+        levelUpMenuObject.SetActive(true);
+        levelUpScreenController.UpdateLevelUpScreen();
+    }
+
+    public void HideLevelUpPanel()
+    {
+        gameController.ResumeGame();
+        levelUpMenuObject.SetActive(false);
+    }
+
+    public void DisplayMissionInfoPanel(string missionName, string missionText, MissionType missionType, int xpReward, int coinReward)
+    {
+        if (missionInfoObject.activeSelf)
+            return;
+        gameController.PauseGame();
+        missionInfoObject.SetActive(true);
+        missionInfoScreenController.DisplayMissionInfo(missionName, missionText, missionType, xpReward, coinReward);
+    }
+
+    public void HideMissionInfoPanel()
+    {
+        gameController.ResumeGame();
+        missionInfoObject.SetActive(false);
+    }
+
+    public void DisplayMissionCompletedPanel(string completedMessage)
+    {
+        gameController.PauseGame();
+        missionCompletedObject.SetActive(true);
+        missionCompletedScreenController.SetMessage(completedMessage);
+    }
+
+    public void HideMissionCompletedPanel()
+    {
+        gameController.ResumeGame();
+        missionCompletedObject.SetActive(false);
+    }
+
+    public void HideMessageText()
+    {
+        messageText.text = "";
+        messageText.enabled = false;
+    }
+
+    public void DisplayMessageText(string messageToDisplay)
+    {
+        StartCoroutine(StartTimedMessageText());
+        messageText.text = messageToDisplay;
+    }
+
+    private IEnumerator StartTimedMessageText()
+    {
+        yield return new WaitForSeconds(messageTextTimeOut);
+
+        messageText.enabled = false;
+    }
+
     public void UpdateHealthBar(int newHealth)
     {
-        Debug.Log("Updating the health bar with health of " + newHealth);
         healthSlider.value = newHealth;
-        Debug.Log("Healthbar value is now " + healthSlider.value);
     }
 
     public void UpdateStaminaBar(int newStamina)
     {
         staminaSlider.value = newStamina;
+    }
+
+    public void UpdateXPBar(int newXP)
+    {
+        xpSlider.value = newXP;
+        xpValue.text = xpSlider.maxValue.ToString() + "/" + xpSlider.value.ToString();
     }
 
     public void SetNewMaxHealth(int newMaxHealth)
@@ -85,6 +186,15 @@ public class OverlayController : MonoBehaviour {
     public void SetNewMaxStamina(int newMaxStamina)
     {
         staminaSlider.maxValue = newMaxStamina;
+    }
+
+    public void SetNewMaxXP(int newMaxXP)
+    {
+        if(newMaxXP > xpSlider.maxValue)
+            overlayAnimator.SetBool("LevelUpAvailable", true);
+
+        xpSlider.maxValue = newMaxXP;
+        xpValue.text = xpSlider.maxValue.ToString() + "/" + xpSlider.value.ToString();
     }
 
     public void PlayEmote1()
@@ -129,10 +239,4 @@ public class OverlayController : MonoBehaviour {
     {
         playerAnimationController.PlayEmote8();
     }
-
-    public void TestClick()
-    {
-        Debug.Log("Clicked!");
-    }
-
 }

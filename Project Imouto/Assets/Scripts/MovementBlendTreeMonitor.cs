@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MovementBlendTreeMonitor : StateMachineBehaviour {
-
+    /*
     private PlayerAttackScript playerAttackScript;
 
     public void AssignAttackScriptReference(PlayerAttackScript _playerAttackScript)
@@ -15,7 +15,7 @@ public class MovementBlendTreeMonitor : StateMachineBehaviour {
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         playerAttackScript.LeftTheAttackSubState();
 	}
-
+    */
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	//override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 	//
