@@ -1127,6 +1127,7 @@ GameObject:
   - component: {fileID: 114201002056344506}
   - component: {fileID: 114512631980751352}
   - component: {fileID: 114150562708860202}
+  - component: {fileID: 114850780252664814}
   m_Layer: 0
   m_Name: knigthprefab
   m_TagString: Untagged
@@ -1598,6 +1599,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1509456284947104
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 224530573715051060}
+  - component: {fileID: 222102861016853150}
+  - component: {fileID: 114209545593277548}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1515150831490980
 GameObject:
   m_ObjectHideFlags: 1
@@ -1626,6 +1644,24 @@ GameObject:
   - component: {fileID: 114607396088947202}
   m_Layer: 5
   m_Name: Button (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1519950753834508
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 224105106501512754}
+  - component: {fileID: 222181658017420520}
+  - component: {fileID: 114145893350450340}
+  - component: {fileID: 114641551741241680}
+  m_Layer: 5
+  m_Name: IncreaseMaxStaminaButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1744,7 +1780,7 @@ GameObject:
   - component: {fileID: 114793365966594066}
   - component: {fileID: 114122076795696776}
   m_Layer: 5
-  m_Name: IncreaseMaxStaminaButton
+  m_Name: IncreaseBonusDamageButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2362,6 +2398,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1790249177073494
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 224120461115473018}
+  - component: {fileID: 222771152365238598}
+  - component: {fileID: 114922325189680004}
+  - component: {fileID: 114742167130403006}
+  m_Layer: 5
+  m_Name: MaxStaminaText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1792662762253042
 GameObject:
   m_ObjectHideFlags: 1
@@ -2890,7 +2944,7 @@ GameObject:
   - component: {fileID: 114870411584627624}
   - component: {fileID: 114983529267343568}
   m_Layer: 5
-  m_Name: MaxStaminaText
+  m_Name: BonusDamageText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4992,7 +5046,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114793365966594066}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114234173259624422}
+        m_MethodName: IncreaseBonusDamage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114122785581928790
@@ -5081,6 +5146,33 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!114 &114145893350450340
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1519950753834508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5313,7 +5405,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114892953993605918}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114234173259624422}
+        m_MethodName: IncreaseMaxHealth
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114176663669396490
@@ -5328,6 +5431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionText: {fileID: 114184711107399294}
+  messageText: {fileID: 114529495980991140}
   healthSlider: {fileID: 114491350180542700}
   staminaSlider: {fileID: 114765439741038082}
   xpSlider: {fileID: 114146318637933446}
@@ -5337,6 +5441,7 @@ MonoBehaviour:
   missionInfoObject: {fileID: 1349015620897056}
   missionCompletedObject: {fileID: 1613947234505084}
   overlayAnimator: {fileID: 95187656128208128}
+  messageTextTimeOut: 4
 --- !u!114 &114178572834673366
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5607,6 +5712,39 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Cancel
+--- !u!114 &114209545593277548
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1509456284947104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 15
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Increase Max Stamina
 --- !u!114 &114223018190488332
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5658,12 +5796,14 @@ MonoBehaviour:
   currentXP: {fileID: 114722503628927776}
   maxHealthText: {fileID: 114881606139743706}
   IncreaseMaxHealthButton: {fileID: 114170444991985530}
-  maxStaminaText: {fileID: 114870411584627624}
-  IncreaseMaxStaminButton: {fileID: 114122076795696776}
+  maxStaminaText: {fileID: 114922325189680004}
+  IncreaseMaxStaminaButton: {fileID: 114641551741241680}
+  bonusDamageText: {fileID: 114870411584627624}
+  IncreaseBonusDamageButton: {fileID: 114122076795696776}
   UnlockHeavyAttack1Button: {fileID: 114521301251853232}
   UnlockHeavyAttack2Button: {fileID: 114723414311552360}
   UnlockSuperHeavyButton: {fileID: 114586411561676972}
-  SkillPointsAvailableText: {fileID: 114988463428391608}
+  skillPointsAvailableText: {fileID: 114988463428391608}
 --- !u!114 &114239360100845042
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6332,6 +6472,9 @@ MonoBehaviour:
   distanceForGoToCompletion: 6
   originalMissions:
   - {fileID: 11400000, guid: 5045fe0689bf8654a9db9e69656cd0b9, type: 2}
+  - {fileID: 11400000, guid: b262092dda031914cabadf2ddb9f3133, type: 2}
+  - {fileID: 11400000, guid: 6052c651f5ddb5e4d8b66f9e12940fcf, type: 2}
+  - {fileID: 11400000, guid: 58950097205dafc4f88d37b683101c1e, type: 2}
   missionBoardPrefab: {fileID: 1557244305805004, guid: f7c24a38a73f6d843ba70609ac5bef49,
     type: 2}
 --- !u!114 &114440044811333888
@@ -6727,7 +6870,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114564032470281060}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114234173259624422}
+        m_MethodName: UnlockHeavyAttack1
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114525893606761946
@@ -6947,7 +7101,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114239360100845042}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114234173259624422}
+        m_MethodName: UnlockSuperHeavyAttack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114601882816560146
@@ -7178,6 +7343,58 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114641551741241680
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1519950753834508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 114145893350450340}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114234173259624422}
+        m_MethodName: IncreaseMaxStamina
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114644296275859050
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7732,7 +7949,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114039713646724226}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114234173259624422}
+        m_MethodName: UnlockHeavyAttack2
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114728757162753226
@@ -7890,6 +8118,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114742167130403006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1790249177073494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114746214519294976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8373,7 +8615,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Increase Max Stamina
+  m_Text: Increase Bonus Damage
 --- !u!114 &114832117358657324
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8387,6 +8629,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locationMarkerPrefab: {fileID: 1131959443714436, guid: 540cdd9a1fc760f458b2d24d59864516,
     type: 2}
+--- !u!114 &114850780252664814
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1397588284646914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90b1fd9e170c1f94d81c6053d5b29137, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthLevels: 320000004b000000640000007d00000096000000af000000c8000000
+  staminaLevels: 320000004b000000640000007d00000096000000af000000c8000000
+  bonusDamageLevels: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a000000
 --- !u!114 &114870411584627624
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8419,7 +8675,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 50
+  m_Text: 0
 --- !u!114 &114871500091936582
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8625,6 +8881,39 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114922325189680004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1790249177073494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 29
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 50
 --- !u!114 &114958625519881438
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9115,6 +9404,13 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1045840663882720}
   m_CullTransparentMesh: 0
+--- !u!222 &222102861016853150
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1509456284947104}
+  m_CullTransparentMesh: 0
 --- !u!222 &222117324241174194
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -9149,6 +9445,13 @@ CanvasRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1846412835437740}
+  m_CullTransparentMesh: 0
+--- !u!222 &222181658017420520
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1519950753834508}
   m_CullTransparentMesh: 0
 --- !u!222 &222231177156259336
 CanvasRenderer:
@@ -9479,6 +9782,13 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1491467726890480}
   m_CullTransparentMesh: 0
+--- !u!222 &222771152365238598
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1790249177073494}
+  m_CullTransparentMesh: 0
 --- !u!222 &222777443183089906
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -9643,7 +9953,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400.00006, y: -412.702}
+  m_AnchoredPosition: {x: 400.00006, y: -412.78256}
   m_SizeDelta: {x: 800, y: 74.684}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224040069611308506
@@ -9713,15 +10023,15 @@ RectTransform:
   m_GameObject: {fileID: 1959141663766556}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
   m_Children: []
   m_Father: {fileID: 224954304709059010}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 702.85004, y: -55}
-  m_SizeDelta: {x: 100, y: 78.5}
+  m_AnchoredPosition: {x: 751.8833, y: -55}
+  m_SizeDelta: {x: 37.2, y: 78.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224079943893183910
 RectTransform:
@@ -9757,7 +10067,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400.00006, y: -412.702}
+  m_AnchoredPosition: {x: 400.00006, y: -412.78256}
   m_SizeDelta: {x: 800, y: 74.684}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224094965873020000
@@ -9814,6 +10124,25 @@ RectTransform:
   m_AnchoredPosition: {x: 400, y: -187.68}
   m_SizeDelta: {x: 753.3, y: 232.2}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224105106501512754
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1519950753834508}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 224530573715051060}
+  m_Father: {fileID: 224954304709059010}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 296.18332, y: -55}
+  m_SizeDelta: {x: 111.4, y: 69.4}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!224 &224116364950981334
 RectTransform:
   m_ObjectHideFlags: 1
@@ -9831,6 +10160,24 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224120461115473018
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1790249177073494}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224954304709059010}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 485.21664, y: -55}
+  m_SizeDelta: {x: 37.2, y: 78.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224124079101768882
 RectTransform:
@@ -10042,7 +10389,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -392.5328}
+  m_AnchoredPosition: {x: 400, y: -392.65384}
   m_SizeDelta: {x: 800, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224278236690192958
@@ -10121,7 +10468,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 47.150005, y: -55}
+  m_AnchoredPosition: {x: 29.516666, y: -55}
   m_SizeDelta: {x: 111.4, y: 69.4}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!224 &224395486272688986
@@ -10271,6 +10618,24 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224615205411725726}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224530573715051060
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1509456284947104}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224105106501512754}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -10592,11 +10957,11 @@ RectTransform:
   m_Children:
   - {fileID: 224099964765959222}
   m_Father: {fileID: 224954304709059010}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 447.15, y: -55}
+  m_AnchoredPosition: {x: 562.85, y: -55}
   m_SizeDelta: {x: 111.4, y: 69.4}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!224 &224662808568923838
@@ -10769,7 +11134,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 142, y: -38.16687}
+  m_AnchoredPosition: {x: 142, y: -38.24756}
   m_SizeDelta: {x: 264, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224750070276376350
@@ -11052,7 +11417,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -280.02185}
+  m_AnchoredPosition: {x: 400, y: -280.10254}
   m_SizeDelta: {x: 800, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224942129384534722
@@ -11103,6 +11468,8 @@ RectTransform:
   m_Children:
   - {fileID: 224361017184140010}
   - {fileID: 224961848551251968}
+  - {fileID: 224105106501512754}
+  - {fileID: 224120461115473018}
   - {fileID: 224660906422115080}
   - {fileID: 224069118900023990}
   m_Father: {fileID: 224157093204084102}
@@ -11110,7 +11477,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -167.51093}
+  m_AnchoredPosition: {x: 400, y: -167.55127}
   m_SizeDelta: {x: 800, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224961848551251968
@@ -11128,8 +11495,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 302.85, y: -55}
-  m_SizeDelta: {x: 100, y: 78.5}
+  m_AnchoredPosition: {x: 218.55, y: -55}
+  m_SizeDelta: {x: 37.2, y: 78.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224971643660981260
 RectTransform:

@@ -34,6 +34,7 @@ public class ItemSpawnerScript : MonoBehaviour {
             if(locationMarker != null)
             {
                 locationMarker.transform.position = hitInfo.point;
+                locationMarker.SetActive(true);
             }
             else
             {

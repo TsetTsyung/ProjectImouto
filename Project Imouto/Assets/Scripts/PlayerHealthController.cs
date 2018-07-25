@@ -24,6 +24,7 @@ public class PlayerHealthController : MonoBehaviour {
 
     private OverlayController overlayController;
     private PlayerProfileController playerProfileController;
+    private PlayerStatsController playerStatsController;
 
     private void Awake()
     {
@@ -34,6 +35,7 @@ public class PlayerHealthController : MonoBehaviour {
     void Start () {
         overlayController = GameObjectDirectory.OverlayController;
         playerProfileController = GameObjectDirectory.PlayerProfileController;
+        playerStatsController = GameObjectDirectory.PlayerStatsController;
         StartNewGame();
     }
 	
@@ -49,9 +51,9 @@ public class PlayerHealthController : MonoBehaviour {
 
     public void StartNewGame()
     {
-        maxHealth = startingMaxHealth;
+        maxHealth = playerStatsController.GetPlayerMaxHealth();
         health = startingHealth;
-        maxStamina = startingMaxStamina;
+        maxStamina = playerStatsController.GetPlayerMaxStamina();
         stamina = startingStamina;
 
         UpdateUIBars();
@@ -61,12 +63,14 @@ public class PlayerHealthController : MonoBehaviour {
     {
         health = newStartingHealth;
         maxHealth = newStartingMaxHealth;
+        UpdateUIBars();
     }
 
     public void InitialiseStamina(int newStartingStamina, int newStartingMaxStamina)
     {
         stamina = newStartingStamina;
         maxStamina = newStartingStamina;
+        UpdateUIBars();
     }
 
     public void PlayerHasTakenDamage(int damageTaken)
@@ -97,14 +101,14 @@ public class PlayerHealthController : MonoBehaviour {
     public void PlayerHasIncreasedMaxHealth(int maxHealthIncrease)
     {
         maxHealth += maxHealthIncrease;
-        playerProfileController.SetPlayerMaxHealth(maxHealth);
+        playerProfileController.SetPlayerMaxHealthLevel(maxHealth);
         UpdateUIBars();
     }
 
     public void PlayerHasIncreasedMaxStamina(int maxStaminaIncrease)
     {
         maxStamina += maxStaminaIncrease;
-        playerProfileController.SetPlayerMaxStamina(maxStamina);
+        playerProfileController.SetPlayerMaxStaminaLevel(maxStamina);
         UpdateUIBars();
     }
 

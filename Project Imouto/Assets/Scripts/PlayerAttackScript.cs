@@ -15,8 +15,6 @@ public class PlayerAttackScript : MonoBehaviour
     private float heavyAttack1Length = 1.3f;
     [SerializeField]
     private float heavyAttack2Length = 1.7f;
-
-
     [SerializeField]
     private BoxCollider swordCollider;
 
@@ -27,13 +25,11 @@ public class PlayerAttackScript : MonoBehaviour
 
     private AnimatorClipInfo[] clipInfo;
 
-
     private AnimatorStateInfo stateInfo;
 
-
-    private bool heavy1Unlocked = true;
-    private bool heavy2Unlocked = true;
-    private bool superHeavyUnlocked = true;
+    private bool heavy1Unlocked = false;
+    private bool heavy2Unlocked = false;
+    private bool superHeavyUnlocked = false;
     private Vector3 landPosition;
     private RaycastHit hitinfo;
 
@@ -42,6 +38,14 @@ public class PlayerAttackScript : MonoBehaviour
     private ComboMoves[] movesThisCombo = new ComboMoves[3];
     private int comboPointer = 0;
     private float comboTimeLeft = 0f;
+    private int bonusDamage = 0;
+    private int lightAttackDamage = 10;
+    private int heavyAttack1Damage = 20;
+    private int heavyAttack2Damage = 35;
+
+    private Collider[] lightAttackHits;
+    private List<GameObject> monstersThatWereHit;
+
     //private int moveStartedPointer = 0;
     //private int moveEndedPointer = 0;
 
@@ -58,12 +62,6 @@ public class PlayerAttackScript : MonoBehaviour
         playerInputController = GameObjectDirectory.PlayerInputController;
         animator = GetComponent<Animator>();
         ourRB = GetComponent<Rigidbody>();
-
-        //animator.GetBehaviour<AttackSubStateMonitor>().AssignAttackScriptReference(this);
-        //animator.GetBehaviour<AttackMoveMonitor>().AssignAttackScriptReference(this);
-        //animator.GetBehaviour<HeavyAttack1MoveMonitor>().AssignAttackScriptReference(this);
-        //animator.GetBehaviour<HeavyAttack2MoveMonitor>().AssignAttackScriptReference(this);
-        //animator.GetBehaviour<SuperHeavyAttackMonitor>().AssignAttackScriptReference(this);
     }
 
     public void SubmitUnlockedMoves(bool heavy1UnlockState, bool heavy2UnlockState, bool superHeavyUnlockState)
@@ -71,6 +69,11 @@ public class PlayerAttackScript : MonoBehaviour
         heavy1Unlocked = heavy1UnlockState;
         heavy2Unlocked = heavy2UnlockState;
         superHeavyUnlocked = superHeavyUnlockState;
+    }
+
+    public void SubmitBonusDamage(int _bonusDamage)
+    {
+        bonusDamage = _bonusDamage;
     }
     #endregion
 
@@ -210,20 +213,19 @@ public class PlayerAttackScript : MonoBehaviour
     {
         stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        int damageToInflict = 10;
+        int damageToInflict = lightAttackDamage + bonusDamage;
 
         if (stateInfo.IsName("HeavyAttack1"))
         {
-            damageToInflict = 20;
+            damageToInflict = heavyAttack1Damage + bonusDamage;
         }
         else if (stateInfo.IsName("HeavyAttack2"))
         {
-            damageToInflict = 35;
+            damageToInflict = heavyAttack2Damage + bonusDamage;
         }
 
         monster.GetComponent<MonsterHealthScript>().TakeDamage(damageToInflict);
     }
-
 
     private void FinishCombo()
     {
@@ -263,7 +265,25 @@ public class PlayerAttackScript : MonoBehaviour
 
     public void LightAttackLanding()
     {
+        monstersThatWereHit = new List<GameObject>();
+
         // Check for hits
+        lightAttackHits = Physics.OverlapBox(transform.position + (transform.forward), new Vector3(2f, 2f, 2f));
+        for (int i = 0; i < lightAttackHits.Length; i++)
+        {
+            if (lightAttackHits[i].CompareTag("Monster"))
+            {
+                if (!monstersThatWereHit.Contains(lightAttackHits[i].gameObject))
+                {
+                    monstersThatWereHit.Add(lightAttackHits[i].gameObject);
+                }
+            }
+        }
+
+        for (int i = 0; i < monstersThatWereHit.Count; i++)
+        {
+            monstersThatWereHit[i].GetComponent<MonsterHealthScript>().TakeDamage(lightAttackDamage + bonusDamage);
+        }
     }
 
     public void HeavyAttackStarted()
@@ -278,8 +298,6 @@ public class PlayerAttackScript : MonoBehaviour
 
     public void EnteredMoveClip(int moveNumber)
     {
-        Debug.LogWarning(this + "EnteredMoveClip called");
-
         switch (moveNumber)
         {
             case 0:

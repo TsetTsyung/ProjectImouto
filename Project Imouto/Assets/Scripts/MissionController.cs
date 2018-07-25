@@ -22,6 +22,7 @@ public class MissionController : MonoBehaviour
     private GameObject spawnedMissionBoard;
     private MissionBoardInteractable spawnedInteractableMissionBoard;
     private ItemSpawnerScript itemSpawner;
+    private MonsterSpawner monsterSpawner;
     private bool haveAnActiveMission = false;
     private string currentMissionName = "";
     private MissionType currentMissionType;
@@ -29,9 +30,12 @@ public class MissionController : MonoBehaviour
     private int currentWaypointPointer = 0;
     private bool currentlyFollowingWaypoints = false;
 
+    private GameObject newMonster;
+
     // variables that are mission specific
     // KillTargetMission
     private MonsterHealthScript targetMonster;
+    private bool targetDestroyed = false;
 
     // DeliverTo
 
@@ -47,10 +51,12 @@ public class MissionController : MonoBehaviour
         overlayController = GameObjectDirectory.OverlayController;
         playerXPController = GameObjectDirectory.PlayerXPController;
         itemSpawner = GameObjectDirectory.ItemSpawner;
+        monsterSpawner = GameObjectDirectory.MonsterSpawner;
         CreateMissionsList();
         SetupMissions();
 
     }
+
 
     private void CreateMissionsList()
     {
@@ -96,13 +102,21 @@ public class MissionController : MonoBehaviour
         {
             if (missions[i].missionIsAvailable && !missions[i].missionIsActive)
             {
-                spawnedMissionBoard = Instantiate(missionBoardPrefab, missions[i].missionBoardLocation, Quaternion.Euler(0, missions[i].missionBoardDirection, 0));
+                Vector3 spawnLocation = missions[i].missionBoardLocation;
+                spawnLocation.y = 1000f;
+                RaycastHit hitInfo;
+                if (Physics.Raycast(spawnLocation, -Vector3.up, out hitInfo, 2000f))
+                {
+                    spawnLocation = hitInfo.point;
 
-                spawnedInteractableMissionBoard = spawnedMissionBoard.GetComponent<MissionBoardInteractable>();
+                    spawnedMissionBoard = Instantiate(missionBoardPrefab, spawnLocation, Quaternion.Euler(0, missions[i].missionBoardDirection, 0));
 
-                spawnedInteractableMissionBoard.SetText("Mission", missions[i].missionName);
+                    spawnedInteractableMissionBoard = spawnedMissionBoard.GetComponent<MissionBoardInteractable>();
 
-                missionBoards.Add(spawnedInteractableMissionBoard);
+                    spawnedInteractableMissionBoard.SetText("Mission", missions[i].missionName);
+
+                    missionBoards.Add(spawnedInteractableMissionBoard);
+                }
             }
         }
     }
@@ -130,12 +144,13 @@ public class MissionController : MonoBehaviour
 
     }
 
-    private void RemoveMissionBoard(int slot, string acceptedMissionName)
+    private void RemoveMissionBoard(string acceptedMissionName)
     {
         for (int i = 0; i < missionBoards.Count; i++)
         {
-            if (missionBoards[slot].GetMissionName().Length == acceptedMissionName.Length && missionBoards[slot].GetMissionName().Contains(acceptedMissionName))
+            if (missionBoards[i].GetMissionName().Length == acceptedMissionName.Length && missionBoards[i].GetMissionName().Contains(acceptedMissionName))
             {
+                missionBoards[i].HideText();
                 Destroy(missionBoards[i].gameObject);
                 missionBoards.RemoveAt(i);
                 i = missionBoards.Count;
@@ -155,22 +170,20 @@ public class MissionController : MonoBehaviour
                 currentMissionType = missions[i].missionType;
                 missions[i].missionIsActive = true;
                 BeginMission();
-                RemoveMissionBoard(i, acceptedMissionName);
+                RemoveMissionBoard(acceptedMissionName);
             }
         }
     }
 
 
-    public void MissionCompleted(int slot, string completedMissionName)
+    public void MissionCompleted()
     {
-        if (missions[slot].missionName.Length == completedMissionName.Length && missions[slot].missionName.Contains(completedMissionName))
-        {
-            // Show text and give winning
-            playerXPController.AddXP(missions[slot].xpReward);
-            itemSpawner.DisableLocationMarker();
-            currentMissionName = "";
-            overlayController.DisplayMissionCompletedPanel(missions[slot].completedMessage);
-        }
+        Debug.Log("Mission Completed!");
+        // Show text and give winning
+        playerXPController.AddXP(missions[currentMissionSlot].xpReward);
+        itemSpawner.DisableLocationMarker();
+        currentMissionName = "";
+        overlayController.DisplayMissionCompletedPanel(missions[currentMissionSlot].completedMessage);
     }
 
 
@@ -198,14 +211,6 @@ public class MissionController : MonoBehaviour
             default:
                 break;
         }
-    }
-
-    private void BeginKillTargetMission()
-    {
-        // We're good to go
-
-        // Spawn Target Monsters
-
 
         // Spawn Monsters
         if (missions[currentMissionSlot].enemies.Length > 0)
@@ -214,10 +219,23 @@ public class MissionController : MonoBehaviour
         }
     }
 
-    private void SpawnMissionMonsters()
+    private void BeginKillTargetMission()
     {
+        // We're in the right mission, check for waypoints
+        if (missions[currentMissionSlot].waypoints.Length != 0)
+        {
+            currentWaypointPointer = 0;
+            currentlyFollowingWaypoints = true;
+            itemSpawner.SpawnLocationMarker(missions[currentMissionSlot].waypoints[currentWaypointPointer]);
+        }
+        else
+        {
+            itemSpawner.SpawnLocationMarker(missions[currentMissionSlot].missionLocation);
+        }
 
+        SpawnTargetMonster();
     }
+
 
     private void BeginDeliverToTargetMission()
     {
@@ -229,19 +247,46 @@ public class MissionController : MonoBehaviour
 
     private void BeginGoToMission()
     {
-        if (missions[slot].missionName.Length == missionName.Length && missions[slot].missionName.Contains(missionName))
+        Debug.Log("Beginning GoTo Mission");
+        // We're in the right mission, check for waypoints
+        if (missions[currentMissionSlot].waypoints.Length != 0)
         {
-            // We're in the right mission, check for waypoints
-            if (missions[slot].waypoints.Length != 0)
+            currentWaypointPointer = 0;
+            currentlyFollowingWaypoints = true;
+            itemSpawner.SpawnLocationMarker(missions[currentMissionSlot].waypoints[currentWaypointPointer]);
+        }
+        else
+        {
+            itemSpawner.SpawnLocationMarker(missions[currentMissionSlot].missionLocation);
+        }
+    }
+
+    private void SpawnMissionMonsters()
+    {
+        newMonster = null;
+        for (int i = 0; i < missions[currentMissionSlot].enemies.Length; i++)
+        {
+            newMonster = monsterSpawner.SpawnMonster(missions[currentMissionSlot].enemies[i], missions[currentMissionSlot].enemyLocations[i]);
+            if (missions[currentMissionSlot].enemyWaypoints.Length > 0 && newMonster != null)
             {
-                currentWaypointPointer = 0;
-                currentlyFollowingWaypoints = true;
-                itemSpawner.SpawnLocationMarker(missions[slot].waypoints[currentWaypointPointer]);
+                newMonster.GetComponent<PatrolingMobScript>().SetWaypoints(missions[currentMissionSlot].enemyWaypoints);
             }
-            else
-            {
-                itemSpawner.SpawnLocationMarker(missions[slot].missionLocation);
-            }
+        }
+    }
+
+    private void SpawnTargetMonster()
+    {
+        newMonster = null;
+        targetMonster = null;
+
+        newMonster = monsterSpawner.SpawnMonster(missions[currentMissionSlot].targetEnemy, missions[currentMissionSlot].targetLocation);
+
+        targetMonster = newMonster.GetComponent<MonsterHealthScript>();
+        targetMonster.SetAsTargetCreature();
+
+        if (missions[currentMissionSlot].targetWaypoints.Length > 0)
+        {
+            newMonster.GetComponent<PatrolingMobScript>().SetWaypoints(missions[currentMissionSlot].targetWaypoints);
         }
     }
 
@@ -272,6 +317,10 @@ public class MissionController : MonoBehaviour
         // Do checks for waypoint
         if (currentlyFollowingWaypoints)
             CheckWaypointReached();
+        Debug.Log("Is the target dead? " + targetDestroyed);
+        // Check to see if we've killed the target.
+        if (targetDestroyed)
+            MissionCompleted(); ;
     }
 
     private void CheckDeliverToTargetMissionSuccess()
@@ -292,13 +341,17 @@ public class MissionController : MonoBehaviour
     {
         // Do checks for waypoint
         if (currentlyFollowingWaypoints)
-            CheckWaypointReached();
-
-        float distance = Vector3.Distance(playerXPController.transform.position, missions[currentMissionSlot].missionLocation);
-        if (distance < distanceForGoToCompletion)
         {
-            // Mission Completed
-            MissionCompleted(currentMissionSlot, currentMissionName);
+            CheckWaypointReached();
+        }
+        else
+        {
+            float distance = Vector3.Distance(playerXPController.transform.position, missions[currentMissionSlot].missionLocation);
+            if (distance < distanceForGoToCompletion)
+            {
+                // Mission Completed
+                MissionCompleted();
+            }
         }
     }
 
@@ -309,12 +362,22 @@ public class MissionController : MonoBehaviour
         {
             overlayController.DisplayMessageText(missions[currentMissionSlot].waypointMessages[currentWaypointPointer]);
             currentWaypointPointer++;
-            if (currentWaypointPointer > missions[currentMissionSlot].waypoints.Length)
+            if (currentWaypointPointer >= missions[currentMissionSlot].waypoints.Length)
             {
                 // We've reached the end of the waypoints, move onto final location
                 currentlyFollowingWaypoints = false;
                 itemSpawner.SpawnLocationMarker(missions[currentMissionSlot].missionLocation);
             }
+            else
+            {
+                itemSpawner.SpawnLocationMarker(missions[currentMissionSlot].waypoints[currentWaypointPointer]);
+            }
         }
+    }
+
+    public void TargetCreatureDied(MonsterHealthScript creatureThatDied)
+    {
+        if (targetMonster == creatureThatDied)
+            targetDestroyed = true;
     }
 }

@@ -19,7 +19,7 @@ MonoBehaviour:
   completedMessage: Yay for you
   xpReward: 10
   coinReward: 10
-  missionBoardLocation: {x: 297.155, y: 6.4256, z: 264.334}
+  missionBoardLocation: {x: 297.155, y: -50, z: 264.334}
   missionBoardDirection: 0
   enemies: 
   targetEnemy: 0

@@ -18,6 +18,7 @@ public static class GameObjectDirectory {
     public static MonsterSpawner MonsterSpawner { get; set; }
     public static MissionController MissionController { get; set; }
     public static ItemSpawnerScript ItemSpawner { get; set; }
+    public static PlayerStatsController PlayerStatsController { get; set; }
 
     public static void ClearAll()
     {

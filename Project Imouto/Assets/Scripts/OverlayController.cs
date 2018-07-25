@@ -28,6 +28,8 @@ public class OverlayController : MonoBehaviour {
     private GameObject missionCompletedObject;
     [SerializeField]
     private Animator overlayAnimator;
+    [SerializeField]
+    private float messageTextTimeOut;
 
     private GameObject interactingObject;
     private GameControllerScript gameController;
@@ -70,7 +72,10 @@ public class OverlayController : MonoBehaviour {
     public void HideInteractionText(GameObject newObject)
     {
         if (newObject == interactingObject)
+        {
             interactionText.enabled = false;
+            interactingObject = null;
+        }
     }
 
 
@@ -146,7 +151,15 @@ public class OverlayController : MonoBehaviour {
 
     public void DisplayMessageText(string messageToDisplay)
     {
+        StartCoroutine(StartTimedMessageText());
         messageText.text = messageToDisplay;
+    }
+
+    private IEnumerator StartTimedMessageText()
+    {
+        yield return new WaitForSeconds(messageTextTimeOut);
+
+        messageText.enabled = false;
     }
 
     public void UpdateHealthBar(int newHealth)
@@ -177,8 +190,9 @@ public class OverlayController : MonoBehaviour {
 
     public void SetNewMaxXP(int newMaxXP)
     {
-        if(xpSlider.value > xpSlider.maxValue)
+        if(newMaxXP > xpSlider.maxValue)
             overlayAnimator.SetBool("LevelUpAvailable", true);
+
         xpSlider.maxValue = newMaxXP;
         xpValue.text = xpSlider.maxValue.ToString() + "/" + xpSlider.value.ToString();
     }

@@ -14,6 +14,8 @@ public class MonsterHealthScript : MonoBehaviour
     private RagDollDeathScript ragDollDeathScript;
 
     private int currentHealth;
+    private bool isTargetCreature = false;
+    private bool isDead = false;
 
     private void Awake()
     {
@@ -29,6 +31,10 @@ public class MonsterHealthScript : MonoBehaviour
         ActivateCreature();
     }
 
+    public void SetAsTargetCreature()
+    {
+        isTargetCreature = true;
+    }
 
     // Update is called once per frame
     void Update()
@@ -45,6 +51,9 @@ public class MonsterHealthScript : MonoBehaviour
 
     public void TakeDamage(int damageTaken)
     {
+        if (isDead)
+            return; 
+
         currentHealth -= damageTaken;
 
         if (currentHealth <= 0)
@@ -56,8 +65,13 @@ public class MonsterHealthScript : MonoBehaviour
 
     private void CreatureDied()
     {
+        isDead = true;
         animationControllerScript.DeactivateAnimtor();
         ragDollDeathScript.EnableRagDoll();
+
+        if (isTargetCreature)
+            GameObjectDirectory.MissionController.TargetCreatureDied(this);
+
         monsterStatusController.DeactivateCreature();
     }
 }

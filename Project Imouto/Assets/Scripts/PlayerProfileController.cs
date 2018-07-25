@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class PlayerProfileController : MonoBehaviour {
 
-    PlayerSaveProfile ourSaveProfile;
-    FileHandler fileHandler;
+    private PlayerAttackScript playerAttackScript;
+    private PlayerSaveProfile ourSaveProfile;
+    private FileHandler fileHandler;
+
 
     private void Awake(){
         GameObjectDirectory.PlayerProfileController = this;
@@ -15,11 +17,14 @@ public class PlayerProfileController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         fileHandler = GameObjectDirectory.FileHandler;
+        playerAttackScript = GameObjectDirectory.PlayerAttackScript;
 
         ourSaveProfile = fileHandler.GetPlayerProfileFromFile();
 
         if (ourSaveProfile == null)
             ourSaveProfile = new PlayerSaveProfile();
+
+        playerAttackScript.SubmitUnlockedMoves(ourSaveProfile.UnlockedHeavyAttack1, ourSaveProfile.UnlockedHeavyAttack2, ourSaveProfile.UnlockedSuperHeavyAttack);
 	}
 
 	// Update is called once per frame
@@ -54,7 +59,7 @@ public class PlayerProfileController : MonoBehaviour {
         return Vector3.zero;
     }
 
-    public int GetPlayerMaxHealth()
+    public int GetPlayerMaxHealthLevel()
     {
         if(ourSaveProfile != null)
         {
@@ -63,11 +68,20 @@ public class PlayerProfileController : MonoBehaviour {
         return 0;
     }
 
-    public int GetPlayerMaxStamina()
+    public int GetPlayerMaxStaminaLevel()
     {
         if(ourSaveProfile != null)
         {
             return ourSaveProfile.MaxStamina;
+        }
+        return 0;
+    }
+
+    public int GetPlayerBonusDamageLevel()
+    {
+        if (ourSaveProfile != null)
+        {
+            return ourSaveProfile.BonusDamage;
         }
         return 0;
     }
@@ -126,6 +140,7 @@ public class PlayerProfileController : MonoBehaviour {
         return false;
     }
 
+
     public void SetPlayerLevel(int newLevel)
     {
         if(ourSaveProfile != null)
@@ -150,7 +165,7 @@ public class PlayerProfileController : MonoBehaviour {
         }
     }
 
-    public void SetPlayerMaxHealth(int newMaxHealth)
+    public void SetPlayerMaxHealthLevel(int newMaxHealth)
     {
         if (ourSaveProfile != null && newMaxHealth > ourSaveProfile.MaxHealth)
         {
@@ -158,11 +173,19 @@ public class PlayerProfileController : MonoBehaviour {
         }
     }
 
-    public void SetPlayerMaxStamina(int newMaxStamina)
+    public void SetPlayerMaxStaminaLevel(int newMaxStamina)
     {
         if (ourSaveProfile != null && newMaxStamina > ourSaveProfile.MaxStamina)
         {
             ourSaveProfile.MaxStamina= newMaxStamina;
+        }
+    }
+
+    public void SetPlayerBonusDamageLevel(int newBonusDamage)
+    {
+        if (ourSaveProfile != null && newBonusDamage > ourSaveProfile.BonusDamage)
+        {
+            ourSaveProfile.BonusDamage = newBonusDamage;
         }
     }
 
@@ -195,6 +218,7 @@ public class PlayerProfileController : MonoBehaviour {
         if(ourSaveProfile != null)
         {
             ourSaveProfile.UnlockedHeavyAttack1 = newUnlockState;
+            playerAttackScript.SubmitUnlockedMoves(ourSaveProfile.UnlockedHeavyAttack1, ourSaveProfile.UnlockedHeavyAttack2, ourSaveProfile.UnlockedSuperHeavyAttack);
         }
     }
 
@@ -203,6 +227,7 @@ public class PlayerProfileController : MonoBehaviour {
         if (ourSaveProfile != null)
         {
             ourSaveProfile.UnlockedHeavyAttack2 = newUnlockState;
+            playerAttackScript.SubmitUnlockedMoves(ourSaveProfile.UnlockedHeavyAttack1, ourSaveProfile.UnlockedHeavyAttack2, ourSaveProfile.UnlockedSuperHeavyAttack);
         }
     }
 
@@ -211,6 +236,15 @@ public class PlayerProfileController : MonoBehaviour {
         if (ourSaveProfile != null)
         {
             ourSaveProfile.UnlockedSuperHeavyAttack = newUnlockState;
+            playerAttackScript.SubmitUnlockedMoves(ourSaveProfile.UnlockedHeavyAttack1, ourSaveProfile.UnlockedHeavyAttack2, ourSaveProfile.UnlockedSuperHeavyAttack);
+        }
+    }
+
+    public void SkillPointSpent()
+    {
+       if(ourSaveProfile != null && ourSaveProfile.SkillPointsToAssign > 0)
+        {
+            ourSaveProfile.SkillPointsToAssign--;
         }
     }
 }
@@ -224,6 +258,7 @@ public class PlayerSaveProfile {
     public Vector3 RespawnLocation { get; set; }
     public int MaxHealth { get; set; }
     public int MaxStamina { get; set; }
+    public int BonusDamage { get; set; }
     public int SwordLevel { get; set; }
     public int ShieldLevel { get; set; }
     public int SkillPointsToAssign { get; set; }
@@ -238,6 +273,7 @@ public class PlayerSaveProfile {
         //RespawnLocation = default start location
         MaxHealth = 50;
         MaxStamina = 50;
+        BonusDamage = 0;
         SwordLevel = 1;
         ShieldLevel = 1;
         SkillPointsToAssign = 0;

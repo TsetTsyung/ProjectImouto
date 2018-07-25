@@ -47,28 +47,27 @@ public class PlayerXPController : MonoBehaviour {
 
     public void AddXP(int newXP)
     {
-        Debug.Log("Adding XP");
         playerXP += newXP;
 
-        if (playerXP >= currentMaxXP)
+        while (playerXP >= currentMaxXP && playerLevel < levels.Length)
             UpdatePlayersLevel();
 
         playerProfileController.SetPlayerXP(playerXP);
-        overlayController.UpdateXPBar(newXP);
+        overlayController.UpdateXPBar(playerXP);
     }
 
     private void UpdatePlayersLevel()
     {
         playerLevel++;
+        currentMaxXP = levels[playerLevel];
         if (playerLevel > levels.Length)
         {
             playerLevel = levels.Length;
         }
 
         playerProfileController.SetPlayerLevel(playerLevel);
-        overlayController.SetNewMaxXP(levels[playerLevel - 1]);
-
-        // Allow unlock of new ability
+        playerProfileController.SetSkillPointsToAssign(playerProfileController.GetSkillPointsToAssign()+1);
+        overlayController.SetNewMaxXP(levels[playerLevel]);
     }
 
     public int GetCurrentXP()

@@ -115,8 +115,6 @@ public class PlayerInputController : MonoBehaviour
             interactionScript.StopAttemptingInteraction();
         }
         
-
-
         // Check for Emote input
         if (Input.GetButtonDown("Emote") && movementAllowed)
         {

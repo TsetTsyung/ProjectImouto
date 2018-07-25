@@ -11,7 +11,7 @@ public class PatrolingMobScript : MonoBehaviour
     [SerializeField]
     private AnimationBaseClass animationController;
     [SerializeField]
-    private Transform[] waypoints;
+    private Transform[] waypointTransforms;
     [SerializeField]
     private NavMeshAgent ourNavAgent;
     [SerializeField]
@@ -40,6 +40,7 @@ public class PatrolingMobScript : MonoBehaviour
     private GameControllerScript gameController;
     private PlayerHealthController playerHealthController;
     private Transform playerTransform;
+    private Vector3[] waypoints;
     private bool creatureActive = true;
     private int currentWaypoint;
     private MobPatrolState ourPatrolState;
@@ -64,6 +65,13 @@ public class PatrolingMobScript : MonoBehaviour
         timeBetweenAttacks = animationController.GetAttackAnimationClipTime();
         timeIntoAnimationForAttack = animationController.GetTimeIntoAnimationForAttack();
 
+        // Get the positions from the transforms and convert to V3's
+        waypoints = new Vector3[waypointTransforms.Length];
+        for (int i = 0; i < waypointTransforms.Length; i++)
+        {
+            waypoints[i] = new Vector3(waypointTransforms[i].position.x, waypointTransforms[i].position.y, waypointTransforms[i].position.z);
+        }
+
         ActivateCreature();
     }
 
@@ -76,9 +84,9 @@ public class PatrolingMobScript : MonoBehaviour
         {
             ourPatrolState = MobPatrolState.Patroling;
             animationController.StartWalkAnimation();
-            transform.position = waypoints[waypoints.Length - 1].position;
+            transform.position = waypoints[waypoints.Length - 1];
 
-            ourNavAgent.SetDestination(waypoints[0].position);
+            ourNavAgent.SetDestination(waypoints[0]);
 
             currentWaypoint = 0;
         }
@@ -112,7 +120,7 @@ public class PatrolingMobScript : MonoBehaviour
         if (ourPatrolState == MobPatrolState.Patroling)
         {
             // Check distance to next waypoint
-            if (Vector3.SqrMagnitude(transform.position - waypoints[currentWaypoint].position) <= (nextWaypointDistance * nextWaypointDistance))
+            if (Vector3.SqrMagnitude(transform.position - waypoints[currentWaypoint]) <= (nextWaypointDistance * nextWaypointDistance))
             {
                 // Move on to the next waypoint
                 currentWaypoint++;
@@ -135,9 +143,9 @@ public class PatrolingMobScript : MonoBehaviour
                 {
                     ourPatrolState = MobPatrolState.Patroling;
                     animationController.StartWalkAnimation();
-                    transform.position = waypoints[waypoints.Length - 1].position;
+                    transform.position = waypoints[waypoints.Length - 1];
 
-                    ourNavAgent.SetDestination(waypoints[0].position);
+                    ourNavAgent.SetDestination(waypoints[0]);
 
                     currentWaypoint = 0;
                 }
@@ -171,14 +179,14 @@ public class PatrolingMobScript : MonoBehaviour
         }
         else if (ourPatrolState == MobPatrolState.ReturningToPatrol)
         {
-            if (Vector3.SqrMagnitude(transform.position - waypoints[currentWaypoint].position) <= (nextWaypointDistance * nextWaypointDistance))
+            if (Vector3.SqrMagnitude(transform.position - waypoints[currentWaypoint]) <= (nextWaypointDistance * nextWaypointDistance))
             {
                 // Move on to the next waypoint
                 currentWaypoint++;
                 if (currentWaypoint > waypoints.Length)
                     currentWaypoint = 0;
 
-                ourNavAgent.SetDestination(waypoints[currentWaypoint].position);
+                ourNavAgent.SetDestination(waypoints[currentWaypoint]);
                 ourNavAgent.speed = patrolSpeed;
 
                 ourPatrolState = MobPatrolState.Patroling;
@@ -230,7 +238,7 @@ public class PatrolingMobScript : MonoBehaviour
         if (waypoints.Length >= 1)
         {
             // Return to patrol
-            ourNavAgent.SetDestination(waypoints[currentWaypoint].position);
+            ourNavAgent.SetDestination(waypoints[currentWaypoint]);
             ourNavAgent.speed = returnToPatrolSpeed;
             animationController.StartRunAnimation();
             ourPatrolState = MobPatrolState.ReturningToPatrol;
@@ -280,5 +288,10 @@ public class PatrolingMobScript : MonoBehaviour
     private void SetPathToPlayer()
     {
         ourNavAgent.SetDestination(playerTransform.position);
+    }
+
+    public void SetWaypoints(Vector3[] _waypoints)
+    {
+        waypoints = _waypoints;
     }
 }

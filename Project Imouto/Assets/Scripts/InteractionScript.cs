@@ -27,7 +27,9 @@ public class InteractionScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out hitInfo, checkDistance))
+        Vector3 rayStart = transform.position;
+        rayStart.y += 0.75f;
+        if (Physics.Raycast(rayStart, transform.forward, out hitInfo, checkDistance))
         {
             if (hitInfo.transform.CompareTag("Interactable"))
             {
