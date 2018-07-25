@@ -9,6 +9,8 @@ public class OverlayController : MonoBehaviour {
     [SerializeField]
     private Text interactionText;
     [SerializeField]
+    private Text messageText;
+    [SerializeField]
     private Slider healthSlider;
     [SerializeField]
     private Slider staminaSlider;
@@ -134,6 +136,17 @@ public class OverlayController : MonoBehaviour {
     {
         gameController.ResumeGame();
         missionCompletedObject.SetActive(false);
+    }
+
+    public void HideMessageText()
+    {
+        messageText.text = "";
+        messageText.enabled = false;
+    }
+
+    public void DisplayMessageText(string messageToDisplay)
+    {
+        messageText.text = messageToDisplay;
     }
 
     public void UpdateHealthBar(int newHealth)

@@ -9,25 +9,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4e746d71667f7848840799621babd4c, type: 3}
-  m_Name: BootCampMission
+  m_Name: SimpleGoToWaypointMonsters
   m_EditorClassIdentifier: 
-  missionName: Test
+  missionName: SimpleGoToWaypointMonsters
   missionType: 3
   missionIsAvailable: 1
   missionIsActive: 0
-  missionBriefing: Go here
+  missionBriefing: Go here, following the waypoints. Watch out, there will be monsters
   completedMessage: Yay for you
   xpReward: 10
   coinReward: 10
-  missionBoardLocation: {x: 297.155, y: 6.4256, z: 264.334}
+  missionBoardLocation: {x: 295.655, y: 6.4256, z: 264.334}
   missionBoardDirection: 0
-  enemies: 
+  enemies: 0000000001000000
   targetEnemy: 0
   missionLocation: {x: 297.155, y: 6.4256, z: 254}
   targetLocation: {x: 0, y: 0, z: 0}
   targetWaypoints: []
-  enemyLocations: []
-  enemyWaypoints: []
-  waypoints: []
-  waypointMessages: []
+  enemyLocations:
+  - {x: 343, y: 8.2, z: 292}
+  - {x: 340, y: 8.2, z: 290}
+  enemyWaypoints:
+  - {x: 340, y: 8.2, z: 288}
+  - {x: 343, y: 8.2, z: 282}
+  waypoints:
+  - {x: 311.5, y: 7.7, z: 277.5}
+  - {x: 344, y: 8.2, z: 292}
+  waypointMessages:
+  - Just a little further...
+  - Well Done! Now turn around and go back the way you came.
   unlocksMissions: 

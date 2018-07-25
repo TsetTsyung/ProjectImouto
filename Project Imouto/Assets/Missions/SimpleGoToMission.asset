@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4e746d71667f7848840799621babd4c, type: 3}
+  m_Name: SimpleGoToMission
+  m_EditorClassIdentifier: 
+  missionName: SimpleGoTo
+  missionType: 3
+  missionIsAvailable: 1
+  missionIsActive: 0
+  missionBriefing: Go here
+  completedMessage: Yay for you
+  xpReward: 10
+  coinReward: 10
+  missionBoardLocation: {x: 297.155, y: 6.4256, z: 264.334}
+  missionBoardDirection: 0
+  enemies: 
+  targetEnemy: 0
+  missionLocation: {x: 297.155, y: 6.4256, z: 254}
+  targetLocation: {x: 0, y: 0, z: 0}
+  targetWaypoints: []
+  enemyLocations: []
+  enemyWaypoints: []
+  waypoints: []
+  waypointMessages: []
+  unlocksMissions: 
