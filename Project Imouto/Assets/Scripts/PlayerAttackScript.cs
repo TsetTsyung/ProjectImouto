@@ -39,6 +39,7 @@ public class PlayerAttackScript : MonoBehaviour
     private int comboPointer = 0;
     private float comboTimeLeft = 0f;
     private int bonusDamage = 0;
+    private int swordDamage = 0;
     private int lightAttackDamage = 10;
     private int heavyAttack1Damage = 20;
     private int heavyAttack2Damage = 35;
@@ -75,8 +76,14 @@ public class PlayerAttackScript : MonoBehaviour
     {
         bonusDamage = _bonusDamage;
     }
+
+    public void UpdateSwordDamage(int newSwordDamage)
+    {
+        swordDamage = newSwordDamage;
+    }
     #endregion
 
+    #region HANDLING ATTACK INPUT
     public void PlayerHasPressedAttack()
     {
         stateInfo = playerAnimationController.GetState();
@@ -196,6 +203,8 @@ public class PlayerAttackScript : MonoBehaviour
         playerInputController.DisableMovementInput();
     }
 
+    #endregion
+
     private void Update()
     {
         if (startedCombo)
@@ -213,15 +222,15 @@ public class PlayerAttackScript : MonoBehaviour
     {
         stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        int damageToInflict = lightAttackDamage + bonusDamage;
+        int damageToInflict = lightAttackDamage + bonusDamage + swordDamage;
 
         if (stateInfo.IsName("HeavyAttack1"))
         {
-            damageToInflict = heavyAttack1Damage + bonusDamage;
+            damageToInflict = heavyAttack1Damage + bonusDamage + swordDamage;
         }
         else if (stateInfo.IsName("HeavyAttack2"))
         {
-            damageToInflict = heavyAttack2Damage + bonusDamage;
+            damageToInflict = heavyAttack2Damage + bonusDamage + swordDamage;
         }
 
         monster.GetComponent<MonsterHealthScript>().TakeDamage(damageToInflict);

@@ -1255,7 +1255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationController: {fileID: 114636366832346768}
-  waypoints: []
+  waypointTransforms: []
   ourNavAgent: {fileID: 195520785103155090}
   nextWaypointDistance: 1.5
   alertRange: 7.5
@@ -1306,6 +1306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   XPValue: 50
+  coinValue: 60
   mainCollider: {fileID: 136525716440135400}
 --- !u!135 &135977372156141534
 SphereCollider:

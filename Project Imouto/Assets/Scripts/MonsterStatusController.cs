@@ -7,6 +7,8 @@ public class MonsterStatusController : MonoBehaviour
     [SerializeField]
     private int XPValue;
     [SerializeField]
+    private int coinValue;
+    [SerializeField]
     private Collider mainCollider;
 
     private MonsterHealthScript monsterHealth;
@@ -49,6 +51,7 @@ public class MonsterStatusController : MonoBehaviour
         if (mainCollider != null)
             mainCollider.enabled = true;
         GameObjectDirectory.PlayerXPController.AddXP(XPValue);
+        GameObjectDirectory.PlayerTreasuryController.AddCoin(coinValue);
         patrolScript.DeactivateCreature();
     }
 }

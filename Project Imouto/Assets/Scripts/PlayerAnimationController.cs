@@ -38,6 +38,7 @@ public class PlayerAnimationController : MonoBehaviour
             if (clipInfo[0].clip.name.Contains("Emote"))
             {
                 playerAnimator.SetTrigger("StopEmoting");
+                DeactivateRootMotion();
             }
         }
 
@@ -48,44 +49,58 @@ public class PlayerAnimationController : MonoBehaviour
         }
     }
 
-    public void PlayEmote1()
-    {
-        playerAnimator.SetTrigger("Emote1");
-    }
-
-    public void PlayEmote2()
-    {
-        playerAnimator.SetTrigger("Emote2");
-    }
-
-    public void PlayEmote3()
-    {
-        playerAnimator.SetTrigger("Emote3");
-    }
-
     public AnimatorStateInfo GetState()
     {
         return playerAnimator.GetCurrentAnimatorStateInfo(0);
     }
 
+    public void PlayEmote1()
+    {
+        ActivateRootMotion();
+        playerAnimator.SetTrigger("Emote1");
+    }
+
+    public void PlayEmote2()
+    {
+        ActivateRootMotion();
+        playerAnimator.SetTrigger("Emote2");
+    }
+
+    public void PlayEmote3()
+    {
+        ActivateRootMotion();
+        playerAnimator.SetTrigger("Emote3");
+    }
+
+
     public void PlayEmote4()
     {
+        ActivateRootMotion();
         playerAnimator.SetTrigger("Emote4");
     }
 
     public void PlayEmote5()
     {
+        ActivateRootMotion();
         playerAnimator.SetTrigger("Emote5");
     }
 
     public void PlayEmote6()
     {
+        ActivateRootMotion();
         playerAnimator.SetTrigger("Emote6");
     }
 
     public void PlayEmote7()
     {
+        ActivateRootMotion();
         playerAnimator.SetTrigger("Emote7");
+    }
+
+    public void PlayEmote8()
+    {
+        ActivateRootMotion();
+        playerAnimator.SetTrigger("Emote8");
     }
 
     public void SubmitInput(float verticalInput, float horizonatlInput, float mouseInput, bool isWalking)
@@ -109,73 +124,10 @@ public class PlayerAnimationController : MonoBehaviour
         playerAnimator.SetBool("Stationary", stationary);
     }
 
-    /*
-    public void SubmitVerticalInput(float verticalInput, bool isWalking)
-    {
-        if (verticalInput != 0f)
-        {
-            if (!isWalking)
-            {
-                verticalInput *= 2f;
-            }
-            playerAnimator.SetFloat("ForwardSpeed", verticalInput);
-            isMovingOnY = true;
-        }
-        else
-        {
-            playerAnimator.SetFloat("ForwardSpeed", 0f);
-            isMovingOnY = false;
-        }
-    }
-
-    public void SubmitHorizontalInput(float horizontalInput, bool isWalking)
-    {
-        if (horizontalInput != 0f)
-        {
-            if (!isWalking)
-            {
-                horizontalInput *= 2f;
-            }
-
-            playerAnimator.SetFloat("SidewaysSpeed", horizontalInput);
-            isMovingOnX = true;
-        }
-        else
-        {
-            playerAnimator.SetFloat("SidewaysSpeed", 0f);
-            isMovingOnX = false;
-        }
-    }
-
-    public void SubmitMouseRotationInput(float mouseXInput, bool isGrounded)
-    {
-        if (isGrounded && mouseXInput != 0f && !isMovingOnX && !isMovingOnY)
-        {
-            if (mouseXInput < 0f)
-            {
-                // Turning Left
-                playerAnimator.SetBool("StationaryTurningLeft", true);
-                playerAnimator.SetBool("StationaryTurningRight", false);
-            }
-            else
-            {
-                // Turning Right
-                playerAnimator.SetBool("StationaryTurningLeft", false);
-                playerAnimator.SetBool("StationaryTurningRight", true);
-            }
-        }
-        else
-        {
-            playerAnimator.SetBool("StationaryTurningLeft", false);
-            playerAnimator.SetBool("StationaryTurningRight", false);
-        }
-    }
-    */
-
     public void PlayerAttack(ComboMoves newMove)
     {
         playerAnimator.SetBool("Attacking", true);
-        playerAnimator.applyRootMotion = true;
+        ActivateRootMotion();
         switch (newMove)
         {
             case ComboMoves.Unset:
@@ -197,11 +149,17 @@ public class PlayerAnimationController : MonoBehaviour
         }
     }
 
-    public void PlayEmote8()
+    private void ActivateRootMotion()
     {
-        playerAnimator.SetTrigger("Emote8");
+        Debug.Log("enabling root motion");
+        playerAnimator.applyRootMotion = true;
     }
 
+    public  void DeactivateRootMotion()
+    {
+        Debug.Log("deactivating root motion");
+        playerAnimator.applyRootMotion = false;
+    }
 
     public void PlayerDied()
     {
@@ -233,6 +191,6 @@ public class PlayerAnimationController : MonoBehaviour
         playerAnimator.ResetTrigger("HeavyAttack1");
         playerAnimator.ResetTrigger("HeavyAttack2");
         playerAnimator.ResetTrigger("SuperHeavyAttack");
-        playerAnimator.applyRootMotion = false;
+        DeactivateRootMotion();
     }
 }

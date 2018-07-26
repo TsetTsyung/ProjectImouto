@@ -19,6 +19,7 @@ public class MissionController : MonoBehaviour
     private MissionScritableObject[] missions;
     private OverlayController overlayController;
     private PlayerXPController playerXPController;
+    private PlayerTreasuryController playerTreasuryController;
     private GameObject spawnedMissionBoard;
     private MissionBoardInteractable spawnedInteractableMissionBoard;
     private ItemSpawnerScript itemSpawner;
@@ -50,6 +51,7 @@ public class MissionController : MonoBehaviour
     {
         overlayController = GameObjectDirectory.OverlayController;
         playerXPController = GameObjectDirectory.PlayerXPController;
+        playerTreasuryController = GameObjectDirectory.PlayerTreasuryController;
         itemSpawner = GameObjectDirectory.ItemSpawner;
         monsterSpawner = GameObjectDirectory.MonsterSpawner;
         CreateMissionsList();
@@ -178,9 +180,9 @@ public class MissionController : MonoBehaviour
 
     public void MissionCompleted()
     {
-        Debug.Log("Mission Completed!");
         // Show text and give winning
         playerXPController.AddXP(missions[currentMissionSlot].xpReward);
+        playerTreasuryController.AddCoin(missions[currentMissionSlot].coinReward);
         itemSpawner.DisableLocationMarker();
         currentMissionName = "";
         overlayController.DisplayMissionCompletedPanel(missions[currentMissionSlot].completedMessage);
@@ -247,7 +249,6 @@ public class MissionController : MonoBehaviour
 
     private void BeginGoToMission()
     {
-        Debug.Log("Beginning GoTo Mission");
         // We're in the right mission, check for waypoints
         if (missions[currentMissionSlot].waypoints.Length != 0)
         {

@@ -19,6 +19,12 @@ public class OverlayController : MonoBehaviour {
     [SerializeField]
     private Text xpValue;
     [SerializeField]
+    private Text smallHealthBrewText;
+    [SerializeField]
+    private Text largeHealthBrewText;
+    [SerializeField]
+    private Text coinText;
+    [SerializeField]
     private GameObject emoteMenuObject;
     [SerializeField]
     private GameObject levelUpMenuObject;
@@ -41,7 +47,9 @@ public class OverlayController : MonoBehaviour {
     private int currentMaxHealth;
     private int currentHealth;
 
-
+    private string smallHealthBrewHeader = "Small Health Brew: ";
+    private string largeHealthBrewHeader = "Large Health Brew: ";
+    private string coinHeader = "Coin : ";
 
     private void Awake()
     {
@@ -124,6 +132,7 @@ public class OverlayController : MonoBehaviour {
         missionInfoScreenController.DisplayMissionInfo(missionName, missionText, missionType, xpReward, coinReward);
     }
 
+
     public void HideMissionInfoPanel()
     {
         gameController.ResumeGame();
@@ -178,6 +187,21 @@ public class OverlayController : MonoBehaviour {
         xpValue.text = xpSlider.maxValue.ToString() + "/" + xpSlider.value.ToString();
     }
 
+    public void UpdateSmallHealthBrewAmount(int smallHealthBrewAmount)
+    {
+        smallHealthBrewText.text = smallHealthBrewHeader + smallHealthBrewAmount.ToString();
+    }
+
+    public void UpdateLargeHealthBrewAmount(int largeHealthBrewAmount)
+    {
+        largeHealthBrewText.text = largeHealthBrewHeader + largeHealthBrewAmount.ToString();
+    }
+
+    public void UpdateCoinAmount(int newCoinAmount)
+    {
+        coinText.text = coinHeader + newCoinAmount.ToString();
+    }
+
     public void SetNewMaxHealth(int newMaxHealth)
     { 
         healthSlider.maxValue = newMaxHealth;
@@ -202,41 +226,47 @@ public class OverlayController : MonoBehaviour {
         HideEmotePanel();
         // Now call the animator controller
         playerAnimationController.PlayEmote1();
-
     }
 
     public void PlayEmote2()
     {
+        HideEmotePanel();
         playerAnimationController.PlayEmote2();
     }
 
     public void PlayEmote3()
     {
+        HideEmotePanel();
         playerAnimationController.PlayEmote3();
     }
 
     public void PlayEmote4()
     {
+        HideEmotePanel();
         playerAnimationController.PlayEmote4();
     }
 
     public void PlayEmote5()
     {
+        HideEmotePanel();
         playerAnimationController.PlayEmote5();
     }
 
     public void PlayEmote6()
     {
+        HideEmotePanel();
         playerAnimationController.PlayEmote6();
     }
 
     public void PlayEmote7()
     {
+        HideEmotePanel();
         playerAnimationController.PlayEmote7();
     }
 
     public void PlayEmote8()
     {
+        HideEmotePanel();
         playerAnimationController.PlayEmote8();
     }
 }

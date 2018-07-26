@@ -19,6 +19,8 @@ public static class GameObjectDirectory {
     public static MissionController MissionController { get; set; }
     public static ItemSpawnerScript ItemSpawner { get; set; }
     public static PlayerStatsController PlayerStatsController { get; set; }
+    public static PlayerGearController PlayerGearController { get; set; }
+    public static PlayerTreasuryController PlayerTreasuryController { get; set; }
 
     public static void ClearAll()
     {
