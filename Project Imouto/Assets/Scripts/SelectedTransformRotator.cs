@@ -31,8 +31,14 @@ public class SelectedTransformRotator : MonoBehaviour {
         }
     }
 
+    public void AssignTransformToRotate(Transform _transformToRotate)
+    {
+        transformToRotate = _transformToRotate;
+    }
+
     // Update is called once per frame
     void Update () {
-        transformToRotate.Rotate(axis, speed * Time.deltaTime, Space.World);
+        if(transformToRotate != null)
+            transformToRotate.Rotate(axis, speed * Time.deltaTime, Space.World);
 	}
 }

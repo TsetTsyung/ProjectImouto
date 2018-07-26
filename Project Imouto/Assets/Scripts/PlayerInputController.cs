@@ -20,6 +20,7 @@ public class PlayerInputController : MonoBehaviour
     private PlayerAnimationController playerAnimationController;
     private PlayerAttackScript playerAttackScript;
     private InteractionScript interactionScript;
+    private PlayerGearController playerGearController;
 
     private float verticalInput;
     private float horizontalInput;
@@ -45,6 +46,7 @@ public class PlayerInputController : MonoBehaviour
         playerAnimationController = GameObjectDirectory.PlayerAnimationController;
         playerAttackScript = GameObjectDirectory.PlayerAttackScript;
         interactionScript = GameObjectDirectory.InteractionSystem;
+        playerGearController = GameObjectDirectory.PlayerGearController;
     }
 
     // Update is called once per frame
@@ -147,6 +149,16 @@ public class PlayerInputController : MonoBehaviour
         if(Input.GetButtonDown("LevelUp"))
         {
             overlayController.DisplayLevelUpPanel();
+        }
+
+        if(Input.GetButtonDown("SmallBrew"))
+        {
+            playerGearController.UseSmallHealthBrew();
+        }
+
+        if(Input.GetButtonDown("LargeBrew"))
+        {
+            playerGearController.UseLargeHealthBrew();
         }
     }
 

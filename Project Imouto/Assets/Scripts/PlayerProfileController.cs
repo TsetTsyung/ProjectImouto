@@ -27,10 +27,7 @@ public class PlayerProfileController : MonoBehaviour {
         playerAttackScript.SubmitUnlockedMoves(ourSaveProfile.UnlockedHeavyAttack1, ourSaveProfile.UnlockedHeavyAttack2, ourSaveProfile.UnlockedSuperHeavyAttack);
 	}
 
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    #region SET METHODS
 
     public int GetPlayerLevel()
     {
@@ -125,21 +122,45 @@ public class PlayerProfileController : MonoBehaviour {
     public bool GetHeavyAttack2Unlock()
     {
         if (ourSaveProfile != null)
-        {
             return ourSaveProfile.UnlockedHeavyAttack2;
-        }
+
         return false;
     }
 
     public bool GetSuperHeavyAttackUnlock()
     {
         if (ourSaveProfile != null)
-        {
             return ourSaveProfile.UnlockedSuperHeavyAttack;
-        }
+
         return false;
     }
 
+    public int GetCoinAmount()
+    {
+        if (ourSaveProfile != null)
+            return ourSaveProfile.Coin;
+
+        return 0;
+    }
+
+    public int GetSmallHealthBrewAmount()
+    {
+        if (ourSaveProfile != null)
+            return ourSaveProfile.SmallHealthBrewCount;
+
+        return 0;
+    }
+
+    public int GetLargeHealthBrewAmount()
+    {
+        if (ourSaveProfile != null)
+            return ourSaveProfile.LargeHealthBrewCount;
+
+        return 0;
+    }
+
+#endregion
+    #region SET METHODS
 
     public void SetPlayerLevel(int newLevel)
     {
@@ -147,7 +168,7 @@ public class PlayerProfileController : MonoBehaviour {
         {
             ourSaveProfile.PlayerLevel = newLevel;
         }
-    }//
+    }
 
     public void SetPlayerXP(int newXP)
     {
@@ -240,14 +261,32 @@ public class PlayerProfileController : MonoBehaviour {
         }
     }
 
+    public void SetCoinAmount(int newCoinAmount)
+    {
+        if(ourSaveProfile != null)
+            ourSaveProfile.Coin = newCoinAmount;
+    }
+
     public void SkillPointSpent()
     {
        if(ourSaveProfile != null && ourSaveProfile.SkillPointsToAssign > 0)
-        {
             ourSaveProfile.SkillPointsToAssign--;
-        }
+    }
+
+    public void UpdateSmallHealthBrewAmount(int newAmount)
+    {
+        if (ourSaveProfile != null)
+            ourSaveProfile.SmallHealthBrewCount = newAmount;
+    }
+
+    public void UpdateLargeHealthBrewAmount(int newAmount)
+    {
+        if (ourSaveProfile != null)
+            ourSaveProfile.LargeHealthBrewCount = newAmount;
     }
 }
+
+#endregion
 
 // serializable class for saving the player's data
 [Serializable]
@@ -261,6 +300,9 @@ public class PlayerSaveProfile {
     public int BonusDamage { get; set; }
     public int SwordLevel { get; set; }
     public int ShieldLevel { get; set; }
+    public int Coin { get; set; }
+    public int SmallHealthBrewCount { get; set; }
+    public int LargeHealthBrewCount { get; set; }
     public int SkillPointsToAssign { get; set; }
     public bool UnlockedHeavyAttack1 { get; set; }
     public bool UnlockedHeavyAttack2 { get; set; }
@@ -274,8 +316,11 @@ public class PlayerSaveProfile {
         MaxHealth = 50;
         MaxStamina = 50;
         BonusDamage = 0;
-        SwordLevel = 1;
-        ShieldLevel = 1;
+        SwordLevel = 0;
+        ShieldLevel = 0;
+        Coin = 3;
+        SmallHealthBrewCount = 2;
+        LargeHealthBrewCount = 0;
         SkillPointsToAssign = 0;
         UnlockedHeavyAttack1 = false;
         UnlockedHeavyAttack2 = false;

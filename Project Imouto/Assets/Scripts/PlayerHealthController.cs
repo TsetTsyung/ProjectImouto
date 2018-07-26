@@ -21,6 +21,7 @@ public class PlayerHealthController : MonoBehaviour {
     private int maxHealth;
     private int stamina;
     private int maxStamina;
+    private int shieldProtection;
 
     private OverlayController overlayController;
     private PlayerProfileController playerProfileController;
@@ -73,8 +74,14 @@ public class PlayerHealthController : MonoBehaviour {
         UpdateUIBars();
     }
 
+    public void UpdateSwordProtection(int newShieldProtection)
+    {
+        shieldProtection = newShieldProtection;
+    }
+
     public void PlayerHasTakenDamage(int damageTaken)
     {
+        damageTaken -= shieldProtection;
         health -= damageTaken;
         UpdateUIBars();
         CheckForDeath();
@@ -89,6 +96,8 @@ public class PlayerHealthController : MonoBehaviour {
     public void PlayerHasIncreasedHealth(int healthIncrease)
     {
         health += healthIncrease;
+        if (health > maxHealth)
+            health = maxHealth;
         UpdateUIBars();
     }
 
