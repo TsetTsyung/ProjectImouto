@@ -15,7 +15,12 @@ public class PlayerHealthController : MonoBehaviour {
     private int startingStamina;
     [SerializeField]
     private int startingMaxStamina;
+    [SerializeField]
+    private float timeToNextStaminaRecharge;
+    [SerializeField]
+    private int staminaRechargeAmount;
 
+    private float staminaRechargeTimer;
 
     private int health;
     private int maxHealth;
@@ -42,7 +47,18 @@ public class PlayerHealthController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(stamina < maxStamina)
+        {
+            staminaRechargeTimer -= Time.deltaTime;
+
+            if (staminaRechargeTimer < 0f)
+            {
+                staminaRechargeTimer = timeToNextStaminaRecharge;
+                PlayerHasIncreasedStamina(staminaRechargeAmount);
+            }
+        }
 	}
+
 
     private void UpdateUIBars()
     {
@@ -87,10 +103,17 @@ public class PlayerHealthController : MonoBehaviour {
         CheckForDeath();
     }
 
-    public void PlayerHasUsedStamina(int staminaUsed)
+    public bool PlayerHasUsedStamina(int staminaUsed)
     {
-        stamina -= staminaUsed;
-        UpdateUIBars();
+        if (stamina >= staminaUsed)
+        {
+            stamina -= staminaUsed;
+            UpdateUIBars();
+            staminaRechargeTimer = timeToNextStaminaRecharge;
+            return true;
+        }
+
+        return false;
     }
 
     public void PlayerHasIncreasedHealth(int healthIncrease)

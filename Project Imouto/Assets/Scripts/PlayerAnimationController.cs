@@ -151,19 +151,16 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void ActivateRootMotion()
     {
-        Debug.Log("enabling root motion");
         playerAnimator.applyRootMotion = true;
     }
 
     public  void DeactivateRootMotion()
     {
-        Debug.Log("deactivating root motion");
         playerAnimator.applyRootMotion = false;
     }
 
     public void PlayerDied()
     {
-        Debug.LogWarning("Player Has Died");
         if (gameController.PlayerIsAlive)
         {
             playerAnimator.SetTrigger("Death" + UnityEngine.Random.Range(0, 2).ToString());
@@ -173,7 +170,6 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void PlayStationaryJump()
     {
-
         playerAnimator.SetTrigger("StationaryJump");
     }
 

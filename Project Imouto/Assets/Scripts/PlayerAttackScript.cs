@@ -16,10 +16,17 @@ public class PlayerAttackScript : MonoBehaviour
     [SerializeField]
     private float heavyAttack2Length = 1.7f;
     [SerializeField]
+    private float superHeavyAttackLength = 2.33f;
+    [SerializeField]
+    private int superHeavyStaminaCost;
+    [SerializeField]
     private BoxCollider swordCollider;
+    [SerializeField]
+    private ParticleSystem SHAParticles;
 
     private PlayerAnimationController playerAnimationController;
     private PlayerInputController playerInputController;
+    private PlayerHealthController playerHealthController;
     private Rigidbody ourRB;
     private Animator animator;
 
@@ -33,7 +40,6 @@ public class PlayerAttackScript : MonoBehaviour
     private Vector3 landPosition;
     private RaycastHit hitinfo;
 
-    private bool airborneSuperHeavyAttack;
     private bool startedCombo = false;
     private ComboMoves[] movesThisCombo = new ComboMoves[3];
     private int comboPointer = 0;
@@ -43,8 +49,9 @@ public class PlayerAttackScript : MonoBehaviour
     private int lightAttackDamage = 10;
     private int heavyAttack1Damage = 20;
     private int heavyAttack2Damage = 35;
+    private int superHeavyAttackDamage = 100;
 
-    private Collider[] lightAttackHits;
+    private Collider[] attackHits;
     private List<GameObject> monstersThatWereHit;
 
     //private int moveStartedPointer = 0;
@@ -61,6 +68,7 @@ public class PlayerAttackScript : MonoBehaviour
     {
         playerAnimationController = GameObjectDirectory.PlayerAnimationController;
         playerInputController = GameObjectDirectory.PlayerInputController;
+        playerHealthController = GameObjectDirectory.PlayerHealthController;
         animator = GetComponent<Animator>();
         ourRB = GetComponent<Rigidbody>();
     }
@@ -166,10 +174,15 @@ public class PlayerAttackScript : MonoBehaviour
 
     public void PlayerHasPressedSuperHeavyAttack()
     {
+        // Do check for stamina
         if (!superHeavyUnlocked || startedCombo || comboPointer > 0)
             return;
 
-        playerAnimationController.PlayerAttack(ComboMoves.SuperHeavyAttack);
+        if (playerHealthController.PlayerHasUsedStamina(superHeavyStaminaCost))
+        {
+            AddMoveToCombo(ComboMoves.SuperHeavyAttack);
+            //playerAnimationController.PlayerAttack(ComboMoves.SuperHeavyAttack);
+        }
     }
 
     public void AddMoveToCombo(ComboMoves newMove)
@@ -180,6 +193,8 @@ public class PlayerAttackScript : MonoBehaviour
         //Debug.LogError("Adding " + newMove + " to the combo");
         if (!startedCombo)
         {
+            comboTimeLeft = 1f;
+            /*
             if (newMove == ComboMoves.LightAttack)
             {
                 comboTimeLeft = lightAttackLength;
@@ -192,12 +207,13 @@ public class PlayerAttackScript : MonoBehaviour
             {
                 comboTimeLeft = heavyAttack2Length;
             }
+            */
         }
+        
 
         startedCombo = true;
         movesThisCombo[comboPointer] = newMove;
         comboPointer++;
-
 
         playerAnimationController.PlayerAttack(newMove);
         playerInputController.DisableMovementInput();
@@ -260,12 +276,31 @@ public class PlayerAttackScript : MonoBehaviour
 
     public void SHAttackTakeOff()
     {
-        airborneSuperHeavyAttack = true;
     }
 
     public void SHAttackLanding()
     {
-        airborneSuperHeavyAttack = false;
+        // Create a sphere, find the monsters and apply damage
+        monstersThatWereHit = new List<GameObject>();
+
+        // Check for hits
+        attackHits = Physics.OverlapSphere(transform.position, 2f);
+        for (int i = 0; i < attackHits.Length; i++)
+        {
+            if (attackHits[i].CompareTag("Monster"))
+            {
+                if (!monstersThatWereHit.Contains(attackHits[i].gameObject))
+                {
+                    monstersThatWereHit.Add(attackHits[i].gameObject);
+                }
+            }
+        }
+
+        for (int i = 0; i < monstersThatWereHit.Count; i++)
+        {
+            monstersThatWereHit[i].GetComponent<MonsterHealthScript>().TakeDamage(superHeavyAttackDamage + bonusDamage);
+        }
+        SHAParticles.Play();
     }
 
     public void SHAttackEnded()
@@ -277,14 +312,14 @@ public class PlayerAttackScript : MonoBehaviour
         monstersThatWereHit = new List<GameObject>();
 
         // Check for hits
-        lightAttackHits = Physics.OverlapBox(transform.position + (transform.forward), new Vector3(2f, 2f, 2f));
-        for (int i = 0; i < lightAttackHits.Length; i++)
+        attackHits = Physics.OverlapBox(transform.position + (transform.forward), new Vector3(2f, 2f, 2f));
+        for (int i = 0; i < attackHits.Length; i++)
         {
-            if (lightAttackHits[i].CompareTag("Monster"))
+            if (attackHits[i].CompareTag("Monster"))
             {
-                if (!monstersThatWereHit.Contains(lightAttackHits[i].gameObject))
+                if (!monstersThatWereHit.Contains(attackHits[i].gameObject))
                 {
-                    monstersThatWereHit.Add(lightAttackHits[i].gameObject);
+                    monstersThatWereHit.Add(attackHits[i].gameObject);
                 }
             }
         }
@@ -317,6 +352,9 @@ public class PlayerAttackScript : MonoBehaviour
                 break;
             case 2:
                 comboTimeLeft = heavyAttack2Length;
+                break;
+            case 3:
+                comboTimeLeft = superHeavyAttackLength;
                 break;
             default:
                 break;
