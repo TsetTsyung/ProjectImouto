@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterSpawner : MonoBehaviour {
+public class MonsterSpawner : MonoBehaviour
+{
 
     [SerializeField]
     private GameObject skeleton;
@@ -10,9 +12,17 @@ public class MonsterSpawner : MonoBehaviour {
     private GameObject soldier;
     [SerializeField]
     private GameObject wolfRider;
+    [SerializeField]
+    private int numberOfMonstersToMaintain;
+    [SerializeField]
+    private int numberOfWaypointsAllowed;
+    [SerializeField]
+    private Transform waypoints;
 
-    RaycastHit hitInfo;
-    Ray ray;
+    private int numberOfMonstersAlive;
+    private GameObject monstersCatalog;
+    private RaycastHit hitInfo;
+    private Ray ray;
 
     private void Awake()
     {
@@ -20,14 +30,16 @@ public class MonsterSpawner : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     public GameObject SpawnMonster(EnemyType enemyToSpawn, Vector3 spawnLoc)
     {
@@ -53,6 +65,20 @@ public class MonsterSpawner : MonoBehaviour {
                     break;
             }
         }
-            return returningMonster;
+
+        if (numberOfWaypointsAllowed > 0)
+        {
+            
+            //Vector3[] newWaypoints = new Vector3[]
+            //returningMonster.GetComponent<PatrolingMobScript>().SetWaypoints()
+        }
+
+        numberOfMonstersAlive++;
+        return returningMonster;
+    }
+
+    public  void ThisCreatureDied(GameObject creatureThatDied)
+    {
+        
     }
 }

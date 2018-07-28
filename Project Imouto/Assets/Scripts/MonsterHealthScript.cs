@@ -73,5 +73,7 @@ public class MonsterHealthScript : MonoBehaviour
             GameObjectDirectory.MissionController.TargetCreatureDied(this);
 
         monsterStatusController.DeactivateCreature();
+        Destroy(this.gameObject, 10f);
+        GameObjectDirectory.MonsterSpawner.ThisCreatureDied(this.gameObject);
     }
 }
