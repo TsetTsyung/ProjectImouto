@@ -9,20 +9,34 @@ public class MonsterSpawner : MonoBehaviour
     [SerializeField]
     private GameObject skeleton;
     [SerializeField]
+    private float skeletonRandomSpawnChance;
+    [SerializeField]
     private GameObject soldier;
+    [SerializeField]
+    private float soldierRandomSpawnChance;
     [SerializeField]
     private GameObject wolfRider;
     [SerializeField]
+    private float wolfRiderRandomSpawnChance;
+    [SerializeField]
+    private float distanceFromPlayerForRandomSpawns;
+    [SerializeField]
     private int numberOfMonstersToMaintain;
+    [SerializeField]
+    private float timeBetweenMonsterCountAndSpawn;
     [SerializeField]
     private int numberOfWaypointsAllowed;
     [SerializeField]
-    private Transform waypoints;
+    private Transform[] waypoints;
 
     private int numberOfMonstersAlive;
-    private GameObject monstersCatalog;
+    private List<GameObject> monstersList;
     private RaycastHit hitInfo;
     private Ray ray;
+    private float totalSpawnChanceValue;
+    private float monsterCountAndSpawnTimer;
+
+    private Transform playerTransform;
 
     private void Awake()
     {
@@ -32,13 +46,58 @@ public class MonsterSpawner : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        playerTransform = GameObjectDirectory.PlayerHealthController.transform;
+        totalSpawnChanceValue = soldierRandomSpawnChance + skeletonRandomSpawnChance + wolfRiderRandomSpawnChance;
+        monsterCountAndSpawnTimer = timeBetweenMonsterCountAndSpawn;
+        SpawnRandomMonsters(numberOfMonstersToMaintain);
     }
 
     // Update is called once per frame
     void Update()
     {
+        monsterCountAndSpawnTimer -= Time.deltaTime;
+        if(monsterCountAndSpawnTimer <= 0f)
+        {
+            // Perform Count
+            CountAndSpawnMonsters();
+            monsterCountAndSpawnTimer = timeBetweenMonsterCountAndSpawn;
+        }
+    }
 
+    private void SpawnRandomMonsters(int numberOfMonstersToSpawn)
+    {
+        if (waypoints.Length <= 0)
+            return;
+
+        Vector3 spawnLoc = Vector3.zero;
+
+        for (int i = 0; i < numberOfMonstersToSpawn; i++)
+        {
+            spawnLoc = waypoints[UnityEngine.Random.Range(0, waypoints.Length)].position;
+
+            while (Vector3.Distance(playerTransform.position, spawnLoc) <= distanceFromPlayerForRandomSpawns)
+            {
+                spawnLoc = waypoints[UnityEngine.Random.Range(0, waypoints.Length)].position;
+            }
+
+            float randomValue = UnityEngine.Random.Range(0, totalSpawnChanceValue);
+            if (randomValue >= 0 && randomValue < soldierRandomSpawnChance)
+            {
+                // Spawn a Soldier
+                SpawnMonster(EnemyType.Soldier, waypoints[UnityEngine.Random.Range(0, waypoints.Length)].position);
+                
+            }
+            else if (randomValue >= soldierRandomSpawnChance && randomValue < skeletonRandomSpawnChance)
+            {
+                // Spawn a Skeleton
+                SpawnMonster(EnemyType.Skeleton, waypoints[UnityEngine.Random.Range(0, waypoints.Length)].position);
+            }
+            else
+            {
+                // Spawn a WolfRider
+                SpawnMonster(EnemyType.WolfRider, waypoints[UnityEngine.Random.Range(0, waypoints.Length)].position);
+            }
+        }
     }
 
     public GameObject SpawnMonster(EnemyType enemyToSpawn, Vector3 spawnLoc)
@@ -68,9 +127,14 @@ public class MonsterSpawner : MonoBehaviour
 
         if (numberOfWaypointsAllowed > 0)
         {
-            
-            //Vector3[] newWaypoints = new Vector3[]
-            //returningMonster.GetComponent<PatrolingMobScript>().SetWaypoints()
+            Vector3[] newWaypoints = new Vector3[UnityEngine.Random.Range(1, numberOfWaypointsAllowed)];
+
+            for (int i = 0; i < newWaypoints.Length; i++)
+            {                
+                newWaypoints[i] = waypoints[UnityEngine.Random.Range(0, waypoints.Length)].position;
+            }
+
+            returningMonster.GetComponent<PatrolingMobScript>().SetWaypoints(newWaypoints);
         }
 
         numberOfMonstersAlive++;
@@ -79,6 +143,16 @@ public class MonsterSpawner : MonoBehaviour
 
     public  void ThisCreatureDied(GameObject creatureThatDied)
     {
-        
+        numberOfMonstersAlive--;
+
+        CountAndSpawnMonsters();
+    }
+
+    private void CountAndSpawnMonsters()
+    {
+        if(numberOfMonstersAlive < numberOfMonstersToMaintain)
+        {
+            SpawnRandomMonsters(numberOfMonstersToMaintain - numberOfMonstersAlive);
+        }
     }
 }

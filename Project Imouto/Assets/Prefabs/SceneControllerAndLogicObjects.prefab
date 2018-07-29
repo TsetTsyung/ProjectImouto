@@ -7162,8 +7162,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeleton: {fileID: 1194221615584224, guid: bf2199870f0711644a3abf6778ed5979, type: 2}
+  skeletonRandomSpawnChance: 5
   soldier: {fileID: 1353122464507292, guid: 0823190a6b778ad40bc194315ba9c785, type: 2}
+  soldierRandomSpawnChance: 3
   wolfRider: {fileID: 1246422787230522, guid: 620542206b2fc774f90d8d17f9d3d9fd, type: 2}
+  wolfRiderRandomSpawnChance: 1
+  distanceFromPlayerForRandomSpawns: 10
+  numberOfMonstersToMaintain: 25
+  timeBetweenMonsterCountAndSpawn: 3
+  numberOfWaypointsAllowed: 0
+  waypoints: []
 --- !u!114 &114554069785998332
 MonoBehaviour:
   m_ObjectHideFlags: 1
