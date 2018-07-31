@@ -17,6 +17,7 @@ public class MissionScritableObject : ScriptableObject {
     public int coinReward;
     public Vector3 missionBoardLocation;
     public float missionBoardDirection;
+    public int amountToPay;
     public EnemyType[] enemies;
     public EnemyType targetEnemy;
     public Vector3 missionLocation;
@@ -27,4 +28,5 @@ public class MissionScritableObject : ScriptableObject {
     public Vector3[] waypoints;
     public string[] waypointMessages;
     public string unlocksMissions;
+    public bool completed;
 }

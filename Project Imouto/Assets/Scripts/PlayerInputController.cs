@@ -160,6 +160,19 @@ public class PlayerInputController : MonoBehaviour
         {
             playerGearController.UseLargeHealthBrew();
         }
+
+        if (Input.GetButtonDown("Save"))
+        {
+            // Save the game
+            Debug.Log("Player pressed 'Save'");
+            gameController.Save();
+        }
+
+        if(Input.GetButtonDown("Load"))
+        {
+            // Reload the scene
+            gameController.Load();
+        }
     }
 
     private void DoGroundCheck()
@@ -176,7 +189,6 @@ public class PlayerInputController : MonoBehaviour
 
     private void Jump(float verticalInput, float horizontalInput)
     {
-        Debug.Log("Jumping");
         if (Mathf.Abs(verticalInput) <= movementThresholdForJump && Mathf.Abs(horizontalInput) <= movementThresholdForJump)
         {
             // Perform standing jump

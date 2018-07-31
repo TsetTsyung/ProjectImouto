@@ -194,11 +194,11 @@ ModelImporter:
       curves: []
       events:
       - time: 0
-        functionName: SHAttackStarted
+        functionName: EnteredMoveClip
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
-        intParameter: 0
+        intParameter: 3
         messageOptions: 0
       - time: 0.2053872
         functionName: SHAttackTakeOff

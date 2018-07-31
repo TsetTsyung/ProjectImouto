@@ -48,6 +48,11 @@ public class PlayerStatsController : MonoBehaviour
         playerGearController = GameObjectDirectory.PlayerGearController;
         playerHealthController = GameObjectDirectory.PlayerHealthController;
 
+        GetStats();
+    }
+
+    public void GetStats()
+    {
         maxHealthPointer = playerProfileController.GetPlayerMaxHealthLevel();
         maxStaminaPointer = playerProfileController.GetPlayerMaxStaminaLevel();
         bonusDamagePointer = playerProfileController.GetPlayerBonusDamageLevel();

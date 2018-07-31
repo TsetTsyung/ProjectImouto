@@ -8,8 +8,6 @@ public class ItemSpawnerScript : MonoBehaviour {
     private GameObject locationMarkerPrefab;
 
     private GameObject locationMarker;
-    private RaycastHit hitInfo;
-    private Ray ray;
 
     private void Awake()
     {
@@ -28,17 +26,17 @@ public class ItemSpawnerScript : MonoBehaviour {
 
     public void SpawnLocationMarker(Vector3 locationToSpawn)
     {
-        ray = new Ray(new Vector3(locationToSpawn.x, locationToSpawn.y + 100f, locationToSpawn.z), -Vector3.up);
-        if (Physics.Raycast(ray, out hitInfo, 200f))
+        locationToSpawn = Utilities.GetSurfacePoint(locationToSpawn);
+        if(locationToSpawn != Vector3.zero)
         {
             if(locationMarker != null)
             {
-                locationMarker.transform.position = hitInfo.point;
+                locationMarker.transform.position = locationToSpawn;
                 locationMarker.SetActive(true);
             }
             else
             {
-                locationMarker = Instantiate(locationMarkerPrefab, hitInfo.point, Quaternion.identity);
+                locationMarker = Instantiate(locationMarkerPrefab, locationToSpawn, Quaternion.identity);
             }
         }
     }

@@ -22,10 +22,13 @@ public class StoreItemScript : InteractableObjectBaseClass{
         overlayController = GameObjectDirectory.OverlayController;
         playerTreasuryController = GameObjectDirectory.PlayerTreasuryController;
         playerGearController = GameObjectDirectory.PlayerGearController;
+        allowedToDisplay = true;
     }
 
     public override void DisplayText()
     {
+        if (!allowedToDisplay)
+            return;
         overlayController.DisplayInteractionText(this.gameObject, textToDisplay);
     }
 
@@ -41,5 +44,10 @@ public class StoreItemScript : InteractableObjectBaseClass{
         {
             playerGearController.AddItem(thisItemsType);
         }
+    }
+
+    public override void DisableText()
+    {
+        allowedToDisplay = false;
     }
 }

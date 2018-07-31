@@ -3,31 +3,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerProfileController : MonoBehaviour {
+public class PlayerProfileController : MonoBehaviour
+{
 
     private PlayerAttackScript playerAttackScript;
+    private bool newGame = true;
     private PlayerSaveProfile ourSaveProfile;
     private FileHandler fileHandler;
 
 
-    private void Awake(){
+    private void Awake()
+    {
         GameObjectDirectory.PlayerProfileController = this;
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         fileHandler = GameObjectDirectory.FileHandler;
         playerAttackScript = GameObjectDirectory.PlayerAttackScript;
 
-        ourSaveProfile = fileHandler.GetPlayerProfileFromFile();
+        Load();
 
-        if (ourSaveProfile == null)
-            ourSaveProfile = new PlayerSaveProfile();
+        if (playerAttackScript != null)
+        {
+            playerAttackScript.SubmitUnlockedMoves(ourSaveProfile.UnlockedHeavyAttack1, ourSaveProfile.UnlockedHeavyAttack2, ourSaveProfile.UnlockedSuperHeavyAttack);
+        }
+        else
+        {
+            Debug.LogError("We have not reference to the playerAttackscript");
+        }
+    }
 
-        playerAttackScript.SubmitUnlockedMoves(ourSaveProfile.UnlockedHeavyAttack1, ourSaveProfile.UnlockedHeavyAttack2, ourSaveProfile.UnlockedSuperHeavyAttack);
-	}
+    public bool NewGame()
+    {
+        return newGame;
+    }
 
-    #region SET METHODS
+    #region GET METHODS
 
     public int GetPlayerLevel()
     {
@@ -40,7 +53,7 @@ public class PlayerProfileController : MonoBehaviour {
 
     public int GetPlayerXP()
     {
-        if(ourSaveProfile != null)
+        if (ourSaveProfile != null)
         {
             return ourSaveProfile.PlayerXP;
         }
@@ -49,16 +62,16 @@ public class PlayerProfileController : MonoBehaviour {
 
     public Vector3 GetPlayerSpawnLocation()
     {
-        if(ourSaveProfile != null)
+        if (ourSaveProfile != null)
         {
-            return ourSaveProfile.RespawnLocation;
+            return new Vector3(ourSaveProfile.RespawnLocationX, ourSaveProfile.RespawnLocationY, ourSaveProfile.RespawnLocationZ);
         }
         return Vector3.zero;
     }
 
     public int GetPlayerMaxHealthLevel()
     {
-        if(ourSaveProfile != null)
+        if (ourSaveProfile != null)
         {
             return ourSaveProfile.MaxHealth;
         }
@@ -67,7 +80,7 @@ public class PlayerProfileController : MonoBehaviour {
 
     public int GetPlayerMaxStaminaLevel()
     {
-        if(ourSaveProfile != null)
+        if (ourSaveProfile != null)
         {
             return ourSaveProfile.MaxStamina;
         }
@@ -108,6 +121,15 @@ public class PlayerProfileController : MonoBehaviour {
             return ourSaveProfile.SkillPointsToAssign;
         }
         return 0;
+    }
+
+    public float GetSpawnRotation()
+    {
+        if (ourSaveProfile != null)
+        {
+            return ourSaveProfile.Rotation;
+        }
+        return 0f;
     }
 
     public bool GetHeavyAttack1Unlock()
@@ -159,12 +181,21 @@ public class PlayerProfileController : MonoBehaviour {
         return 0;
     }
 
-#endregion
+    public bool[] GetCompletedMissions()
+    {
+        if (ourSaveProfile != null)
+        {
+            return ourSaveProfile.CompletedMissions;
+        }
+        return null;
+    }
+
+    #endregion
     #region SET METHODS
 
     public void SetPlayerLevel(int newLevel)
     {
-        if(ourSaveProfile != null)
+        if (ourSaveProfile != null)
         {
             ourSaveProfile.PlayerLevel = newLevel;
         }
@@ -178,11 +209,14 @@ public class PlayerProfileController : MonoBehaviour {
         }
     }//
 
-    public void SetPlayerSpawnLocation(Vector3 newLocation)
+    public void SetPlayerSpawnLocation(Vector3 newLocation, float newRotation)
     {
         if (ourSaveProfile != null)
         {
-            ourSaveProfile.RespawnLocation = newLocation;
+            ourSaveProfile.RespawnLocationX = newLocation.x;
+            ourSaveProfile.RespawnLocationY = newLocation.y;
+            ourSaveProfile.RespawnLocationZ = newLocation.z;
+            ourSaveProfile.Rotation = newRotation;
         }
     }
 
@@ -198,7 +232,7 @@ public class PlayerProfileController : MonoBehaviour {
     {
         if (ourSaveProfile != null && newMaxStamina > ourSaveProfile.MaxStamina)
         {
-            ourSaveProfile.MaxStamina= newMaxStamina;
+            ourSaveProfile.MaxStamina = newMaxStamina;
         }
     }
 
@@ -236,7 +270,7 @@ public class PlayerProfileController : MonoBehaviour {
 
     public void SetHeavyAttack1Unlock(bool newUnlockState)
     {
-        if(ourSaveProfile != null)
+        if (ourSaveProfile != null)
         {
             ourSaveProfile.UnlockedHeavyAttack1 = newUnlockState;
             playerAttackScript.SubmitUnlockedMoves(ourSaveProfile.UnlockedHeavyAttack1, ourSaveProfile.UnlockedHeavyAttack2, ourSaveProfile.UnlockedSuperHeavyAttack);
@@ -263,13 +297,13 @@ public class PlayerProfileController : MonoBehaviour {
 
     public void SetCoinAmount(int newCoinAmount)
     {
-        if(ourSaveProfile != null)
+        if (ourSaveProfile != null)
             ourSaveProfile.Coin = newCoinAmount;
     }
 
     public void SkillPointSpent()
     {
-       if(ourSaveProfile != null && ourSaveProfile.SkillPointsToAssign > 0)
+        if (ourSaveProfile != null && ourSaveProfile.SkillPointsToAssign > 0)
             ourSaveProfile.SkillPointsToAssign--;
     }
 
@@ -284,17 +318,52 @@ public class PlayerProfileController : MonoBehaviour {
         if (ourSaveProfile != null)
             ourSaveProfile.LargeHealthBrewCount = newAmount;
     }
+
+    public void UpdateCompletedMissions(bool[] _completedMissions)
+    {
+        if (ourSaveProfile != null)
+            ourSaveProfile.CompletedMissions = _completedMissions;
+    }
+    #endregion
+
+    public void Save()
+    {
+        if (fileHandler == null)
+            Debug.LogError("We have no reference to the file handler");
+
+        newGame = false;
+        fileHandler.SavePlayerProfileToFile(ourSaveProfile);
+    }
+
+    public void Load()
+    {
+        if (fileHandler == null)
+            Debug.LogError("We have no reference to the file handler");
+
+        ourSaveProfile = fileHandler.GetPlayerProfileFromFile();
+
+        if (ourSaveProfile == null)
+        {
+            newGame = true;
+            ourSaveProfile = new PlayerSaveProfile();
+        }
+        else
+        {
+            newGame = false;
+        }
+    }
 }
 
-#endregion
-
-// serializable class for saving the player's data
-[Serializable]
+    // serializable class for saving the player's data
+    [Serializable]
 public class PlayerSaveProfile {
 
     public int PlayerLevel { get; set; }
     public int PlayerXP { get; set; }
-    public Vector3 RespawnLocation { get; set; }
+    public float RespawnLocationX { get; set; }
+    public float RespawnLocationY { get; set; }
+    public float RespawnLocationZ { get; set; }
+    public float Rotation { get; set; }
     public int MaxHealth { get; set; }
     public int MaxStamina { get; set; }
     public int BonusDamage { get; set; }
@@ -307,19 +376,21 @@ public class PlayerSaveProfile {
     public bool UnlockedHeavyAttack1 { get; set; }
     public bool UnlockedHeavyAttack2 { get; set; }
     public bool UnlockedSuperHeavyAttack { get; set; }
+    public bool[] CompletedMissions { get; set; }
 
     public PlayerSaveProfile()
     {
         PlayerLevel = 0;
         PlayerXP = 0;
         //RespawnLocation = default start location
+        Rotation = 0f;
         MaxHealth = 50;
         MaxStamina = 50;
         BonusDamage = 0;
         SwordLevel = 0;
         ShieldLevel = 0;
         Coin = 3;
-        SmallHealthBrewCount = 2;
+        SmallHealthBrewCount = 1;
         LargeHealthBrewCount = 0;
         SkillPointsToAssign = 0;
         UnlockedHeavyAttack1 = false;

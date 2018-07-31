@@ -30,6 +30,7 @@ public class StoreShieldScript : InteractableObjectBaseClass
         overlayController = GameObjectDirectory.OverlayController;
         playerStatsController = GameObjectDirectory.PlayerStatsController;
         playerTreasuryController = GameObjectDirectory.PlayerTreasuryController;
+        allowedToDisplay = true;
         SetupStoreShieldItem();
     }
 
@@ -54,6 +55,8 @@ public class StoreShieldScript : InteractableObjectBaseClass
 
     public override void DisplayText()
     {
+        if (!allowedToDisplay)
+            return;
         overlayController.DisplayInteractionText(this.gameObject, textToDisplay);
     }
 
@@ -69,5 +72,10 @@ public class StoreShieldScript : InteractableObjectBaseClass
             playerStatsController.UpdateShieldProtection(shieldLevel + 1); // This is plus 1 to move the progress along
         SetupStoreShieldItem();
         }
+    }
+
+    public override void DisableText()
+    {
+        allowedToDisplay = false;
     }
 }

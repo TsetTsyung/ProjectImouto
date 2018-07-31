@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4e746d71667f7848840799621babd4c, type: 3}
+  m_Name: SimplePayMission
+  m_EditorClassIdentifier: 
+  missionName: Simple Pay Mission
+  missionType: 1
+  missionIsAvailable: 1
+  missionIsActive: 0
+  missionBriefing: pay the man, man!
+  completedMessage: You paid the man, man!
+  xpReward: 250
+  coinReward: 250
+  missionBoardLocation: {x: 294.155, y: 0, z: 260}
+  missionBoardDirection: 0
+  amountToPay: 10
+  enemies: 0000000000000000
+  targetEnemy: 0
+  missionLocation: {x: 300, y: 6.8, z: 275}
+  targetLocation: {x: 0, y: 0, z: 0}
+  targetWaypoints: []
+  enemyLocations:
+  - {x: 294, y: 0, z: 270}
+  - {x: 295, y: 0, z: 271}
+  enemyWaypoints: []
+  waypoints: []
+  waypointMessages: []
+  unlocksMissions: 
+  completed: 0
