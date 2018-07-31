@@ -22,6 +22,7 @@ public class FileHandler : MonoBehaviour {
     // Use this for initialization
     void Start () {
         dataPath = Application.dataPath + "/";
+        Debug.Log(dataPath);
 	}
 	
 	// Update is called once per frame
@@ -31,7 +32,7 @@ public class FileHandler : MonoBehaviour {
 
     public PlayerSaveProfile GetPlayerProfileFromFile()
     {
-        if (File.Exists(playerProfileFilename))
+        if (File.Exists(dataPath + playerProfileFilename))
         {
             // The file exists, so open it and get the settings
             using (Stream stream = File.OpenRead(dataPath + playerProfileFilename))
@@ -47,7 +48,7 @@ public class FileHandler : MonoBehaviour {
 
     public void SavePlayerProfileToFile(PlayerSaveProfile profile)
     {
-        using (Stream stream = File.OpenWrite(dataPath + playerSettingsFilename))
+        using (Stream stream = File.OpenWrite(dataPath + playerProfileFilename))
         {
             BinaryFormatter formatter = new BinaryFormatter();
             formatter.Serialize(stream, profile);

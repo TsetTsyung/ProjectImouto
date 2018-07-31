@@ -6160,6 +6160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47949d1c94ed52640b2864fb27333e83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &114329104336946708
 MonoBehaviour:
   m_ObjectHideFlags: 1

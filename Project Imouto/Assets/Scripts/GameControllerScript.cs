@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class GameControllerScript : MonoBehaviour {
 
+    [SerializeField]
+    private Vector3 startingPosition;
+
     private bool isPaused = false;
     private bool playerIsAlive = true;
 
@@ -18,14 +21,23 @@ public class GameControllerScript : MonoBehaviour {
     // Use this for initialization
     void Start () {
         // Load the game state from the save profile and set everything up.
-        SetupGame();
-
-        ResumeGame();
+        Invoke("SetupGame", 0.1f);
 	}
 
     private void SetupGame()
     {
+        Load();
+        /*
+        Debug.Log("Setting up game");
+        GameObjectDirectory.PlayerProfileController.Load();
 
+        if (!GameObjectDirectory.PlayerProfileController.NewGame())
+        {
+            Debug.Log("This is not a new game.");
+            GameObjectDirectory.PlayerHealthController.transform.position = GameObjectDirectory.PlayerProfileController.GetPlayerSpawnLocation();
+        }
+        */
+        ResumeGame();
     }
 
     // Update is called once per frame
@@ -68,5 +80,34 @@ public class GameControllerScript : MonoBehaviour {
     public void PlayerDied()
     {
         playerIsAlive = false;
+    }
+
+    internal void Save()
+    {
+        GameObjectDirectory.PlayerProfileController.SetPlayerSpawnLocation(GameObjectDirectory.PlayerHealthController.transform.position, GameObjectDirectory.PlayerHealthController.transform.rotation.eulerAngles.y);
+        GameObjectDirectory.MissionController.SaveAllMissionStatus();
+        GameObjectDirectory.PlayerProfileController.Save();
+    }
+
+    internal void Load()
+    {
+        GameObjectDirectory.PlayerProfileController.Load();
+        // Sort out all of the position info
+
+        if (!GameObjectDirectory.PlayerProfileController.NewGame())
+        {
+            Debug.Log("This is not a new game.");
+            GameObjectDirectory.PlayerHealthController.transform.position = GameObjectDirectory.PlayerProfileController.GetPlayerSpawnLocation();
+            GameObjectDirectory.PlayerHealthController.transform.Rotate(Vector3.up, GameObjectDirectory.PlayerProfileController.GetSpawnRotation());
+        }
+        else
+        {
+            Debug.Log("This is a new game");
+            //GameObjectDirectory.PlayerHealthController.transform.position = startingPosition;
+        } 
+
+        GameObjectDirectory.MonsterSpawner.RedoAllMonsters();
+        GameObjectDirectory.MissionController.ReloadMissions();
+        GameObjectDirectory.PlayerStatsController.GetStats();
     }
 }

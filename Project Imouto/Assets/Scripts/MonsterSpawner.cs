@@ -31,8 +31,6 @@ public class MonsterSpawner : MonoBehaviour
 
     private int numberOfMonstersAlive;
     private List<GameObject> monstersList;
-    private RaycastHit hitInfo;
-    private Ray ray;
     private float totalSpawnChanceValue;
     private float monsterCountAndSpawnTimer;
 
@@ -49,7 +47,7 @@ public class MonsterSpawner : MonoBehaviour
         playerTransform = GameObjectDirectory.PlayerHealthController.transform;
         totalSpawnChanceValue = soldierRandomSpawnChance + skeletonRandomSpawnChance + wolfRiderRandomSpawnChance;
         monsterCountAndSpawnTimer = timeBetweenMonsterCountAndSpawn;
-        SpawnRandomMonsters(numberOfMonstersToMaintain);
+        //SpawnRandomMonsters(numberOfMonstersToMaintain);
     }
 
     // Update is called once per frame
@@ -100,15 +98,25 @@ public class MonsterSpawner : MonoBehaviour
         }
     }
 
+    public void RedoAllMonsters()
+    {
+        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+
+        for (int i = 0; i < monsters.Length; i++)
+        {
+            Destroy(monsters[i].gameObject);
+        }
+
+        SpawnRandomMonsters(numberOfMonstersToMaintain);
+    }
+
     public GameObject SpawnMonster(EnemyType enemyToSpawn, Vector3 spawnLoc)
     {
         GameObject returningMonster = null;
-
-        ray = new Ray(new Vector3(spawnLoc.x, 200, spawnLoc.z), -Vector3.up);
-        if (Physics.Raycast(ray, out hitInfo, 400))
+        spawnLoc = Utilities.GetSurfacePoint(spawnLoc);
+        
+        if(spawnLoc != Vector3.zero)
         {
-            spawnLoc = hitInfo.point; // Update the spawnloc to make sure the Monster is on the ground
-
             switch (enemyToSpawn)
             {
                 case EnemyType.Soldier:
@@ -123,6 +131,10 @@ public class MonsterSpawner : MonoBehaviour
                 default:
                     break;
             }
+        }
+        else
+        {
+            Debug.LogError("We couldn't get a valid Spawn Point");
         }
 
         if (numberOfWaypointsAllowed > 0)

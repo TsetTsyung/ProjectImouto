@@ -23,6 +23,7 @@ public class PayTargetInteractable : InteractableObjectBaseClass {
         overlayController = GameObjectDirectory.OverlayController;
         missionController = GameObjectDirectory.MissionController;
         playerTreasuryController = GameObjectDirectory.PlayerTreasuryController;
+        allowedToDisplay = true;
     }
 	
 	// Update is called once per frame
@@ -32,7 +33,6 @@ public class PayTargetInteractable : InteractableObjectBaseClass {
 
     public void SetMissionParameters(string _missionName, int _amountToPay)
     {
-        Debug.Log("Setting up the parameters");
         amountToPay = _amountToPay;
         SetText(header + amountToPay.ToString() + footer, _missionName);
     }
@@ -45,7 +45,9 @@ public class PayTargetInteractable : InteractableObjectBaseClass {
 
     public override void DisplayText()
     {
-        Debug.Log("Displaying the text");
+        if (!allowedToDisplay)
+            return;
+
         overlayController.DisplayInteractionText(this.gameObject, textToDisplay);
     }
 
@@ -56,11 +58,15 @@ public class PayTargetInteractable : InteractableObjectBaseClass {
 
     public override void Interact()
     {
-        Debug.Log("Interacting");
         // Show the full mission display
         if (playerTreasuryController.SpendCoin(amountToPay))
             missionController.PaidTarget(amountToPay);
 
         HideText();
+    }
+
+    public override void DisableText()
+    {
+        allowedToDisplay = false;
     }
 }

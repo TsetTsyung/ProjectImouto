@@ -29,6 +29,7 @@ public class StoreWeaponScript : InteractableObjectBaseClass
         overlayController = GameObjectDirectory.OverlayController;
         playerStatsController = GameObjectDirectory.PlayerStatsController;
         playerTreasuryController = GameObjectDirectory.PlayerTreasuryController;
+        allowedToDisplay = true;
         SetupStoreSwordItem();
     }
 
@@ -53,6 +54,8 @@ public class StoreWeaponScript : InteractableObjectBaseClass
 
     public override void DisplayText()
     {
+        if (!allowedToDisplay)
+            return;
         overlayController.DisplayInteractionText(this.gameObject, textToDisplay);
     }
 
@@ -68,5 +71,10 @@ public class StoreWeaponScript : InteractableObjectBaseClass
             playerStatsController.UpdateSwordDamage(swordLevel + 1); // This is plus 1 to move the progress along
             SetupStoreSwordItem();
         }
+    }
+
+    public override void DisableText()
+    {
+        allowedToDisplay = false;
     }
 }

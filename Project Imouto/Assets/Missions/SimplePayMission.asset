@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: SimplePayMission
   m_EditorClassIdentifier: 
   missionName: Simple Pay Mission
-  missionType: 2
+  missionType: 1
   missionIsAvailable: 1
   missionIsActive: 0
   missionBriefing: pay the man, man!
@@ -24,7 +24,7 @@ MonoBehaviour:
   amountToPay: 10
   enemies: 0000000000000000
   targetEnemy: 0
-  missionLocation: {x: 0, y: 0, z: 0}
+  missionLocation: {x: 300, y: 6.8, z: 275}
   targetLocation: {x: 0, y: 0, z: 0}
   targetWaypoints: []
   enemyLocations:
@@ -34,3 +34,4 @@ MonoBehaviour:
   waypoints: []
   waypointMessages: []
   unlocksMissions: 
+  completed: 0

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: SimpleGoToWaypoint
   m_EditorClassIdentifier: 
   missionName: SimpleGoToWaypoint
-  missionType: 3
+  missionType: 2
   missionIsAvailable: 1
   missionIsActive: 0
   missionBriefing: Go here, following the waypoints
@@ -21,6 +21,7 @@ MonoBehaviour:
   coinReward: 10
   missionBoardLocation: {x: 294.155, y: 6.4256, z: 264.334}
   missionBoardDirection: 0
+  amountToPay: 0
   enemies: 
   targetEnemy: 0
   missionLocation: {x: 297.155, y: 6.4256, z: 254}
@@ -35,3 +36,4 @@ MonoBehaviour:
   - Just a little further...
   - Well Done! Now turn around and go back the way you came.
   unlocksMissions: 
+  completed: 0

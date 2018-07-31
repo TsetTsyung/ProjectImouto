@@ -28,4 +28,5 @@ public class MissionScritableObject : ScriptableObject {
     public Vector3[] waypoints;
     public string[] waypointMessages;
     public string unlocksMissions;
+    public bool completed;
 }

@@ -9,11 +9,13 @@ public class MissionBoardInteractable : InteractableObjectBaseClass
 
     private OverlayController overlayController;
     private MissionController missionController;
-    
+
     // Use this for initialization
     void Start () {
         overlayController = GameObjectDirectory.OverlayController;
         missionController = GameObjectDirectory.MissionController;
+
+        allowedToDisplay = true;
 	}
 	
 	// Update is called once per frame
@@ -34,6 +36,9 @@ public class MissionBoardInteractable : InteractableObjectBaseClass
 
     public override void DisplayText()
     {
+        if (!allowedToDisplay)
+            return;
+
         overlayController.DisplayInteractionText(this.gameObject, textToDisplay);
     }
 
@@ -47,5 +52,11 @@ public class MissionBoardInteractable : InteractableObjectBaseClass
         // Show the full mission display
         HideText();
         missionController.DisplayMissionScreen(missionName);
+    }
+
+    public override void DisableText()
+    {
+        allowedToDisplay = false;
+        HideText();
     }
 }
