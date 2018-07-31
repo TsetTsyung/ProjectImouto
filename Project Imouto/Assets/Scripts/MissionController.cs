@@ -13,6 +13,8 @@ public class MissionController : MonoBehaviour
     private MissionScritableObject[] originalMissions;
     [SerializeField]
     private GameObject missionBoardPrefab;
+    [SerializeField]
+    private GameObject payTargetPrefab;
 
     private List<MissionBoardInteractable> missionBoards;
 
@@ -30,8 +32,10 @@ public class MissionController : MonoBehaviour
     private int currentMissionSlot;
     private int currentWaypointPointer = 0;
     private bool currentlyFollowingWaypoints = false;
+    private int amountPaidToMission = 0;
 
     private GameObject newMonster;
+    private GameObject payTarget;
 
     // variables that are mission specific
     // KillTargetMission
@@ -166,6 +170,7 @@ public class MissionController : MonoBehaviour
         {
             if (acceptedMissionName.Length == missions[i].missionName.Length && acceptedMissionName.Contains(missions[i].missionName))
             {
+                Debug.Log("We've found the missions, and are trying to accept it");
                 haveAnActiveMission = true;
                 currentMissionName = acceptedMissionName;
                 currentMissionSlot = i;
@@ -180,12 +185,17 @@ public class MissionController : MonoBehaviour
 
     public void MissionCompleted()
     {
+        Debug.LogWarning("Mission Completed");
         // Show text and give winning
         playerXPController.AddXP(missions[currentMissionSlot].xpReward);
         playerTreasuryController.AddCoin(missions[currentMissionSlot].coinReward);
         itemSpawner.DisableLocationMarker();
         currentMissionName = "";
         overlayController.DisplayMissionCompletedPanel(missions[currentMissionSlot].completedMessage);
+        amountPaidToMission = 0;
+
+        if (payTarget != null)
+            Destroy(payTarget.gameObject);
     }
 
 
@@ -223,31 +233,34 @@ public class MissionController : MonoBehaviour
 
     private void BeginKillTargetMission()
     {
-        // We're in the right mission, check for waypoints
-        if (missions[currentMissionSlot].waypoints.Length != 0)
-        {
-            currentWaypointPointer = 0;
-            currentlyFollowingWaypoints = true;
-            itemSpawner.SpawnLocationMarker(missions[currentMissionSlot].waypoints[currentWaypointPointer]);
-        }
-        else
-        {
-            itemSpawner.SpawnLocationMarker(missions[currentMissionSlot].missionLocation);
-        }
-
+        SetupWaypoints();
         SpawnTargetMonster();
     }
 
 
     private void BeginDeliverToTargetMission()
     {
+        SpawnPayTarget();
+        SetupWaypoints();
     }
+
 
     private void BeginPayTargetMission()
     {
+        Debug.LogWarning("Beginning Pay Target Mission, amount to pay is " + missions[currentMissionSlot].amountToPay);
+        Debug.Log("Name of current mission is " + missions[currentMissionSlot].missionName);
+        amountPaidToMission = 0;
+        
+        SetupWaypoints();
+        SpawnPayTarget();
     }
 
     private void BeginGoToMission()
+    {
+        SetupWaypoints();
+    }
+
+    private void SetupWaypoints()
     {
         // We're in the right mission, check for waypoints
         if (missions[currentMissionSlot].waypoints.Length != 0)
@@ -291,6 +304,16 @@ public class MissionController : MonoBehaviour
         }
     }
 
+    private void SpawnPayTarget()
+    {
+        if (payTarget != null)
+            Destroy(payTarget.gameObject);
+
+        Debug.LogError("Creating the pay target");
+        payTarget = Instantiate(payTargetPrefab, missions[currentMissionSlot].targetLocation, Quaternion.identity);
+        payTarget.GetComponent<PayTargetInteractable>().SetMissionParameters(currentMissionName, missions[currentMissionSlot].amountToPay);
+    }
+
     private void CheckMissionSuccess()
     {
         switch (currentMissionType)
@@ -318,10 +341,10 @@ public class MissionController : MonoBehaviour
         // Do checks for waypoint
         if (currentlyFollowingWaypoints)
             CheckWaypointReached();
-        Debug.Log("Is the target dead? " + targetDestroyed);
+
         // Check to see if we've killed the target.
         if (targetDestroyed)
-            MissionCompleted(); ;
+            MissionCompleted();
     }
 
     private void CheckDeliverToTargetMissionSuccess()
@@ -336,6 +359,12 @@ public class MissionController : MonoBehaviour
         // Do checks for waypoint
         if (currentlyFollowingWaypoints)
             CheckWaypointReached();
+
+        if (amountPaidToMission >= missions[currentMissionSlot].amountToPay)
+        {
+            Debug.Log("amountPaid is " + amountPaidToMission + ", and amountToPay is " + missions[currentMissionSlot].amountToPay);
+            MissionCompleted();
+        }
     }
 
     private void CheckGoToMissionSuccess()
@@ -380,5 +409,11 @@ public class MissionController : MonoBehaviour
     {
         if (targetMonster == creatureThatDied)
             targetDestroyed = true;
+    }
+
+    public void PaidTarget(int _amountPaid)
+    {
+        Debug.LogWarning("We've paid the target");
+        amountPaidToMission = _amountPaid;
     }
 }

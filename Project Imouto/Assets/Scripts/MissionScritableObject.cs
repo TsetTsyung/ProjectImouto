@@ -17,6 +17,7 @@ public class MissionScritableObject : ScriptableObject {
     public int coinReward;
     public Vector3 missionBoardLocation;
     public float missionBoardDirection;
+    public int amountToPay;
     public EnemyType[] enemies;
     public EnemyType targetEnemy;
     public Vector3 missionLocation;

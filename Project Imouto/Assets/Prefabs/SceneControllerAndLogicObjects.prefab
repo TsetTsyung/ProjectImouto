@@ -6605,7 +6605,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5045fe0689bf8654a9db9e69656cd0b9, type: 2}
   - {fileID: 11400000, guid: b262092dda031914cabadf2ddb9f3133, type: 2}
   - {fileID: 11400000, guid: 6052c651f5ddb5e4d8b66f9e12940fcf, type: 2}
+  - {fileID: 11400000, guid: edeebec02fe35a84ea98f1f3d7e9b23d, type: 2}
   missionBoardPrefab: {fileID: 1557244305805004, guid: f7c24a38a73f6d843ba70609ac5bef49,
+    type: 2}
+  payTargetPrefab: {fileID: 1829852443732876, guid: c279550adef07b54193b68d8f549d9c2,
     type: 2}
 --- !u!114 &114440044811333888
 MonoBehaviour:

@@ -45,7 +45,7 @@ public class MissionBoardInteractable : InteractableObjectBaseClass
     public override void Interact()
     {
         // Show the full mission display
-        missionController.DisplayMissionScreen(missionName);
         HideText();
+        missionController.DisplayMissionScreen(missionName);
     }
 }
